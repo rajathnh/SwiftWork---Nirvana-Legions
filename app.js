@@ -19,6 +19,8 @@ const connectDB = require('./db/connect');
 
 //  routers
 const authRoutes = require('./routes/authRoutes')
+const freelancerRoutes = require('./routes/freelancerRoutes')
+const clientRoutes = require('./routes/clientRoutes')
 
 // middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -43,6 +45,9 @@ app.use(express.static('./public'));
 app.use(fileUpload());
 
 app.use('/api/v1/auth',authRoutes)
+app.use('/api/v1/freelancer',freelancerRoutes)
+app.use('/api/v1/client',clientRoutes)
+
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
