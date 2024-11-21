@@ -3,14 +3,14 @@
 Landing Page:
 Overview of the platform with links to login, sign up, and basic features.
 
-Authentication Pages: - Done
+Authentication Pages: - Backend Done, upgrades - Email verification on first login
 Sign Up: Separate forms for freelancers and clients.
 Login: Common login page for all users.
 
-Freelancer Profile Page: - Partially Done, Image Update, Review show left
+Freelancer Profile Page: - Backend Partially Done, Image Update, Review show left
 Displays freelancer details: skills, experience, portfolio, and reviews.
 
-Client Profile Page:Partially done, Order list left
+Client Profile Page:Backend Partially done, Order list left
 Shows client details: previous job listings and reviews (if any).
 
 Freelancer Dashboard:
