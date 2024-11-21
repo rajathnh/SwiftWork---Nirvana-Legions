@@ -31,3 +31,7 @@ Includes messaging and file-sharing functionality.
 
 Payment Page:
 Allows clients to process payments for accepted jobs.
+
+
+To run, download codebase and open the Swiftwork folder in terminal. Run npn install and then npm start.
+To test API, create postman acconunt and send me(Rajath) your email.
