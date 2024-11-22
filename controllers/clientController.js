@@ -59,7 +59,7 @@ const getClientById = async (req, res) => {
         throw new CustomError.NotFoundError('Client not found');
       }
   
-      await client.remove();
+      await client.deleteOne();
   
       res.status(StatusCodes.OK).json({ msg: 'Client deleted successfully' });
     } catch (error) {
