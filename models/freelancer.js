@@ -34,40 +34,48 @@ const freelancerSchema = new mongoose.Schema({
     skills:{
         type:[String],
         required:true,
-    },
-    ratings:{
-        average:{
-            type:Number,
-            default:0,
-        },
-        totalReviews:{
-            type:Number,
-            default:0,
-        },
-    },
+    },    
     image1:{
         type:String,
-        default:'/uploads/default.jpg',
-        //required:[true,'Please upload an image showcasing your skills'],
+        
+        required:[true,'Please upload an image showcasing your skills'],
         
     },
     image2:{
         type:String,
-        default:'/uploads/default.jpg'
+       // default:'/uploads/default.jpg'
     },
     image3:{
         type:String,
-        default:'/uploads/default.jpg'
+        //default:'/uploads/default.jpg'
     },
     image4:{
         type:String,
-        default:'/uploads/default.jpg'
+        //default:'/uploads/default.jpg'
     },
     createdAt:{
         type:Date,
         default:Date.now,
-    }
+    },
+    averageRating:{
+        type:Number,
+        default:0,
+    },
+    numOfReviews:{
+        type:Number,
+        default:0,
+    },
 })
+
+freelancerSchema.virtual('reviews', {
+    ref: 'Review',
+    localField: '_id',
+    foreignField: 'freelancer',
+    justOne: false,
+  });
+  freelancerSchema.pre('remove', async function (next) {
+    await this.model('Review').deleteMany({ freelancer: this._id });
+  });
 
 
 module.exports = mongoose.model('Freelancer',freelancerSchema)
