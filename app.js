@@ -8,6 +8,14 @@ const app = express();
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 const rateLimiter = require('express-rate-limit');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -21,10 +29,13 @@ const connectDB = require('./db/connect');
 const authRoutes = require('./routes/authRoutes')
 const freelancerRoutes = require('./routes/freelancerRoutes')
 const clientRoutes = require('./routes/clientRoutes')
+const reviewRoutes = require('./routes/reviewRoutes')
 
 // middleware
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
+const CustomError = require('./errors')
+
 
 app.set('trust proxy', 1);
 app.use(
@@ -42,11 +53,22 @@ app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
 app.use(express.static('./public'));
-app.use(fileUpload());
+// Modify your file upload middleware configuration
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: '/tmp/', // Ensure this directory exists
+  createParentPath: true, // Automatically create upload directories
+  limits: { 
+    fileSize: 5 * 1024 * 1024 // 5MB max file size
+  },
+  abortOnLimit: true,
+  debug: true // Add debug logging
+}));
 
 app.use('/api/v1/auth',authRoutes)
 app.use('/api/v1/freelancer',freelancerRoutes)
 app.use('/api/v1/client',clientRoutes)
+app.use('/api/v1/review',reviewRoutes)
 
 
 app.use(notFoundMiddleware);
