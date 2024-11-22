@@ -2,11 +2,19 @@ const Freelancer = require('../models/freelancer')
 const bcrypt = require('bcryptjs')
 const {StatusCodes} = require('http-status-codes')
 const CustomError = require('../errors')
+const path = require('path')
+
+const getAllFreelancers = async(req,res) =>{
+    const freelancer = await Freelancer.find({});
+    res.status(StatusCodes.OK).json({ freelancer, count: freelancer.length });
+}
 
 const getFreelancerById = async(req,res)=>{
     try{
-        const{id} = req.params;
-        const freelancer = await Freelancer.findById(id);
+        const{id:freelancerId} = req.params;
+        
+        const freelancer = await Freelancer.findOne({_id:freelancerId}).populate('reviews')
+        console.log(freelancer)
         if(!freelancer){
             throw new CustomError.BadRequestError("Invalid Credentials")
         }
@@ -59,6 +67,7 @@ const deleteFreelancer = async(req,res) =>{
 }
 
 module.exports = {
+    getAllFreelancers,
     updateFreelancer,
     getFreelancerById,
     deleteFreelancer,
