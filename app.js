@@ -30,6 +30,8 @@ const authRoutes = require('./routes/authRoutes')
 const freelancerRoutes = require('./routes/freelancerRoutes')
 const clientRoutes = require('./routes/clientRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
+const gigRoutes = require('./routes/gigRoutes')
+const proposalRoutes = require('./routes/proposalRoutes')
 
 // middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -69,6 +71,8 @@ app.use('/api/v1/auth',authRoutes)
 app.use('/api/v1/freelancer',freelancerRoutes)
 app.use('/api/v1/client',clientRoutes)
 app.use('/api/v1/review',reviewRoutes)
+app.use('/api/v1/gigs',gigRoutes)
+app.use('/api/v1/proposal',proposalRoutes)
 
 
 app.use(notFoundMiddleware);
