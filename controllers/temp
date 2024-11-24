@@ -1,0 +1,66 @@
+const createFreelancer = async (req,res)=>{
+    try{
+        console.log(req.files)
+    const {name,email,password,skills,bio,portfolio} = req.body;
+    const existingFreelancer = await Freelancer.findOne({email});
+    if(existingFreelancer){
+        return res.status(400).json({msg:'Email already exists'})
+    }
+    const hashedPassword = await bcrypt.hash(password,10);
+    let uploadedImages = [];
+  
+      // Handle image upload
+      if (req.files && Object.keys(req.files).length > 0) {
+        for (const [key, file] of Object.entries(req.files)) {
+          // Upload each image to Cloudinary
+          const result = await cloudinary.uploader.upload(file.tempFilePath, {
+            folder: 'freelancer_images',
+          });
+          uploadedImages.push(result.secure_url);
+  
+          // Cleanup temporary file after upload
+          await fs.unlink(file.tempFilePath);
+        }
+      }
+  
+      // Default image fallback
+      const defaultImage = '/uploads/default.jpg';
+  
+      // Create the freelancer document
+      const newFreelancer = new Freelancer({
+        name,
+        email,
+        password: hashedPassword,
+        skills, // Split skills by commas
+        bio,
+        portfolio,
+        image1: uploadedImages[0] || defaultImage,
+        image2: uploadedImages[1] || defaultImage,
+        image3: uploadedImages[2] || defaultImage,
+        image4: uploadedImages[3] || defaultImage,
+      });
+  
+      // Save the freelancer to the database
+      await newFreelancer.save();
+  
+      // Respond with success
+      res.status(201).json({
+        msg: 'Freelancer created successfully',
+        newFreelancer: {
+          id: newFreelancer._id,
+          name: newFreelancer.name,
+          email: newFreelancer.email,
+          skills: newFreelancer.skills,
+          portfolio: newFreelancer.portfolio,
+          images: [
+            newFreelancer.image1,
+            newFreelancer.image2,
+            newFreelancer.image3,
+            newFreelancer.image4,
+          ],
+        },
+      });
+}catch(error){
+    res.status(500).json({msg:'Server Error',error:error.message});
+}
+};

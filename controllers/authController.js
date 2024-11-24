@@ -12,88 +12,88 @@ const { attachCookiesToResponse, createTokenUser } = require('../utils');
 const cloudinary = require('cloudinary');
 const fs = require('fs/promises')
 
-const createFreelancer = async (req,res)=>{
+const createFreelancer = async (req, res) => {
     try {
-        // console.log('Received files:', req.files);
-        // console.log('Received body:', req.body);
-
         const { name, email, password, skills, bio, portfolio } = req.body;
         const defaultImage = '/uploads/default.jpg';
-        
-        // Function to upload image safely
+
+        // Validate required fields
+        if (!name || !email || !password) {
+            throw new CustomError.BadRequestError('Please provide all required fields');
+        }
+
+        // Check if freelancer already exists
+        const existingFreelancer = await Freelancer.findOne({ email });
+        if (existingFreelancer) {
+            throw new CustomError.BadRequestError('Email already exists');
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Define the function to safely upload an image
         const uploadImageSafely = async (file) => {
             if (!file) return defaultImage;
             try {
-                console.log('Attempting to upload file:', {
-                    name: file.name,
-                    mimetype: file.mimetype,
-                    size: file.size,
-                    tempFilePath: file.tempFilePath
-                });
-
                 const result = await cloudinary.uploader.upload(file.tempFilePath, {
                     use_filename: true,
-                    folder: 'file-upload'
+                    folder: 'file-upload',
                 });
-
-                console.log('Cloudinary upload result:', {
-                    url: result.secure_url,
-                    public_id: result.public_id
-                });
-
                 return result.secure_url;
             } catch (error) {
-                console.error('Detailed Image upload error:', {
-                    message: error.message,
-                    stack: error.stack,
-                    file: file
-                });
-                return defaultImage;
+                console.error('Error uploading image:', error.message);
+                return defaultImage; // Fallback to default image if upload fails
             }
         };
 
-        // Safely upload images
-        const image1 = req.files?.image1 
-            ? await uploadImageSafely(req.files.image1) 
-            : defaultImage;
-        const image2 = req.files?.image2 
-            ? await uploadImageSafely(req.files.image2) 
-            : defaultImage;
-        const image3 = req.files?.image3 
-            ? await uploadImageSafely(req.files.image3) 
-            : defaultImage;
-        const image4 = req.files?.image4 
-            ? await uploadImageSafely(req.files.image4) 
-            : defaultImage;
-    
+        // Upload images dynamically
+        const uploadImages = async (files, defaultImage) => {
+            return Promise.all(
+                Array.from({ length: 4 }).map((_, i) => {
+                    const file = files[`image${i + 1}`];
+                    return file ? uploadImageSafely(file) : defaultImage;
+                })
+            );
+        };
 
+        // Process image uploads
+        const [image1, image2, image3, image4] = await uploadImages(req.files || {}, defaultImage);
 
-    const existingFreelancer = await Freelancer.findOne({email});
-    if(existingFreelancer){
-        return res.status(400).json({msg:'Email already exists'})
+        // Create the freelancer document
+        const newFreelancer = await Freelancer.create({
+            name,
+            email,
+            password: hashedPassword,
+            skills,
+            bio,
+            portfolio,
+            image1,
+            image2,
+            image3,
+            image4,
+        });
+
+        // Send response
+        res.status(201).json({
+            msg: 'Freelancer created successfully',
+            newFreelancer: {
+                id: newFreelancer._id,
+                name: newFreelancer.name,
+                email: newFreelancer.email,
+                skills: newFreelancer.skills,
+                images: [image1, image2, image3, image4],
+            },
+        });
+    } catch (error) {
+        console.error('Error creating freelancer:', error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            msg: 'Server Error',
+            error: error.message,
+        });
     }
-    const hashedPassword = await bcrypt.hash(password,10);
-
-    const newFreelancer = new Freelancer({name,email,password:hashedPassword,skills,bio,portfolio,image1,image2,image3,image4})
-    await newFreelancer.save()
-
-    res.status(201).json({
-        msg:'Freelancer created successfully',
-        newFreelancer:{
-            id: newFreelancer._id,
-            name: newFreelancer.name,
-            email: newFreelancer.email,
-            skills: newFreelancer.skills,
-            image1: newFreelancer.image1,
-            image2: newFreelancer.image2,
-            image3: newFreelancer.image3,
-            image4: newFreelancer.image4,
-        },
-    });
-}catch(error){
-    res.status(500).json({msg:'Server Error',error:error.message});
-}
 };
+
+
 
 const createClient = async(req,res)=>{
     try{
