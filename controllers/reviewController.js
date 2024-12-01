@@ -36,10 +36,7 @@ const createReview = async (req, res) => {
   
 
 const getAllReviews = async (req, res) => {
-  const reviews = await Review.find({}).populate({
-    path: 'freelancer',
-    select: 'name',
-  }).populate({path:'user',select:'name'});
+  const reviews = await Review.find({}).populate({path:'freelancer',select:'name'})
 
   res.status(StatusCodes.OK).json({ reviews, count: reviews.length });
 };

@@ -25,6 +25,14 @@ const clientSchema = new mongoose.Schema({
         type:Date,
         default:Date.now,
     },
+},
+    {timestamps:true}    
+)
+clientSchema.virtual('gigs',{
+    ref:'Gig',
+    localField:'_id',
+    foreignField:'client',
 })
+
 
 module.exports = mongoose.model('Client',clientSchema);
