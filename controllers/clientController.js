@@ -26,13 +26,16 @@ const updateClient = async (req,res) =>{
         res.status(500).json({ msg: 'Server Error', error: error.message });
     }
 }
-
+const getAllClients = async(req,res) =>{
+  const clients = await Client.find({}).populate('gigs')
+  res.status(StatusCodes.OK).json({clients,count:clients.length})
+}
 const getClientById = async (req, res) => {
     try {
       const { id } = req.params;
   
       // Find the client by ID
-      const client = await Client.findById(id);
+      const client = await Client.findById(id).populate({path:'gigs',select:'title description budget'});
       if (!client) {
         throw new CustomError.NotFoundError('Client not found');
       }
@@ -42,6 +45,7 @@ const getClientById = async (req, res) => {
           id: client._id,
           name: client.name,
           email: client.email,
+          gigs: client.gigs,
         },
       });
     } catch (error) {
@@ -69,6 +73,7 @@ const getClientById = async (req, res) => {
   
 
   module.exports = {    
+    getAllClients,
     updateClient,
     getClientById,    
     deleteClient,
