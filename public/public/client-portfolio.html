@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="src/output.css">
+</head>
+<body>
+  <div class="min-h-screen bg-gray-50">
+    <!-- Header Section -->
+    <div class="bg-blue-500 text-white">
+      <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row items-center md:justify-between">
+        <!-- Profile Info -->
+        <div class="flex items-center space-x-6">
+          <!-- Profile Picture -->
+          <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white">
+            <img src="https://via.placeholder.com/150" alt="Freelancer Picture" class="w-full h-full object-cover">
+          </div>
+          <!-- Freelancer Details -->
+          <div>
+            <h1 class="text-2xl font-bold">John Doe</h1>
+            <p class="text-sm">Top Rated Seller | Full-Stack Developer</p>
+            <div class="mt-2 flex space-x-2 items-center">
+              <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Level 2 Freelancer</span>
+              <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+              <span class="text-sm">(320 Reviews)</span>
+            </div>
+          </div>
+        </div>
+        <!-- Contact or Hire -->
+        <div class="mt-6 md:mt-0">
+          <button class="bg-white text-blue-500 px-6 py-2 rounded-lg font-semibold shadow hover:bg-gray-100">
+            Contact Me
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-10 grid md:grid-cols-3 gap-8">
+      <!-- Left Sidebar -->
+      <div class="md:col-span-1 space-y-6">
+        <!-- About Section -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-xl font-bold mb-4">About Me</h2>
+          <p class="text-gray-600">
+            I'm a Full-Stack Developer with over 5 years of experience delivering high-quality web applications. I specialize in React, Node.js, and scalable system architectures.
+          </p>
+        </div>
+  
+        <!-- Skills Section -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-xl font-bold mb-4">Skills</h2>
+          <ul class="list-disc pl-6 space-y-2 text-gray-600">
+            <li>JavaScript (React.js, Node.js)</li>
+            <li>SQL & MongoDB</li>
+            <li>API Integration</li>
+            <li>Web Performance Optimization</li>
+          </ul>
+        </div>
+  
+        <!-- Contact Information -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-xl font-bold mb-4">Contact Info</h2>
+          <p class="text-gray-600"><strong>Email:</strong> john.doe@example.com</p>
+          <p class="text-gray-600"><strong>Location:</strong> New York, USA</p>
+        </div>
+      </div>
+  
+      <!-- Main Content -->
+      <div class="md:col-span-2 space-y-8">
+        <!-- Services Section -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-2xl font-bold mb-4">Services</h2>
+          <div class="grid sm:grid-cols-2 gap-6">
+            <div class="border rounded-lg p-4 shadow-sm hover:shadow-md">
+              <h3 class="font-semibold text-lg mb-2">Build a Responsive Website</h3>
+              <p class="text-gray-600 text-sm">I will create a fully responsive and SEO-optimized website tailored to your needs.</p>
+              <div class="mt-4 text-blue-500 font-semibold">$500</div>
+            </div>
+            <div class="border rounded-lg p-4 shadow-sm hover:shadow-md">
+              <h3 class="font-semibold text-lg mb-2">Custom API Development</h3>
+              <p class="text-gray-600 text-sm">I will develop robust APIs for seamless integration with your applications.</p>
+              <div class="mt-4 text-blue-500 font-semibold">$300</div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Portfolio Section -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-2xl font-bold mb-4">Portfolio</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <img src="https://via.placeholder.com/200" alt="Project 1" class="rounded-lg shadow">
+            <img src="https://via.placeholder.com/200" alt="Project 2" class="rounded-lg shadow">
+            <img src="https://via.placeholder.com/200" alt="Project 3" class="rounded-lg shadow">
+            <img src="https://via.placeholder.com/200" alt="Project 4" class="rounded-lg shadow">
+          </div>
+        </div>
+  
+        <!-- Reviews Section -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-2xl font-bold mb-4">Reviews</h2>
+          <div class="space-y-4">
+            <div>
+              <p class="text-gray-700">"Fantastic work! Exceeded expectations and delivered on time."</p>
+              <p class="text-sm text-gray-500 mt-1">- Client A</p>
+            </div>
+            <div>
+              <p class="text-gray-700">"Very professional and skilled. I highly recommend!"</p>
+              <p class="text-sm text-gray-500 mt-1">- Client B</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+</body>
+</html>
