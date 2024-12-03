@@ -30,6 +30,7 @@ const getAllClients = async(req,res) =>{
   const clients = await Client.find({}).populate('gigs')
   res.status(StatusCodes.OK).json({clients,count:clients.length})
 }
+
 const getClientById = async (req, res) => {
     try {
       const { id } = req.params;
