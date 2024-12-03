@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Registration</title>
+  <link rel="stylesheet" href="register-client.css">
+  <script defer src="register-client.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="flex justify-center items-center h-screen">
+    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-bold text-center mb-4">Client Registration</h2>
+      
+      <form id="client-form" class="space-y-4">
+        <!-- Name -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+          <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+          <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="password" name="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <!-- Profile Picture -->
+        <div>
+          <label for="profilePic" class="block text-sm font-medium text-gray-700">Profile Picture (optional)</label>
+          <input type="file" id="profilePic" name="profilePic" accept="image/*" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button type="submit" class="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Register</button>
+        </div>
+      </form>
+
+      <div id="error-message" class="mt-4 text-center text-red-500 hidden"></div>
+    </div>
+  </div>
+</body>
+</html>

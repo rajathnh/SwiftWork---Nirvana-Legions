@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.profile-header h2 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.bio, .portfolio, .reviews, .rating {
+    margin-top: 30px;
+}
+
+.portfolio .images img {
+    width: 100%;
+    max-width: 300px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.review {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+}
+
+.review p {
+    margin: 5px 0;
+}
