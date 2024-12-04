@@ -24,8 +24,14 @@
     padding: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    justify-content: flex-start; /* Ensure the form starts from the top */
+    min-height: 80vh; /* Ensure form takes at least 80% of the viewport height */
   }
   
+  /* Heading Styling */
   h2 {
     font-size: 1.5rem;
     font-weight: bold;
@@ -75,6 +81,7 @@
     padding: 0.75rem;
     background-color: #ffffff;
     border: 1px solid #d1d5db;
+    font-size: 1rem;
   }
   
   /* Button Styling */
@@ -110,5 +117,14 @@
   small {
     font-size: 0.875rem;
     color: #6b7280;
+  }
+  
+  /* Added for better spacing */
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .mt-6 {
+    margin-top: 1.5rem;
   }
   
