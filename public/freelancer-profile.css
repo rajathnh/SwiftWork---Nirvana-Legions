@@ -1,0 +1,143 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* Profile Container */
+.profile-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-header img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 3px solid #ddd;
+}
+
+.profile-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #444;
+}
+
+.profile-header p {
+    margin: 5px 0 0;
+    color: #777;
+}
+
+/* Skills Section */
+.skills-section {
+    margin: 20px 0;
+}
+
+.skills-section h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #444;
+}
+
+.skills-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.skills-section ul li {
+    display: inline-block;
+    margin: 5px 10px;
+    padding: 5px 10px;
+    background-color: #e7f3ff;
+    color: #007bff;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* Bio Section */
+.bio-section {
+    margin: 20px 0;
+}
+
+.bio-section h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #444;
+}
+
+.bio-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Portfolio Section */
+.portfolio-section {
+    margin: 20px 0;
+}
+
+.portfolio-section h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #444;
+}
+
+.portfolio-section .portfolio-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.portfolio-section .portfolio-images img {
+    width: calc(50% - 10px);
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Reviews Section */
+.reviews-section {
+    margin: 20px 0;
+}
+
+.reviews-section h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #444;
+}
+
+.reviews-section .review {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+.reviews-section .review h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.reviews-section .review p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #555;
+}

@@ -21,6 +21,9 @@ const clientSchema = new mongoose.Schema({
         minlength:6,
         trim:true,
     },
+    profilePic:{
+        type:String,
+    },
     createdAt:{
         type:Date,
         default:Date.now,
