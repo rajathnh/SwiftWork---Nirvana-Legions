@@ -1,12 +1,13 @@
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+const loginForm = document.querySelector('#login-form');
 
-  // Get form data
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault(); // Prevent default form submission
+
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
   try {
-    // Send data to backend API
+    // Send the login request to the server
     const response = await fetch('http://localhost:5000/api/v1/auth/login', {
       method: 'POST',
       headers: {
@@ -15,19 +16,27 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       body: JSON.stringify({ email, password }),
     });
 
-    // Handle the response
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.msg || 'Login failed');
+    const data = await response.json();
+
+    if (response.ok) {
+      // Store the user ID in localStorage
+      const userId = data.userId;
+      localStorage.setItem('swiftWork_ID', userId);
+
+      // Store the userType to handle redirection
+      const userType = data.userType;
+
+      // Redirect based on user type
+      if (userType === 'freelancer') {
+        window.location.href = 'freelancer-profile.html'; // Redirect to freelancer profile page
+      } else if (userType === 'client') {
+        window.location.href = 'client-portfolio.html'; // Redirect to client portfolio page
+      }
+    } else {
+      alert(data.message); // Show error message if login failed
     }
-
-    const result = await response.json();
-    console.log('Login successful:', result);
-
-    // Redirect or show success message
-    window.location.href = '/dashboard.html';
   } catch (error) {
-    console.error('Error:', error.message);
-    alert('Login failed: ' + error.message);
+    console.error('Error:', error);
+    alert('An error occurred. Please try again.');
   }
 });

@@ -185,7 +185,8 @@ const login = async(req,res)=>{
         
         const tokenUser = createTokenUser(user);
         attachCookiesToResponse({ res, user: tokenUser });
-        res.status(StatusCodes.OK).json({ user: tokenUser });
+        const userType = user instanceof Freelancer ? 'freelancer' : 'client';
+        res.status(StatusCodes.OK).json({ user: tokenUser ,userId:user._id, userType: userType,});
     }catch(error){
         console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: 'Server Error', error: error.message });
