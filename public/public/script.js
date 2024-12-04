@@ -118,3 +118,16 @@ function addSkillRow(event) {
     }
   }
   
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const statusIndicator = document.getElementById("statusIndicator");
+
+    // Freelancer Status - Example of toggle between 'Available' and 'Not Available'
+    const isAvailable = true; // This should come from your backend or user state
+
+    if (isAvailable) {
+      statusIndicator.classList.add("bg-green-500"); // Available
+    } else {
+      statusIndicator.classList.add("bg-gray-400"); // Not Available
+    }
+  });
