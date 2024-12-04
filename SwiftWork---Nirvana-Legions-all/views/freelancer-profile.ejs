@@ -1,0 +1,57 @@
+<!-- views/profile.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Profile</title>
+    <link rel="stylesheet" href="/freelancer-profile.css">
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Freelancer Profile</h1>
+        <div class="profile-header">
+            <img src="<%= freelancer.profilePic %>" alt="<%= freelancer.name %>" class="profile-pic">
+            <h2><%= freelancer.name %></h2>
+            <p>Email: <%= freelancer.email %></p>
+            <p>Bio: <%= freelancer.bio %></p>
+        </div>
+
+        <div class="skills">
+            <h3>Skills</h3>
+            <ul>
+                <% freelancer.skills.forEach(skill => { %>
+                    <li><%= skill %></li>
+                <% }); %>
+            </ul>
+        </div>
+
+        <div class="portfolio-images">
+            <h3>Portfolio</h3>
+            <% if (freelancer.image1) { %>
+                <img src="<%= freelancer.image1 %>" alt="Portfolio Image 1">
+            <% } %>
+            <% if (freelancer.image2) { %>
+                <img src="<%= freelancer.image2 %>" alt="Portfolio Image 2">
+            <% } %>
+            <% if (freelancer.image3) { %>
+                <img src="<%= freelancer.image3 %>" alt="Portfolio Image 3">
+            <% } %>
+            <% if (freelancer.image4) { %>
+                <img src="<%= freelancer.image4 %>" alt="Portfolio Image 4">
+            <% } %>
+        </div>
+
+        <div class="reviews">
+            <h3>Reviews</h3>
+            <% freelancer.reviews.forEach(review => { %>
+                <div class="review">
+                    <h4><%= review.title %></h4>
+                    <p><%= review.comment %></p>
+                    <p>Rating: <%= review.rating %></p>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</body>
+</html>

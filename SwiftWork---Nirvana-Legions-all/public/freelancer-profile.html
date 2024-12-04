@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freelancer Portfolio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .profile-header img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
+    .bio, .portfolio, .reviews, .rating {
+      margin-bottom: 2rem;
+    }
+
+    .portfolio .images {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .portfolio .images img {
+      width: calc(50% - 1rem);
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .review {
+      padding: 1rem;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    h2, h3 {
+      color: #007bff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Freelancer Profile Section -->
+    <div id="profile" class="profile-header">
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <!-- Include Script to Fetch Data -->
+  <script src="freelancer-profile.js"></script>
+</body>
+
+</html>
