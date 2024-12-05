@@ -20,6 +20,13 @@ const SubmitProposal = async (req, res) => {
     return res.status(StatusCodes.NOT_FOUND).json({ msg: `No gig found with ID: ${gigId}` });
   }
 
+  // Check if the freelancer has already made a proposal for this gig
+  const existingProposal = await Proposal.findOne({ gig: gigId, freelancer: freelancerId });
+  if (existingProposal) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ msg: 'You have already made a proposal for this gig' });
+  }
+
+  // Create a new proposal
   const proposal = await Proposal.create({
     gig: gigId,  // Use 'gig' (singular) in the Proposal schema
     freelancer: freelancerId,
