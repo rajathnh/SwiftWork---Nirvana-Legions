@@ -44,15 +44,9 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'","https://unpkg.com"],
-      styleSrc: ["'self'", "'unsafe-inline'","https://fonts.googleapis.com","https://demos.creative-tim.com"],
-      fontSrc: [
-        "'self'",
-        "https://fonts.gstatic.com", // Google Fonts
-        "https://demos.creative-tim.com", // Font Awesome
-      ],
-      imgSrc: ["'self'","data:", "https://images.unsplash.com", "https://res.cloudinary.com", "https://unpkg.com"],
-      connectSrc: ["'self'", "https://unpkg.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "https://res.cloudinary.com", "data:"],
     },
   },
 }));

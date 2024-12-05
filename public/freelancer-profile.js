@@ -60,6 +60,11 @@ function displayFreelancerData(freelancer) {
             <p><strong>Number of Reviews:</strong> ${freelancer.numOfReviews || 0}</p>
         </div>
     `;
+
+    // Add event listener for the "View All Gigs" button
+    document.getElementById('view-all-gigs-btn').addEventListener('click', function () {
+        window.location.href = 'display-all-gigs.html';
+    });
 }
 
 // Display portfolio images dynamically

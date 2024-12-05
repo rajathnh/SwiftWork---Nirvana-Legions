@@ -22,14 +22,18 @@ loginForm.addEventListener('submit', async (e) => {
       // Store the user ID in localStorage
       const userId = data.userId;
       localStorage.setItem('swiftWork_ID', userId);
+      // Example: Store user role after login
+      localStorage.setItem('swiftWork_role', 'client'); // or 'freelancer'
 
       // Store the userType to handle redirection
       const userType = data.userType;
 
       // Redirect based on user type
       if (userType === 'freelancer') {
+        localStorage.setItem('swiftWork_role', 'freelancer'); 
         window.location.href = 'freelancer-profile.html'; // Redirect to freelancer profile page
       } else if (userType === 'client') {
+        localStorage.setItem('swiftWork_role', 'client'); 
         window.location.href = 'client-portfolio.html'; // Redirect to client portfolio page
       }
     } else {

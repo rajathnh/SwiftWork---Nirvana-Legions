@@ -28,18 +28,20 @@ const getAllGigs = async (req, res) => {
 const getGigById = async (req, res) => {
     const { id: gigId } = req.params;
 
-    const gig = await Gig.findById(gigId).populate('proposals','proposalMessage bidAmount')
-    // .populate({
-    //     path: 'client',
-    //     select: 'name email',
-    // });
+    const gig = await Gig.findById(gigId)
+        .populate('proposals', 'proposalMessage bidAmount')
+        .populate('client', 'name email'); // Populate client details (name and email)
+
     if (!gig) {
         throw new CustomError.NotFoundError(`No gig found with id: ${gigId}`);
     }
-    res.status(StatusCodes.OK).json({ gig ,
-        proposals:gig.proposals
+
+    res.status(StatusCodes.OK).json({
+        gig,
+        proposals: gig.proposals, // Include populated proposals in response
     });
 };
+
 
 // Update a gig
 const updateGig = async (req, res) => {
