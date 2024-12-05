@@ -10,48 +10,32 @@ body {
     height: 100vh;
   }
   
-  .portfolio-container {
+  .gig-details-container {
     background-color: #fff;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 80%;
-    max-width: 600px;
-    text-align: center;
-  }
-  
-  .profile-pic {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin-bottom: 1rem;
-  }
-  
-  .gigs-list {
-    list-style: none;
-    padding: 0;
+    max-width: 800px;
     text-align: left;
   }
   
-  .gigs-list li {
-    padding: 0.5rem;
+  .proposals-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .proposals-list li {
+    padding: 0.75rem;
     margin: 0.5rem 0;
     background-color: #e9ecef;
     border-radius: 5px;
   }
   
-  .gigs-list a {
-    text-decoration: none;
-    color: #007bff;
-  }
-  
-  .gigs-list a:hover {
-    text-decoration: underline;
-  }
-  
-  .add-gig-btn {
-    margin-top: 1.5rem;
+  .view-client-btn,
+  .make-proposal-btn {
+    display: block;
+    margin: 1rem 0;
     padding: 0.75rem 1.5rem;
     background-color: #007bff;
     color: white;
@@ -61,7 +45,8 @@ body {
     cursor: pointer;
   }
   
-  .add-gig-btn:hover {
+  .view-client-btn:hover,
+  .make-proposal-btn:hover {
     background-color: #0056b3;
   }
   

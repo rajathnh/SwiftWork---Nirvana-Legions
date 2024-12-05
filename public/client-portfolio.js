@@ -1,40 +1,76 @@
-// Fetch the swiftWork_ID from localStorage
-const swiftWorkID = localStorage.getItem('swiftWork_ID');
-console.log(swiftWorkID)
-if (swiftWorkID) {
-  // Construct the URL to get the client data
-  const url = `http://localhost:5000/api/v1/client/${swiftWorkID}`;
+document.addEventListener('DOMContentLoaded', async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    //const clientId = urlParams.get('clientId');
+    const swiftWorkID =urlParams.get('clientId')|| localStorage.getItem('swiftWork_ID');
+  
+    // Check if the client ID exists in localStorage
+    if (!swiftWorkID) {
+      alert('No client ID found. Please log in.');
+      window.location.href = 'login.html';
+      return;
+    }
 
-  // Fetch the client data from the backend
-  fetch(url)
-    .then((response) => {
-      // Check if the response is successful
+    // Simulate role check (assume role is stored in localStorage or fetched from the backend)
+    const userRole = localStorage.getItem('swiftWork_role'); // Stored during login
+
+    // Show "Create Gig" button only if the user is a client
+    const createGigButton = document.getElementById('create-gig-button');
+    if (createGigButton) {
+        if (userRole === 'client') {
+            createGigButton.style.display = 'block';
+        } else {
+            createGigButton.style.display = 'none';
+            console.log('User is not a client. Hiding Create Gig button.');
+        }
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/client/${swiftWorkID}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`, // Ensure the token is passed
+        },
+      });
+  
       if (!response.ok) {
         throw new Error('Failed to fetch client data.');
       }
-      return response.json();
-    })
-    .then((data) => {
-      // Log the data for debugging
-      console.log('Client Data:', data);
+  
+      const data = await response.json();
+  
+      if (data.client) {
+        // Update client name and email
+        document.getElementById('client-name').textContent = `Name: ${data.client.name}`;
+        document.getElementById('client-email').textContent = `Email: ${data.client.email}`;
+  
+        // Update profile picture (check if exists)
+        const profilePic = document.getElementById('profile-pic');
+        if (profilePic) {
+            profilePic.src = data.client.profilePic || 'uploads/defaut.jpg'; // Default pic if not available
+        }
 
-      // Update the DOM with the client data
-      document.getElementById('client-name').textContent = data.name;
-      document.getElementById('client-email').textContent = data.email;
-
-      // Check if profilePicPath exists and update the image
-      if (data.profilePicPath) {
-        const profilePic = document.getElementById('client-profile-pic');
-        profilePic.src = `http://localhost:5000/${data.profilePicPath}`; // Adjust path if needed
-        profilePic.style.display = 'block'; // Make the image visible
+        // Populate the gigs list (only if gigs exist)
+        const gigsList = document.getElementById('gigs-list');
+        if (gigsList && data.client.gigs && data.client.gigs.length > 0) {
+            data.client.gigs.forEach((gig) => {
+                const gigItem = document.createElement('li');
+    
+                // Add link to gig details
+                const gigLink = document.createElement('a');
+                gigLink.href = `gig-details.html?gigId=${gig._id}`;
+                gigLink.textContent = `${gig.title} - Budget: $${gig.budget}`;
+    
+                gigItem.appendChild(gigLink);
+                gigsList.appendChild(gigItem);
+            });
+        } else {
+            alert('No gigs found for this client.');
+        }
+      } else {
+        alert('Client data not found.');
       }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      // Display error message to the user
-      alert('Failed to fetch client data. Please try again.');
-    });
-} else {
-  console.error('swiftWork_ID not found in localStorage.');
-  alert('No client ID found. Please register or log in again.');
-}
+    } catch (error) {
+      console.error('Error fetching client data:', error);
+      alert('Error fetching client data.');
+    }
+});
