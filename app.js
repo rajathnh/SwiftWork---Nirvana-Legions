@@ -11,6 +11,7 @@ const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary').v2;
 const { Server } = require('socket.io');
 const http = require('http');
+const path = require('path');
 
 // Middleware imports
 const rateLimiter = require('express-rate-limit');
@@ -35,10 +36,22 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
   credentials: true
 };
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Middleware Configuration
 app.use(cors(corsOptions));
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "https://res.cloudinary.com", "data:"],
+    },
+  },
+}));
+
 app.use(xss());
 app.use(mongoSanitize());
 
@@ -66,7 +79,7 @@ cloudinary.config({
 });
 
 // Static file serving
-app.use(express.static("./public"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // File upload middleware
 app.use(fileUpload({
@@ -85,6 +98,14 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+app.get('/api/v1/auth/register/freelancer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust the path as necessary
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html')); // Serving index.html as the landing page
+});
+
 // Routes
 const routes = [
   { path: '/api/v1/auth', router: require('./routes/authRoutes') },
@@ -93,7 +114,8 @@ const routes = [
   { path: '/api/v1/review', router: require('./routes/reviewRoutes') },
   { path: '/api/v1/gigs', router: require('./routes/gigRoutes') },
   { path: '/api/v1/proposal', router: require('./routes/proposalRoutes') },
-  { path: '/api/v1/messages', router: require('./routes/messageRoutes') }
+  { path: '/api/v1/chat', router: require('./routes/messageRoutes') },
+  
 ];
 
 routes.forEach(route => app.use(route.path, route.router));
@@ -109,10 +131,20 @@ app.use(errorHandlerMiddleware);
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  socket.on('sendMessage', (message) => {
-    io.emit('receiveMessage', message);
+  // Listen for users joining a specific room (gigId)
+  socket.on('joinRoom', (gigId) => {
+    socket.join(gigId); // Users join the room based on gigId
+    console.log(`User joined room ${gigId}`);
   });
 
+  // Listen for sending messages
+  socket.on('sendMessage', (message) => {
+    // Broadcast message to the room
+    io.to(message.gigId).emit('receiveMessage', message); // Send message only to the specific room (gigId)
+    console.log(`Message sent in gig ${message.gigId}`);
+  });
+
+  // Handle user disconnect
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });

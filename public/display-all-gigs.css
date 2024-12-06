@@ -1,0 +1,79 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Dashboard container */
+.dashboard-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Dashboard title */
+.dashboard-container h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Gig list container */
+.gig-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Individual gig card */
+.gig-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.gig-card:hover {
+    transform: translateY(-5px);
+}
+
+.gig-card h3 {
+    font-size: 18px;
+    color: #007BFF;
+    margin-bottom: 10px;
+}
+
+.gig-card p {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.gig-card .gig-budget,
+.gig-card .gig-deadline {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Small screen responsive */
+@media (max-width: 600px) {
+    .dashboard-container {
+        padding: 15px;
+    }
+    
+    .gig-card h3 {
+        font-size: 16px;
+    }
+
+    .gig-card p {
+        font-size: 12px;
+    }
+}

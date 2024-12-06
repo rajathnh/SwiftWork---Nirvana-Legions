@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+
+    <div class="chat-container">
+        <h2>Chat Room</h2>
+        
+        <!-- Displaying chat messages -->
+        <div id="messages" class="messages"></div>
+
+        <!-- Form to send messages -->
+        <form id="message-form">
+            <input type="text" id="message-input" placeholder="Type a message" required />
+            <input type="file" id="file-input" multiple />
+            <button type="submit">Send</button>
+          </form>
+          
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>

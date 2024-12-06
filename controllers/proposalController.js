@@ -20,6 +20,13 @@ const SubmitProposal = async (req, res) => {
     return res.status(StatusCodes.NOT_FOUND).json({ msg: `No gig found with ID: ${gigId}` });
   }
 
+  // Check if the freelancer has already made a proposal for this gig
+  const existingProposal = await Proposal.findOne({ gig: gigId, freelancer: freelancerId });
+  if (existingProposal) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ msg: 'You have already made a proposal for this gig' });
+  }
+
+  // Create a new proposal
   const proposal = await Proposal.create({
     gig: gigId,  // Use 'gig' (singular) in the Proposal schema
     freelancer: freelancerId,
@@ -37,12 +44,28 @@ const getProposalsForGig = async (req, res) => {
 };
 
 const getProposalsForFreelancer = async (req, res) => {
-  const freelancerId = req.user.userId;
-  const proposals = await Proposal.find({ freelancer: freelancerId })
-    .populate('gig', 'title description budget deadline')
-    .populate('freelancer', 'name email');
-  res.status(StatusCodes.OK).json({ proposals });
+  try {
+    const freelancerId = req.params.id;
+
+    const proposals = await Proposal.find({ freelancer: freelancerId })
+      .populate('gig', 'title description budget deadline') // Populate gig fields
+      .populate('freelancer', 'name email'); // Populate freelancer fields
+
+    if (!proposals || proposals.length === 0) {
+      return res.status(404).json({ message: 'No proposals found for this freelancer.' });
+    }
+
+    // Log proposals to debug issues
+    console.log('Proposals:', proposals);
+
+    res.status(200).json({ proposals });
+  } catch (error) {
+    console.error('Error fetching proposals:', error);
+    res.status(500).json({ message: 'Error fetching proposals.', error: error.message });
+  }
 };
+
+
 
 const updateProposalStatus = async (req, res) => {
   const { id } = req.params;

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SwiftWork</title>
+
+    <!-- <link rel="stylesheet" href="./styles.css" /> -->
+    <link rel="stylesheet" href="src/output.css" />
+    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+
+    <!---Fonts--->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script defer src="script.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+
+  </head>
+
+  <body id="home">
+
+    <!-- -----------------------------header------------------------------ -->
+    <header class="bg-gray-100 font-[Montserrat-bold] shadow-md">
+      <nav class="flex justify-between items-center w-[92%] text-xl mx-auto py-4">
+        <!-- Logo -->
+        <div>
+          <h1 class="text-3xl text-blue-500 font-bold">Swiftwork</h1>
+        </div>
+    
+        <!-- Navigation Links -->
+        <div
+          class="nav-links md:static absolute bg-gray-100 md:min-h-fit min-h-[60vh] left-0  top-[-100%] w-auto items-center px-5"
+        >
+          <ul
+            class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8"
+          >
+            <li>
+              <a class="hover:text-blue-500 transition-colors" href="#home">Home</a>
+            </li>
+            <li>
+              <a class="hover:text-blue-500 transition-colors" href="#about-us">About</a>
+            </li>
+            <li>
+              <a class="hover:text-blue-500 transition-colors" href="#contact-us">Contact us</a>
+            </li>
+          </ul>
+        </div>
+    
+        <!-- Sign-in Button and Menu Icon -->
+        <div class="flex items-center gap-6">
+          <button
+            class="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+          >
+            <a href="login.html">Log In</a>
+          </button>
+          <ion-icon
+            onclick="onToggleMenu(this)"
+            name="menu"
+            class=" cursor-pointer md:hidden text-blue-500"
+          ></ion-icon>
+        </div>
+      </nav>
+    </header>
+    
+  
+      <header class="bg-gray-50">
+        <div class="container w-full mx-auto px-6 lg:px-12 py-12">
+          <div
+            class="flex flex-col-reverse lg:flex-row items-center justify-between">
+            <!-- Text Content -->
+            <div class="text-center lg:text-left max-w-lg">
+              <h1 class="text-5xl  lg:text-[70px] font-extrabold text-gray-800 leading-tight">
+                Welcome to <span class="text-blue-900 lg:text-[5rem] ">SWIFTWORK!</span>
+              </h1>
+              <br><br>
+              <h1
+                class="text-4xl  lg:text-[50px] font-extrabold text-gray-800 leading-tight"
+              >
+                Find the <span class="text-blue-500">Perfect Freelancer</span> or  <span class="text-blue-500">Client</span>  for
+                Your Project
+              </h1>
+              <p class="mt-4 text-gray-600 text-lg">
+                Connect with talented freelancers and get your work done quickly
+                and efficiently.
+              </p>
+              <div class="mt-6 flex justify-center lg:justify-start gap-4">
+                <a
+                  href="register-client.html"
+                  class="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                >
+                  Hire a Freelancer
+                </a>
+                <a
+                  href="register-freelancer.html"
+                  class="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                >
+                  Become a Freelancer
+                </a>
+              </div>
+            </div>
+  
+            <!-- Hero Image -->
+            <div class="w-1/12 lg:w-2/5 hidden shadow-md hover:shadow-xl transition-shadow duration-300 lg:block">
+              <img
+                src="uploads/landing-page1.png"
+                alt="Freelancing"
+                class="rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </header>
+  
+      
+      <section id="about-us" class="bg-gray-50 py-12">
+        <div class="relative left-1/2 transform -translate-x-1/2 top-0 w-24 h-1 bg-blue-500"></div>
+          <div class="container mx-auto px-6 lg:px-12 text-center">
+            <!-- Section Title -->
+            <h2 class="text-4xl font-extrabold text-gray-800 mb-8">
+              Why <span class="text-blue-500">Choose Us</span>
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto mb-12">
+              Discover what sets us apart and why we're the best choice for your freelancing needs.
+            </p>
+        
+            <!-- Grid for features -->
+            <div class="grid gap-16 lg:grid-cols-2 sm:grid-cols-2">
+              <!-- Feature 1 -->
+              <div class="bg-white shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center justify-center h-16 w-16 bg-blue-100 rounded-full mx-auto mb-4">
+                  <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c2.28 0 4.28-.53 6-1.46a4.5 4.5 0 01.45 8.88C16.32 16.47 14.28 17 12 17c-2.28 0-4.28-.53-6-1.46a4.5 4.5 0 01-.45-8.88C7.68 7.53 9.72 8 12 8z" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Reliable Experts</h3>
+                <p class="text-gray-600">
+                  Work with experienced professionals who deliver exceptional results.
+                </p>
+              </div>
+        
+              <!-- Feature 2 -->
+              <div class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center justify-center h-16 w-16 bg-blue-100 rounded-full mx-auto mb-4">
+                  <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2h12a2 2 0 002-2z" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Secure Payments</h3>
+                <p class="text-gray-600">
+                  Our platform ensures safe and secure transactions every time.
+                </p>
+              </div>
+        
+              <!-- Feature 3 -->
+              <div class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center justify-center h-16 w-16 bg-blue-100 rounded-full mx-auto mb-4">
+                  <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11M9 21V3m5 18h5m0 0l3-3m-3 3l-3-3" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Global Reach</h3>
+                <p class="text-gray-600">
+                  Access a diverse pool of freelancers from around the world.
+                </p>
+              </div>
+        
+              <!-- Feature 4 -->
+              <div class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center justify-center h-16 w-16 bg-blue-100 rounded-full mx-auto mb-4">
+                  <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c2.28 0 4.28-.53 6-1.46a4.5 4.5 0 01.45 8.88C16.32 16.47 14.28 17 12 17c-2.28 0-4.28-.53-6-1.46a4.5 4.5 0 01-.45-8.88C7.68 7.53 9.72 8 12 8z" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">24/7 Support</h3>
+                <p class="text-gray-600">
+                  Enjoy round-the-clock support from our dedicated team.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+  
+        <div class="relative left-1/2 transform -translate-x-1/2 top-0 w-24 h-1 bg-blue-500"></div>
+        <section class="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:px-8">
+          
+          <div class="absolute inset-0 -z-10  opacity-20"></div>
+          <div class="absolute inset-y-0 right-1/2 -z-10 mr-16 w-1/2 origin-bottom-left skew-x-[-30deg] bg-white shadow-xl shadow-indigo-600/10 ring-1 ring-indigo-50 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center"></div>
+          <div class="mx-auto max-w-2xl lg:max-w-4xl">
+            <h2 class="text-center font-bold text-3xl">Testimonial</h2>
+            <figure class="mt-10">
+              <blockquote class="text-center text-xl/8 font-semibold text-gray-900 sm:text-2xl/9">
+              <p>Using this platform made freelancing a breeze—I found my first client within days, felt secure with the reliable payment system, and grew my career quickly with the support of an amazing community and user-friendly tools!</p>  
+              </blockquote>
+              <figcaption class="mt-10">
+                <img class="mx-auto size-10 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                <div class="mt-4 flex items-center justify-center space-x-3 text-base">
+                  <div class="font-semibold text-gray-900">Avanish Verma</div>
+                  <svg viewBox="0 0 2 2" width="3" height="3" aria-hidden="true" class="fill-gray-900">
+                    <circle cx="1" cy="1" r="1" />
+                  </svg>
+                  <div class="text-gray-600">App Developer</div>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+  
+        <section>
+          
+          <div class="container mx-auto px-6 lg:px-12 text-center">
+              <div class="relative left-1/2 transform -translate-x-1/2 top-0 w-24 h-1 bg-blue-500"></div>
+              <h2 class="text-4xl font-extrabold text-gray-800 mb-8">
+                  Meet the <span class="text-blue-500">team</span>
+                </h2>
+              <div class="grid gap-10 lg:grid-cols-3 sm:grid-cols-2  ">
+                  <div class= "bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 w-auto">
+                      <div class=" flex items-center ">
+                          <img src="images\1732604892582.jpg" alt="not found" class="rounded-full">
+                      </div>
+                      <h2 class="font-bold text-2xl mt-4">Prateek Bhat</h2>
+                      <h3 class="font-bold text-gray-500">Frontend Developer</h3>
+                  </div>
+                  <div class= "bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 w-auto">
+                      <div class=" flex items-center ">
+                          <img src="images\1732604892582.jpg" alt="not found" class="rounded-full">
+                      </div>
+                      <h2 class="font-bold text-2xl mt-4">Prateek Bhat</h2>
+                      <h3 class="font-bold text-gray-500">Frontend Developer</h3>
+                  </div>
+                  <div class= "bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 w-auto">
+                      <div class=" flex items-center ">
+                          <img src="images\1732604892582.jpg" alt="not found" class="rounded-full">
+                      </div>
+                      <h2 class="font-bold text-2xl mt-4">Prateek Bhat</h2>
+                      <h3 class="font-bold text-gray-500">Frontend Developer</h3>
+                  </div>
+                  <div class= "bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 w-auto">
+                      <div class=" flex items-center ">
+                          <img src="images\1732604892582.jpg" alt="not found" class="rounded-full">
+                      </div>
+                      <h2 class="font-bold text-2xl mt-4">Prateek Bhat</h2>
+                      <h3 class="font-bold text-gray-500">Frontend Developer</h3>
+                  </div>
+                  <div class= "bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 w-auto">
+                      <div class=" flex items-center ">
+                          <img src="images\1732604892582.jpg" alt="not found" class="rounded-full">
+                      </div>
+                      <h2 class="font-bold text-2xl mt-4">Prateek Bhat</h2>
+                      <h3 class="font-bold text-gray-500">Frontend Developer</h3>
+                  </div>
+                  <div class= "bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 w-auto">
+                      <div class=" flex items-center ">
+                          <img src="images\1732604892582.jpg" alt="not found" class="rounded-full">
+                      </div>
+                      <h2 class="font-bold text-2xl mt-4">Prateek Bhat</h2>
+                      <h3 class="font-bold text-gray-500">Frontend Developer</h3>
+                  </div>
+              </div>
+              
+          </div>
+        </section>
+  
+        <section id="contact-us" class="bg-gray-100 py-12">
+          <div class="relative left-1/2 transform -translate-x-1/2 top-0 w-24 h-1 bg-blue-500"></div>
+          <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">Contact Us</h2>
+            <p class="text-gray-600 text-center mb-12">
+              Have questions? We'd love to hear from you. Fill out the form below, and we’ll get back to you as soon as possible.
+            </p>
+        
+            <div class="bg-white shadow-md rounded-lg p-8 md:p-12">
+              <form action="/contact" method="POST">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- Name Field -->
+                  <div>
+                    <label for="name" class="block text-gray-700 font-medium mb-2">Your Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+                      placeholder="John Doe"
+                    />
+                  </div>
+        
+                  <!-- Email Field -->
+                  <div>
+                    <label for="email" class="block text-gray-700 font-medium mb-2">Your Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                </div>
+        
+                <!-- Subject Field -->
+                <div class="mt-6">
+                  <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+                    placeholder="How can we help you?"
+                  />
+                </div>
+        
+                <!-- Message Field -->
+                <div class="mt-6">
+                  <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+                    placeholder="Write your message here..."
+                  ></textarea>
+                </div>
+        
+                <!-- Submit Button -->
+                <div class="mt-8 text-center">
+                  <button
+                    type="submit"
+                    class="px-6 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-200 focus:outline-none"
+                  >
+                    Send Message
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+        
+        
+        <footer class="relative bg-blueGray-200 pt-8 pb-6 bg-blue-950">
+          <div class="container mx-auto px-4">
+            <div class="flex flex-wrap text-left lg:text-left">
+              <div class="w-full lg:w-6/12 px-4 ">
+                <h4 class="text-3xl fonat-semibold text-blueGray-700  text-white">Let's keep in touch!</h4>
+                <h5 class="text-lg mt-0 mb-2 text-blueGray-600 text-gray-200">
+                  Find us on any of these platforms, we respond 1-2 business days.
+                </h5>
+                <div class="mt-6 lg:mb-0 mb-6">
+                  <button class="bg-white text-lightBlue-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2" type="button">
+                    <i class="fab fa-twitter"></i></button><button class="bg-white text-lightBlue-600 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2" type="button">
+                    <i class="fab fa-facebook-square"></i></button><button class="bg-white text-pink-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2" type="button">
+  
+                    <i class="fab fa-github"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4 text-gray-300">
+                <div class="flex flex-wrap items-top mb-6">
+                  <div class="w-full lg:w-4/12 px-4 ml-auto">
+                    <span class="block uppercase text-blueGray-500 text-xl font-semibold mb-2">Useful Links</span>
+                    <ul class="list-unstyled">
+                      <li>
+                        <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm" href="#home">Go Back</a>
+                      </li>
+                      <li>
+                        
+                        <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm" href="#about-us">About Us</a>
+                      </li>
+                      <li>
+                        <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm" href="https://www.github.com/creativetimofficial?ref=njs-profile">Github</a>
+                      </li>
+                      
+                    </ul>
+                  </div>
+                 
+                  <!-- <div class="w-full lg:w-4/12 px-4">
+                    <span class="block uppercase text-blueGray-500 text-xl font-semibold mb-2">Other Resources</span>
+                    <ul class="list-unstyled">
+                      
+                      <li>
+                        <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm" href="https://myaccount.google.com/termsofservice">Terms &amp; Conditions</a>
+                      </li>
+                      <li>
+                        <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm" href="https://policies.google.com/privacy?hl=en-US">Privacy Policy</a>
+                      </li>
+                      <li>
+                        <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm" href="#contact-us">Contact Us</a>
+                      </li>
+                    </ul>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <hr class="my-6 border-blueGray-300">
+            <div class="flex flex-wrap items-center md:justify-between justify-center">
+              <div class="w-full md:w-4/12 px-4 mx-auto text-center">
+                <div class="text-sm text-blueGray-500 font-semibold py-1 text-gray-100">
+                  Copyright © <span id="get-current-year">2024 </span><a href="#home" class="text-blueGray-500 hover:text-gray-800" target="_blank">Swiftwork
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+        
+  
+      <script>
+        function onToggleMenu(icon) {
+    const navLinks = document.querySelector(".nav-links");
+    if (navLinks.style.top === "0%") {
+      navLinks.style.top = "-100%";
+      icon.name = "menu";
+    } else {
+      navLinks.style.top = "0%";
+      icon.name = "close";
+    }
+  }
+  
+        
+      </script>
+    </body>
+</html>
+
+<!-- <body>
+  <div class="landing-page">
+    <header>
+      <h1>Freelancer Marketplace</h1>
+      <p class="tagline">
+        Your one-stop platform to hire or become a freelancer!
+      </p>
+    </header>
+
+    <main>
+      <div class="buttons-container">
+        <a href="register-freelancer.html" class="button"
+          >Register as Freelancer</a
+        >
+        <a href="register-client.html" class="button">Register as Client</a>
+        <a href="login.html" class="button">Login</a>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2024 Freelancer Marketplace. All rights reserved.</p>
+    </footer>
+  </div>
+</body> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Freelancer Marketplace</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="src/output.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="landing-page ">
+    <header>
+      <h1>Freelancer Marketplace</h1>
+      <p class="tagline">Your one-stop platform to hire or become a freelancer!</p>
+    </header>
+    
+    <main>
+      <div class="buttons-container">
+        <a href="register-freelancer.html" class="button">Register as Freelancer</a>
+        <a href="register-client.html" class="button">Register as Client</a>
+        <a href="login.html" class="button">Login</a>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2024 Freelancer Marketplace. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Freelancer Marketplace</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="landing-page">
+    <header>
+      <h1>Freelancer Marketplace</h1>
+      <p class="tagline">Your one-stop platform to hire or become a freelancer!</p>
+    </header>
+    
+    <main>
+      <div class="buttons-container">
+        <a href="register-freelancer.html" class="button">Register as Freelancer</a>
+        <a href="register-client.html" class="button">Register as Client</a>
+        <a href="login.html" class="button">Login</a>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2024 Freelancer Marketplace. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html> -->

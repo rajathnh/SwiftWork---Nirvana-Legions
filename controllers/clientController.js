@@ -2,7 +2,22 @@ const Client = require('../models/client')
 const bcrypt = require('bcryptjs')
 const {StatusCodes} = require('http-status-codes')
 const CustomError = require('../errors')
+const cloudinary = require('cloudinary')
+const uploadImageSafely = async (file) => {
+  const defaultImage = '/uploads/default.jpg';
+  if (!file) return defaultImage;
 
+  try {
+    const result = await cloudinary.uploader.upload(file.tempFilePath, {
+      use_filename: true,
+      folder: 'file-upload'
+    });
+    return result.secure_url;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    return defaultImage; // fallback if upload fails
+  }
+};
 const updateClient = async (req,res) =>{
     try{
         const{id} = req.params;
@@ -14,11 +29,13 @@ const updateClient = async (req,res) =>{
         client.name = name||client.name;
         client.email = email||client.email;
         client.password = password?await bcrypt.hash(password,10):client.password
+        const profilePic = req.files?.profilePic?await uploadImageSafely(req.files.profilePic):client.profilePic;
+        client.profilePic = profilePic;
         await client.save();
 
         res.status(StatusCodes.OK).json({
             msg:'Client updates successfully',id:client._id,
-            name:client.name,email:client.email,
+            name:client.name,email:client.email,profilePic:client.profilePic,
             
             })
         }
@@ -45,6 +62,7 @@ const getClientById = async (req, res) => {
           id: client._id,
           name: client.name,
           email: client.email,
+          profilePic:client.profilePic,
           gigs: client.gigs,
         },
       });

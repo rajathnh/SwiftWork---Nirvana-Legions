@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Proposal</title>
+    <link rel="stylesheet" href="create-proposal.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Create Proposal</h1>
+        </header>
+
+        <div class="gig-details">
+            <h2 id="gig-title">Title: </h2>
+            <p id="gig-description">Description: </p>
+            <p id="gig-budget">Budget: </p>
+            <p id="gig-deadline">Deadline: </p>
+        </div>
+
+        <div class="proposal-form">
+            <textarea id="proposalMessage" placeholder="Write your proposal message here..." maxlength="1000"></textarea>
+            <input type="number" id="bidAmount" placeholder="Enter your bid amount" min="1">
+            
+            <button id="submit-proposal-button">Submit Proposal</button>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Freelancer Platform</p>
+        </footer>
+    </div>
+
+    <script src="create-proposal.js"></script>
+</body>
+</html>

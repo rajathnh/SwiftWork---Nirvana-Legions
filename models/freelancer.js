@@ -35,6 +35,9 @@ const freelancerSchema = new mongoose.Schema({
         type:[String],
         required:true,
     },    
+    profilePic:{
+        type:String,
+    },
     image1:{
         type:String,
         
