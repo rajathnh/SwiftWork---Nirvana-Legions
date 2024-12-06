@@ -12,18 +12,33 @@ function getFreelancerIdFromLocalStorage() {
 async function getFreelancerData(freelancerId) {
     try {
         const response = await fetch(`http://localhost:5000/api/v1/freelancer/${freelancerId}`);
-        const data = await response.json();
-
-        if (response.ok) {
-            const freelancer = data.freelancer;
-            displayFreelancerData(freelancer);
-        } else {
-            console.error("Error fetching freelancer data:", data.msg || data.error);
-            alert("Unable to fetch freelancer data. Please try again later.");
+        if (!response.ok) {
+            throw new Error("Failed to fetch freelancer data");
         }
+        const data = await response.json();
+        displayFreelancerData(data.freelancer);
+        getFreelancerProposals(freelancerId); // Fetch proposals after displaying profile
     } catch (error) {
         console.error("Error:", error);
         alert("An error occurred while fetching freelancer data. Please try again later.");
+    }
+}
+
+// Fetch proposals for the freelancer
+async function getFreelancerProposals(freelancerId) {
+    try {
+        const response = await fetch(`http://localhost:5000/api/v1/freelancer/${freelancerId}/proposals`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch proposals");
+        }
+        const data = await response.json();
+        displayFreelancerProposals(data.proposals);
+    } catch (error) {
+        console.error("Error:", error);
+        const proposalsSection = document.getElementById('proposals-section');
+        if (proposalsSection) {
+            proposalsSection.innerHTML = "<p>Error loading proposals. Please try again later.</p>";
+        }
     }
 }
 
@@ -60,8 +75,6 @@ function displayFreelancerData(freelancer) {
             <p><strong>Number of Reviews:</strong> ${freelancer.numOfReviews || 0}</p>
         </div>
     `;
-
-    // Add event listener for the "View All Gigs" button
     document.getElementById('view-all-gigs-btn').addEventListener('click', function () {
         window.location.href = 'display-all-gigs.html';
     });
@@ -93,8 +106,55 @@ function displayReviews(reviews) {
     }
 }
 
-// Get the freelancer ID from local storage
-const freelancerId = getFreelancerIdFromLocalStorage();
+// Display proposals dynamically
 
-// Fetch and display the freelancer data based on the stored ID
-getFreelancerData(freelancerId);
+function displayFreelancerProposals(proposals) {
+    const proposalsSection = document.getElementById('proposals-section');
+
+    // Check if the element exists before attempting to update its innerHTML
+    if (!proposalsSection) {
+        console.error('Proposals section not found');
+        return;
+    }
+
+    proposalsSection.innerHTML = proposals.map(proposal => {
+        // Fallback to check both `gig` and `gigs`
+        const gig = proposal.gig || proposal.gigs;
+
+        if (!gig) {
+            return `
+                <div class="proposal">
+                    <p><strong>Gig:</strong> Not available</p>
+                    <p><strong>Budget:</strong> N/A</p>
+                    <p><strong>Deadline:</strong> N/A</p>
+                </div>
+            `;
+        }
+
+        // Create a link to the display-gig.html page with the gig's ID
+        const gigLink = `gig-details.html?gigId=${gig._id}`;
+
+        // Render proposal details with a link to the gig page
+        return `
+            <div class="proposal">
+                <a href="${gigLink}" class="proposal-link">
+                    <p><strong>Gig:</strong> ${gig.title || 'No Title'}</p>
+                    <p><strong>Description:</strong> ${gig.description || 'No Description'}</p>
+                    <p><strong>Budget:</strong> ${gig.budget || 'N/A'}</p>
+                    <p><strong>Deadline:</strong> ${new Date(gig.deadline).toDateString() || 'N/A'}</p>
+                    <p><strong>Bid Amount:</strong> ${proposal.bidAmount || 'N/A'}</p>
+                    <p><strong>Proposal Message:</strong> ${proposal.proposalMessage || 'No Message Provided'}</p>
+                    <p><strong>Status:</strong> ${proposal.status || 'N/A'}</p>
+                </a>
+            </div>
+        `;
+    }).join('');
+}
+
+
+// Wait for the DOM to be fully loaded before running the script
+document.addEventListener('DOMContentLoaded', function() {
+    const freelancerId = getFreelancerIdFromLocalStorage();
+    console.log('Freelancer ID:', freelancerId); // Check if the ID is correct
+    getFreelancerData(freelancerId);
+});
