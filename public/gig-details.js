@@ -3,18 +3,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     const gigId = urlParams.get('gigId');
     console.log('GigID from URL:', gigId); // Debug log for gigId
 
-    const makeProposalBtn = document.getElementById('make-proposal-btn');
-    const proposalsListElement = document.getElementById('proposals-list');
 
     // Debug function to log all element selections
     function debugElementSelection() {
         const elementsToCheck = [
-            'gig-title', 
-            'gig-description', 
-            'gig-budget', 
-            'gig-deadline', 
-            'client-name', 
-            'proposals-list', 
+            'gig-title',
+            'gig-description',
+            'gig-budget',
+            'gig-deadline',
+            'client-name',
+            'proposals-list',
             'make-proposal-btn'
         ];
 
@@ -26,85 +24,97 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     function getUserRole() {
         const role = localStorage.getItem('swiftWork_role');
-        console.log('User Role:', role); // Debug log for user role
+        console.log('User Role:', role);
         return role;
     }
 
     async function fetchGigDetails() {
         try {
-            // Debug: Log authentication token
-            const authToken = localStorage.getItem('authToken');
-            console.log('Auth Token:', authToken ? 'Present' : 'Missing');
-
             const gigResponse = await fetch(`http://localhost:5000/api/v1/gigs/${gigId}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${authToken}`,
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                 },
             });
-    
-            console.log('Fetch Response:', gigResponse); // Debug log for fetch response
 
             if (!gigResponse.ok) {
-                const errorText = await gigResponse.text();
-                console.error('Error Response Text:', errorText);
-                throw new Error(`Failed to fetch gig details: ${errorText}`);
+                throw new Error('Failed to fetch gig details');
             }
-    
-            const data = await gigResponse.json();
-            console.log('Fetched Gig Data:', data); // Detailed debug log
 
+            const data = await gigResponse.json();
             const gig = data.gig;
             const proposals = data.proposals;
-    
-            // Debug element selection
-            debugElementSelection();
 
             // Get current user's ID and role
             const currentUserId = localStorage.getItem('swiftWork_ID');
-            console.log('Current User ID:', currentUserId); // Debug log for user ID
             const userRole = getUserRole();
-    
-            // Populate gig details with explicit null checks and logging
-            const setElementText = (elementId, text) => {
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.textContent = text;
-                    console.log(`Set ${elementId} to:`, text);
-                } else {
-                    console.warn(`Element ${elementId} not found`);
-                }
-            };
 
-            // Populate gig details
-            setElementText('gig-title', gig.title || 'No Title');
-            setElementText('gig-description', gig.description || 'No Description');
-            setElementText('gig-budget', `Budget: $${gig.budget || 'Not specified'}`);
-            setElementText('gig-deadline', `Deadline: ${gig.deadline ? new Date(gig.deadline).toLocaleDateString() : 'Not set'}`);
-            
-            // Client Name
-            if (gig.client) {
-                setElementText('client-name', `Client: ${gig.client.name || 'Unknown Client'}`);
+            // Check if gig is assigned
+            if (gig.status === 'assigned') {
+                // Specific condition for authorized access to chat
+                const isAuthorizedUser =
+                    (userRole === 'client' && gig.client._id === currentUserId) ||
+                    (userRole === 'freelancer' && gig.assignedFreelancer._id === currentUserId);
+
+                if (isAuthorizedUser) {
+                    // Redirect to chat page for authorized users
+                    window.location.href = `chat.html?gigId=${gigId}`;
+                    return;
+                } else {
+                    // Show message that gig is already assigned for unauthorized users
+                    const gigDetailsContainer = document.getElementById('gig-details-container');
+                    if (gigDetailsContainer) {
+                        // Clear existing content
+                        gigDetailsContainer.innerHTML = `
+                <div class="alert alert-info">
+                    <h2>Gig Assigned</h2>
+                    <p>This gig has already been assigned to a freelancer and is no longer available for proposals.</p>
+                </div>
+            `;
+                    }
+
+                    // Hide proposal-related elements
+                    const makeProposalBtn = document.getElementById('make-proposal-btn');
+                    const proposalsListElement = document.getElementById('proposals-list');
+
+                    if (makeProposalBtn) makeProposalBtn.style.display = 'none';
+                    if (proposalsListElement) proposalsListElement.innerHTML = '';
+
+                    return;
+                }
             }
-    
+
+            // If not redirected, continue with normal gig details rendering
+            // Populate gig details
+            document.getElementById('gig-title').textContent = gig.title;
+            document.getElementById('gig-description').textContent = gig.description;
+            document.getElementById('gig-budget').textContent = `Budget: $${gig.budget}`;
+            document.getElementById('gig-deadline').textContent = `Deadline: ${new Date(gig.deadline).toLocaleDateString()}`;
+
+            // Client Name
+            const clientNameElement = document.getElementById('client-name');
+            if (gig.client) {
+                clientNameElement.textContent = `Client: ${gig.client.name}`;
+            }
+
             // Handle Proposals Display
             renderProposals(proposals, gig);
-    
+
         } catch (error) {
-            console.error('Complete Error Details:', error);
-            alert(`Error fetching gig details: ${error.message}`);
+            console.error('Error:', error);
+            alert('Error fetching gig details. Redirecting...');
             window.location.href = 'display-all-gigs.html';
         }
     }
 
     function renderProposals(proposals, gig) {
         const userRole = getUserRole();
-        console.log('Rendering Proposals. Proposals:', proposals); // Debug log
+        console.log('Rendering Proposals. Proposals:', proposals);
 
         // Clear previous proposals
         const proposalsListElement = document.getElementById('proposals-list');
         if (proposalsListElement) {
-            proposalsListElement.innerHTML = ''; 
+            proposalsListElement.innerHTML = '';
         }
 
         if (!proposals || proposals.length === 0) {
@@ -117,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         proposals.forEach(proposal => {
             const proposalElement = document.createElement('li');
             proposalElement.classList.add('proposal');
-            
+
             let proposalContent = `
                 <strong>Bid Amount:</strong> $${proposal.bidAmount} <br>
                 <strong>Proposal Details:</strong> ${proposal.proposalMessage}
@@ -152,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // Proposal Acceptance Function
-    window.acceptProposal = async function(gigId, proposalId, freeLancerID) {
+    window.acceptProposal = async function (gigId, proposalId, freeLancerID) {
         try {
             const response = await fetch('http://localhost:5000/api/v1/gigs/accept-proposal', {
                 method: 'POST',
