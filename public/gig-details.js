@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         } catch (error) {
             console.error('Error:', error);
             alert('Error fetching gig details. Redirecting...');
+            alert(error)
             window.location.href = 'display-all-gigs.html';
         }
     }
@@ -70,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (userRole === 'client' && gig.status !== 'assigned') {
                 proposalContent += `
                     <button class="select-proposal-btn" 
-                            onclick="acceptProposal('${gig._id}', '${proposal._id}')">
+                            onclick="acceptProposal('${gig._id}', '${proposal._id}', '${proposal.freelancer._id}')">
                         Select Proposal
                     </button>
                 `;
@@ -93,8 +94,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // Proposal Acceptance Function
-    window.acceptProposal = async function(gigId, proposalId) {
+    window.acceptProposal = async function(gigId, proposalId, freeLancerID) {
         try {
+            console.log("proposolllll ♨️", gigId, proposalId, freeLancerID);
             const response = await fetch('http://localhost:5000/api/v1/gigs/accept-proposal', {
                 method: 'POST',
                 headers: {
@@ -104,6 +106,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 body: JSON.stringify({
                     gigId: gigId,
                     proposalId: proposalId,
+                    freeLancerID: freeLancerID
                 }),
             });
 
