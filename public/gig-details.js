@@ -50,12 +50,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     function renderProposals(proposals, gig) {
         const userRole = getUserRole();
         proposalsListElement.innerHTML = ''; 
+        console.log("♨️123♨️", "hello");
 
         if (proposals.length === 0) {
             proposalsListElement.innerHTML = "<p>No proposals yet.</p>";
-            return;
+            // return;
         }
-
+        console.log("♨️🧱🧱♨️", );
         proposals.forEach(proposal => {
             const proposalElement = document.createElement('li');
             proposalElement.classList.add('proposal');
@@ -78,9 +79,12 @@ document.addEventListener('DOMContentLoaded', async function () {
             proposalElement.innerHTML = proposalContent;
             proposalsListElement.appendChild(proposalElement);
         });
+        console.log("♨️🧱23🧱♨️", );
 
         // Show Make Proposal button for freelancers
+        console.log("♨️rolee♨️", userRole);
         if (userRole === 'freelancer' && gig.status !== 'assigned') {
+            console.log("♨️123333♨️", "freelancer and not assigned kek");
             makeProposalBtn.style.display = 'inline-block';
             makeProposalBtn.onclick = () => {
                 window.location.href = `create-proposal.html?gigId=${gigId}`;
