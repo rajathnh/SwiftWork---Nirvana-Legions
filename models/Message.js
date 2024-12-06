@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema(
   {
+    gigId: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Gig', // Reference to the Gig model
+      required: true 
+    },
     client: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Client',

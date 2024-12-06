@@ -44,12 +44,28 @@ const getProposalsForGig = async (req, res) => {
 };
 
 const getProposalsForFreelancer = async (req, res) => {
-  const freelancerId = req.user.userId;
-  const proposals = await Proposal.find({ freelancer: freelancerId })
-    .populate('gig', 'title description budget deadline')
-    .populate('freelancer', 'name email');
-  res.status(StatusCodes.OK).json({ proposals });
+  try {
+    const freelancerId = req.params.id;
+
+    const proposals = await Proposal.find({ freelancer: freelancerId })
+      .populate('gig', 'title description budget deadline') // Populate gig fields
+      .populate('freelancer', 'name email'); // Populate freelancer fields
+
+    if (!proposals || proposals.length === 0) {
+      return res.status(404).json({ message: 'No proposals found for this freelancer.' });
+    }
+
+    // Log proposals to debug issues
+    console.log('Proposals:', proposals);
+
+    res.status(200).json({ proposals });
+  } catch (error) {
+    console.error('Error fetching proposals:', error);
+    res.status(500).json({ message: 'Error fetching proposals.', error: error.message });
+  }
 };
+
+
 
 const updateProposalStatus = async (req, res) => {
   const { id } = req.params;

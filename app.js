@@ -38,6 +38,7 @@ const corsOptions = {
 };
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
 // Middleware Configuration
 app.use(cors(corsOptions));
 app.use(helmet({
@@ -96,14 +97,15 @@ app.use(fileUpload({
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
-app.get('/api/v1/auth/register/freelancer', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public','index.html')); // Adjust the path as necessary
-});
 
+app.get('/api/v1/auth/register/freelancer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust the path as necessary
+});
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));  // Serving index.html as the landing page
+  res.sendFile(path.join(__dirname, 'public', 'index.html')); // Serving index.html as the landing page
 });
+
 // Routes
 const routes = [
   { path: '/api/v1/auth', router: require('./routes/authRoutes') },
@@ -112,7 +114,8 @@ const routes = [
   { path: '/api/v1/review', router: require('./routes/reviewRoutes') },
   { path: '/api/v1/gigs', router: require('./routes/gigRoutes') },
   { path: '/api/v1/proposal', router: require('./routes/proposalRoutes') },
-  { path: '/api/v1/messages', router: require('./routes/messageRoutes') }
+  { path: '/api/v1/chat', router: require('./routes/messageRoutes') },
+  
 ];
 
 routes.forEach(route => app.use(route.path, route.router));
@@ -128,10 +131,20 @@ app.use(errorHandlerMiddleware);
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  socket.on('sendMessage', (message) => {
-    io.emit('receiveMessage', message);
+  // Listen for users joining a specific room (gigId)
+  socket.on('joinRoom', (gigId) => {
+    socket.join(gigId); // Users join the room based on gigId
+    console.log(`User joined room ${gigId}`);
   });
 
+  // Listen for sending messages
+  socket.on('sendMessage', (message) => {
+    // Broadcast message to the room
+    io.to(message.gigId).emit('receiveMessage', message); // Send message only to the specific room (gigId)
+    console.log(`Message sent in gig ${message.gigId}`);
+  });
+
+  // Handle user disconnect
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
