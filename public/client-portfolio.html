@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Portfolio</title>
+  <link rel="stylesheet" href="client-portfolio.css">
+</head>
+
+<body class="portfolio-body">
+  <div class="portfolio-container">
+    <h1>Client Portfolio</h1>
+    
+    <!-- Profile Picture Display -->
+    <img id="profile-pic" src="default-profile-pic.jpg" alt="Profile Picture" class="profile-pic">
+    
+    <p id="client-name">Loading client name...</p>
+    <p id="client-email">Loading client email...</p>
+
+    <h2>Gigs</h2>
+    <ul id="gigs-list" class="gigs-list"></ul>
+
+    <!-- Add Gig Button -->
+   <!-- Add Gig Button -->
+<button id="create-gig-button" 
+onclick="window.location.href='gig-create.html'" 
+style="display: none; margin-top: 1.5rem; padding: 0.75rem 1.5rem; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;">
+Add New Gig
+</button>
+
+  <script src="client-portfolio.js"></script>
+</body>
+
+</html>
