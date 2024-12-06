@@ -59,7 +59,7 @@ async function submitProposal() {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ gigId, bidAmount, proposalMessage })
+            body: JSON.stringify({ gigId, bidAmount, proposalMessage, userId })
         });
 
         if (!response.ok) {
