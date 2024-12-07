@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     return;
                 } else {
                     // Show message that gig is already assigned for unauthorized users
+                    console.log("♨️ALREADY ASSIGNJED !!!!! ♨️", );
                     const gigDetailsContainer = document.getElementById('gig-details-container');
                     if (gigDetailsContainer) {
                         // Clear existing content
@@ -121,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (proposalsListElement) {
                 proposalsListElement.innerHTML = "<p>No proposals yet.</p>";
             }
-            return;
+            // return;     SUSS
         }
 
         proposals.forEach(proposal => {
