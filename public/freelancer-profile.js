@@ -89,7 +89,7 @@ function displayPortfolioImages(freelancer) {
         .join('') || "<p>No portfolio images available.</p>";
 }
 
-// Display the freelancer reviews dynamically
+// Display reviews dynamically
 function displayReviews(reviews) {
     if (reviews && reviews.length > 0) {
         return reviews.map(review => {
@@ -107,36 +107,64 @@ function displayReviews(reviews) {
 }
 
 // Display proposals dynamically
-
 function displayFreelancerProposals(proposals) {
     const proposalsSection = document.getElementById('proposals-section');
-
+    //console.log('Proposals:', proposals);
     // Check if the element exists before attempting to update its innerHTML
     if (!proposalsSection) {
         console.error('Proposals section not found');
         return;
     }
 
-    proposalsSection.innerHTML = proposals.map(proposal => {
-        // Fallback to check both `gig` and `gigs`
-        const gig = proposal.gig || proposal.gigs;
+   
+    // Get the logged-in freelancer's ID from local storage
+    const freelancerId = getFreelancerIdFromLocalStorage();
+    console.log('Logged-in freelancer ID:', freelancerId);
 
-        if (!gig) {
-            return `
-                <div class="proposal">
-                    <p><strong>Gig:</strong> Not available</p>
-                    <p><strong>Budget:</strong> N/A</p>
-                    <p><strong>Deadline:</strong> N/A</p>
-                </div>
-            `;
-        }
+    // Categorize gigs based on their status and the assigned freelancer
+    const openGigs = proposals.filter(proposal => {
+        console.log('Checking open gig proposal:', proposal.gig);
+        return proposal.gig?.status === 'open';
+    });
 
-        // Create a link to the display-gig.html page with the gig's ID
-        const gigLink = `gig-details.html?gigId=${gig._id}`;
+    const assignedGigs = proposals.filter(proposal => {
+        console.log('Checking assigned gig proposal:', proposal.gig);
+        console.log('Assigned freelancer:', proposal.assignedFreelancer);
+        return proposal.gig?.status === 'assigned' && proposal.assignedFreelancer === freelancerId;
+    });
 
-        // Render proposal details with a link to the gig page
-        return `
-            <div class="proposal">
+    const approvalPendingGigs = proposals.filter(proposal => proposal.gig?.status === 'approval pending');
+    const assignedToOthersGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.assignedFreelancer !== freelancerId);
+
+    // Clear the section
+    proposalsSection.innerHTML = '';
+
+    // Display categorized gigs
+    displayGigCategory(proposalsSection, 'Open Gigs', openGigs);
+    displayGigCategory(proposalsSection, 'Assigned Gigs', assignedGigs);
+    displayGigCategory(proposalsSection, 'Approval Pending Gigs', approvalPendingGigs);
+    displayGigCategory(proposalsSection, 'Assigned to Others Gigs', assignedToOthersGigs);
+}
+
+// Helper function to display a categorized section
+function displayGigCategory(proposalsSection, categoryTitle, gigs) {
+    if (gigs.length > 0) {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.classList.add('gig-category');
+
+        const heading = document.createElement('h3');
+        heading.innerText = categoryTitle;
+        categoryDiv.appendChild(heading);
+
+        gigs.forEach(proposal => {
+            const gig = proposal.gig; // Get the gig from the proposal
+            const gigLink = `gig-details.html?gigId=${gig._id}`;
+            const gigStatus = gig.status || 'Pending';
+
+            // Create a proposal display
+            const proposalDiv = document.createElement('div');
+            proposalDiv.classList.add('proposal');
+            proposalDiv.innerHTML = `
                 <a href="${gigLink}" class="proposal-link">
                     <p><strong>Gig:</strong> ${gig.title || 'No Title'}</p>
                     <p><strong>Description:</strong> ${gig.description || 'No Description'}</p>
@@ -144,17 +172,28 @@ function displayFreelancerProposals(proposals) {
                     <p><strong>Deadline:</strong> ${new Date(gig.deadline).toDateString() || 'N/A'}</p>
                     <p><strong>Bid Amount:</strong> ${proposal.bidAmount || 'N/A'}</p>
                     <p><strong>Proposal Message:</strong> ${proposal.proposalMessage || 'No Message Provided'}</p>
-                    <p><strong>Status:</strong> ${proposal.status || 'N/A'}</p>
+                    <p><strong>Status:</strong> ${gigStatus}</p> <!-- Gig status -->
                 </a>
-            </div>
-        `;
-    }).join('');
+
+                <!-- Show the 'Submit Final Project' button if the gig is assigned to this freelancer -->
+                ${gig.assignedFreelancer && gig.assignedFreelancer === getFreelancerIdFromLocalStorage() ? `
+                    <button class="submit-project-btn" onclick="submitProject('${gig._id}')">Submit Final Project</button>
+                ` : ''}
+            `;
+            categoryDiv.appendChild(proposalDiv);
+        });
+
+        proposalsSection.appendChild(categoryDiv);
+    } else {
+        const noGigsMessage = document.createElement('p');
+        noGigsMessage.innerText = `No gigs available in the ${categoryTitle}.`;
+        proposalsSection.appendChild(noGigsMessage);
+    }
 }
 
 
 // Wait for the DOM to be fully loaded before running the script
 document.addEventListener('DOMContentLoaded', function() {
     const freelancerId = getFreelancerIdFromLocalStorage();
-    console.log('Freelancer ID:', freelancerId); // Check if the ID is correct
     getFreelancerData(freelancerId);
 });

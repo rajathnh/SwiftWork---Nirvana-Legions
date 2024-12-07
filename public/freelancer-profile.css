@@ -71,7 +71,19 @@ body {
     cursor: pointer;
     font-size: 16px;
   }
-  
+  .submit-project-btn {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.submit-project-btn:hover {
+    background-color: #45a049;
+}
   .btn:hover {
     background-color: #0056b3;
   }

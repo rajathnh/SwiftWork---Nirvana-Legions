@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Final Work Submission</title>
+    <link href="src/output.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-message {
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="form-container mt-10">
+        <h2 class="text-2xl font-semibold text-center text-gray-700">Submit Final Work</h2>
+
+        <form id="submitWorkForm" enctype="multipart/form-data" class="mt-6">
+            <div class="mb-4">
+                <label for="message" class="block text-sm font-medium text-gray-700">Message:</label>
+                <textarea id="message" name="message" required rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Describe your work"></textarea>
+            </div>
+            
+            <div class="mb-4">
+                <label for="files" class="block text-sm font-medium text-gray-700">Upload Files:</label>
+                <input type="file" id="files" name="files" multiple required class="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:text-sm file:bg-gray-100 hover:file:bg-gray-200" />
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none">Submit Work</button>
+        </form>
+
+        <!-- Status message container -->
+        <div id="statusMessage" class="status-message hidden"></div>
+    </div>
+
+    <script src="submit-project.js"></script>
+</body>
+</html>

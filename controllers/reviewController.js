@@ -6,34 +6,50 @@ const CustomError = require('../errors');
 const { checkPermissions } = require('../utils');
 
 const createReview = async (req, res) => {
-    console.log('req.user:', req.user);
-    const { freelancer: freelancerId } = req.body;
-  
-    // Check if the freelancer exists
-    const isValidFreelancer = await Freelancer.findOne({ _id: freelancerId });
-    if (!isValidFreelancer) {
-      throw new CustomError.NotFoundError(`No freelancer with id: ${freelancerId}`);
-    }
-  
-    // Check if the client (req.user) has already submitted a review for this freelancer
-    const alreadySubmitted = await Review.findOne({
-      freelancer: freelancerId,
-      user: req.user.userId, // Make sure `req.user.clientId` is being set by your authentication middleware
-    });
-  
-    if (alreadySubmitted) {
-      throw new CustomError.BadRequestError('You have already submitted a review for this freelancer.');
-    }
-  
-    // Assign clientId to the review body (making sure to store the authenticated client)
-    req.body.user = req.user.userId;
-  
-    // Create the review in the database
-    const review = await Review.create(req.body);    
-    // Respond with the created review
-    res.status(StatusCodes.CREATED).json({ review });
-  };
-  
+  const { gigId, rating, efficiency, communication, qualityOfWork, timeliness, title, comment } = req.body;
+
+  // Validate gig and freelancer existence (same as before)
+  const gig = await Gig.findById(gigId);
+  if (!gig) {
+    throw new CustomError.NotFoundError('Gig not found');
+  }
+
+  if (gig.client.toString() !== req.user.userId) {
+    throw new CustomError.UnauthorizedError('You are not authorized to review this gig');
+  }
+
+  if (gig.status !== 'approval pending') {
+    throw new CustomError.BadRequestError('Review can only be submitted for gigs in approval pending status');
+  }
+
+  const freelancer = await Freelancer.findById(gig.assignedFreelancer);
+  if (!freelancer) {
+    throw new CustomError.NotFoundError('Freelancer not found');
+  }
+
+  // Create the review
+  const review = await Review.create({
+    rating,
+    efficiency,
+    communication,
+    qualityOfWork,
+    timeliness,
+    title,
+    comment,
+    user: req.user.userId,
+    freelancer: gig.assignedFreelancer,
+  });
+
+  // Mark the gig as completed
+  gig.status = 'completed';
+  await gig.save();
+
+  res.status(StatusCodes.CREATED).json({
+    message: 'Review submitted and gig marked as completed',
+    review,
+  });
+};
+
 
 const getAllReviews = async (req, res) => {
   const reviews = await Review.find({}).populate({path:'freelancer',select:'name'})

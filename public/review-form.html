@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="review-form.css">
+  <title>Freelancer Review</title>
+</head>
+<body>
+  <div class="review-container">
+    <h1 class="review-title">Submit Your Review</h1>
+    <form id="review-form">
+      <div class="form-group">
+        <label for="rating">Overall Rating (1-5)</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" required>
+      </div>
+      <div class="form-group">
+        <label for="efficiency">Efficiency</label>
+        <input type="number" id="efficiency" name="efficiency" min="1" max="5" required>
+      </div>
+      <div class="form-group">
+        <label for="communication">Communication</label>
+        <input type="number" id="communication" name="communication" min="1" max="5" required>
+      </div>
+      <div class="form-group">
+        <label for="qualityOfWork">Quality of Work</label>
+        <input type="number" id="qualityOfWork" name="qualityOfWork" min="1" max="5" required>
+      </div>
+      <div class="form-group">
+        <label for="timeliness">Timeliness</label>
+        <input type="number" id="timeliness" name="timeliness" min="1" max="5" required>
+      </div>
+      <div class="form-group">
+        <label for="title">Review Title</label>
+        <input type="text" id="title" name="title" maxlength="100" required>
+      </div>
+      <div class="form-group">
+        <label for="comment">Review Comment</label>
+        <textarea id="comment" name="comment" rows="5" maxlength="500" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Submit Review</button>
+    </form>
+    <p id="success-message" class="hidden">Review submitted successfully!</p>
+  </div>
+  <script src="review-form.js"></script>
+</body>
+</html>

@@ -3,7 +3,8 @@ const Client = require('../models/client');
 const Freelancer = require('../models/freelancer'); // Add this import for validation
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
-
+const upload = require('../middleware/multer')
+const cloudinary = require('cloudinary')
 // Create a new gig
 const createGig = async (req, res) => {
     const { title, description, budget, deadline } = req.body;
@@ -120,6 +121,104 @@ const acceptProposal = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message || 'Error assigning the gig' });
     }
 };
+const uploadFileSafely = async (file, folder = 'freelancer-submissions') => {
+    if (!file) return null; // If no file, return null (or you can set a default message)
+    try {
+      // Upload any file to Cloudinary (not just images)
+      const result = await cloudinary.uploader.upload(file.tempFilePath, {
+        resource_type: 'auto', // auto-detects file type (image, video, document, etc.)
+        use_filename: true,
+        folder: folder,
+      });
+      return result.secure_url; // Return the uploaded file's URL
+    } catch (error) {
+      console.error('Error uploading file:', error.message);
+      return null; // Return null if upload fails
+    }
+  };
+  
+  // Endpoint for freelancers to submit final files for a gig
+  const submitFinalWork = async (req, res) => {
+    try {
+        const gigId = req.params.id;
+        const { message } = req.body;
+
+        // Fetch gig by ID
+        const gig = await Gig.findById(gigId);
+        if (!gig) {
+            return res.status(404).json({ msg: 'Gig not found' });
+        }
+
+        // Ensure the submissions array exists
+        if (!gig.submissions) {
+            gig.submissions = [];
+        }
+
+        // Extract files array from req.files
+        let files = req.files?.files || [];
+        if (!Array.isArray(files)) {
+            files = [files]; // Convert single file to array
+        }
+
+        console.log('Received files:', files); // Log the received files
+
+        // Upload files to Cloudinary
+        const uploadedFiles = await Promise.all(
+            files.map(async (file) => {
+                const result = await cloudinary.uploader.upload(file.tempFilePath, {
+                    folder: 'gig-submissions',
+                });
+                console.log('File uploaded:', result); // Log the result of each file upload
+                return result.secure_url; // Return the uploaded file URL
+            })
+        );
+
+        // Create submission object
+        const submission = {
+            files: uploadedFiles,
+            message,
+            submittedAt: new Date(),
+        };
+
+        // Push submission to the gig
+        gig.submissions.push(submission);
+        gig.status = 'approval pending';
+        console.log('Updated gig status:', gig.status); // Log the updated status
+        await gig.save();
+
+        res.status(200).json({ msg: 'Final work submitted successfully', submission });
+    } catch (error) {
+        console.error('Error submitting final work:', error.message);
+        res.status(500).json({ msg: 'File submission failed', error: error.message });
+    }
+};
+
+const setGigToCompleted = async (req, res) => {
+    const { id: gigId } = req.params;
+  
+    try {
+      const gig = await Gig.findById(gigId);
+  
+      if (!gig) {
+        return res.status(404).json({ message: `No gig found with ID: ${gigId}` });
+      }
+  
+      // Update the status to "completed"
+      gig.status = "completed";
+      await gig.save();
+  
+      res.status(200).json({
+        message: "Gig status updated to completed successfully",
+        gig,
+      });
+    } catch (error) {
+      console.error("Error updating gig status:", error);
+      res.status(500).json({ message: "Error updating gig status" });
+    }
+  };
+  
+
+
 
 module.exports = {
     createGig,
@@ -129,4 +228,6 @@ module.exports = {
     deleteGig,
     getSingleClientGigs,
     acceptProposal,
+    submitFinalWork,
+    setGigToCompleted,
 };
