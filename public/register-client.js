@@ -19,7 +19,7 @@ form.addEventListener("submit", async (e) => {
   try {
     // Send the FormData to the server, which will automatically handle the file upload
     const response = await fetch(
-      "http://localhost:5500/api/v1/auth/register/client",
+      "http://localhost:5000/api/v1/auth/register/client",
       {
         method: "POST",
         body: formData, // Send FormData instead of JSON

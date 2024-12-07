@@ -23,9 +23,16 @@ const getGigById = async (req, res) => {
     const { id: gigId } = req.params;
 
     const gig = await Gig.findById(gigId)
-        .populate('proposals', 'proposalMessage bidAmount') // Populate proposals
-        .populate('client', 'name email') // Populate client details
-        .populate('assignedFreelancer', 'name email'); // Populate freelancer details
+    .populate({
+        path: 'proposals', 
+        populate: { 
+            path: 'freelancer', 
+            select: 'name email _id' 
+        },
+        select: 'proposalMessage bidAmount freelancer'
+    })
+    .populate('client', 'name email') 
+    .populate('assignedFreelancer', 'name email');
 
     if (!gig) {
         throw new CustomError.NotFoundError(`No gig found with id: ${gigId}`);
@@ -73,7 +80,8 @@ const getSingleClientGigs = async (req, res) => {
 
 // Accept a proposal and assign a freelancer to the gig
 const acceptProposal = async (req, res) => {
-    const { gigId, freelancerId } = req.body;
+    const { gigId, proposalId, freeLancerID } = req.body;
+    console.log("♨️acceptProposol LOGS♨️", req.body);
 
     try {
         // Find the gig
@@ -83,7 +91,8 @@ const acceptProposal = async (req, res) => {
         }
 
         // Check if the freelancer exists
-        const freelancer = await Freelancer.findById(freelancerId);
+        console.log("♨️freelancer ID ♨️", freeLancerID);
+        const freelancer = await Freelancer.findById(freeLancerID);
         if (!freelancer) {
             throw new CustomError.NotFoundError('Freelancer not found');
         }
@@ -95,7 +104,7 @@ const acceptProposal = async (req, res) => {
 
         // Update the gig details
         gig.status = 'assigned'; // Update status
-        gig.assignedFreelancer = freelancerId; // Set the assigned freelancer
+        gig.assignedFreelancer = freeLancerID; // Set the assigned freelancer
 
         await gig.save();
 
