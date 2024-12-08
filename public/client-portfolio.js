@@ -83,9 +83,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                     View Details
                   </a>
                   <!-- Review Button -->
-                  ${gig.status === 'approval pending' ? `<button onclick="window.location.href='review-form.html?gigId=${gig._id}'" class="review-button bg-green-500 mt-4 text-white px-4 py-2 rounded hover:bg-green-700">
-                    Leave a Review
-                  </button>` : ''}
+                  ${gig.status === 'approval pending' ? `
+                    <button 
+                      onclick="location.href='review-form.html?gigId=${gig._id}'" 
+                      class="view-details inline-block bg-blue-500 mt-4 text-white px-4 py-2 rounded hover:bg-blue-700"
+                      style="display: block !important; visibility: visible !important; opacity: 1 !important;"
+                    >
+                      Leave a Review
+                    </button>
+                  ` : ''}
+                  
                 </div>
               `;
               categoryDiv.appendChild(gigCard);
