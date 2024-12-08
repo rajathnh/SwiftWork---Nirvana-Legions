@@ -41,7 +41,7 @@
     <!-- Create Gig Form -->
     <div class="form-container max-w-lg w-full mt-4 mx-auto p-6 bg-white rounded-lg shadow-lg space-y-6 flex-grow">
         <h2 class="text-2xl font-bold text-gray-800 text-center">Create a New Gig</h2>
-        <form id="create-gig-form" class="space-y-4 text-2xl">
+        <form id="create-gig-form" class="space-y-4">
             <!-- Gig Title -->
             <div class="form-group">
                 <label for="title" class="block text-sm font-medium text-gray-700">Gig Title</label>
@@ -76,10 +76,14 @@
     
             <!-- Submit Button -->
             <div class="form-group">
-                <button type="submit" 
+                <button type="submit"
+                 class="bg-green-500 w-full text-white py-2 px-6 rounded-full shadow-md hover:bg-green-600 transition duration-300" >
+                    Create Gig
+                  </button>
+                <!-- <button type="submit" 
                     class="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                     Create Gig
-                </button>
+                </button> -->
             </div>
         </form>
     </div>
