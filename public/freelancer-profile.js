@@ -17,7 +17,8 @@ async function getFreelancerData(freelancerId) {
         }
         const data = await response.json();
         displayFreelancerData(data.freelancer);
-        getFreelancerProposals(freelancerId); // Fetch proposals after displaying profile
+        getFreelancerProposals(freelancerId); 
+       
     } catch (error) {
         console.error("Error:", error);
         alert("An error occurred while fetching freelancer data. Please try again later.");
@@ -51,6 +52,7 @@ function displayFreelancerData(freelancer) {
             <h2>${freelancer.name || 'No Name Provided'}</h2>
             <p><strong>Email:</strong> ${freelancer.email || 'Not Provided'}</p>
             <p><strong>Skills:</strong> ${freelancer.skills && freelancer.skills.length ? freelancer.skills.join(', ') : 'No Skills Provided'}</p>
+            <button id="editProfileBtn" class="btn">Edit Profile</button>
         </div>
 
         <div class="bio">
@@ -75,6 +77,13 @@ function displayFreelancerData(freelancer) {
             <p><strong>Number of Reviews:</strong> ${freelancer.numOfReviews || 0}</p>
         </div>
     `;
+    
+    // Add event listener to the Edit Profile button
+    document.getElementById('editProfileBtn').addEventListener('click', function () {
+        window.location.href = 'freelancer-update.html'; // Or whatever URL for editing the profile
+    });
+
+    // Add event listener for the "View All Gigs" button
     document.getElementById('view-all-gigs-btn').addEventListener('click', function () {
         window.location.href = 'display-all-gigs.html';
     });
