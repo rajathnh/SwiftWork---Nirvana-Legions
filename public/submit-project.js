@@ -26,7 +26,8 @@ document.getElementById('submitWorkForm').addEventListener('submit', async funct
     }
 
     // Get the gig ID dynamically (Example: extracting it from URL)
-    const gigId = '67534bf557c99cdfb4d065c2' // Assuming gigId is the last part of the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const gigId = urlParams.get('gigId'); // Assuming gigId is the last part of the URL
 
     try {
         const response = await fetch(`/api/v1/gigs/${gigId}/files`, {
