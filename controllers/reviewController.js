@@ -4,9 +4,11 @@ const Client = require('../models/client')
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 const { checkPermissions } = require('../utils');
+const Gig = require('../models/Gig')
 
 const createReview = async (req, res) => {
   const { gigId, rating, efficiency, communication, qualityOfWork, timeliness, title, comment } = req.body;
+  console.log("♨️REVIEW CAME!!♨️");
 
   // Validate gig and freelancer existence (same as before)
   const gig = await Gig.findById(gigId);
@@ -14,9 +16,9 @@ const createReview = async (req, res) => {
     throw new CustomError.NotFoundError('Gig not found');
   }
 
-  if (gig.client.toString() !== req.user.userId) {
-    throw new CustomError.UnauthorizedError('You are not authorized to review this gig');
-  }
+  // if (gig.client.toString() !== req.user.userId) {
+  //   throw new CustomError.UnauthorizedError('You are not authorized to review this gig');
+  // }
 
   if (gig.status !== 'approval pending') {
     throw new CustomError.BadRequestError('Review can only be submitted for gigs in approval pending status');
@@ -36,14 +38,14 @@ const createReview = async (req, res) => {
     timeliness,
     title,
     comment,
-    user: req.user.userId,
+    // user: req.user.userId,
     freelancer: gig.assignedFreelancer,
   });
 
   // Mark the gig as completed
   gig.status = 'completed';
   await gig.save();
-
+  console.log("♨️✨✨✨✨♨️ review accepte", );
   res.status(StatusCodes.CREATED).json({
     message: 'Review submitted and gig marked as completed',
     review,

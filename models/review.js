@@ -47,7 +47,7 @@ const ReviewSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'Client',
-      required: true,
+      // required: true,
     },
     freelancer: {
       type: mongoose.Schema.ObjectId,
