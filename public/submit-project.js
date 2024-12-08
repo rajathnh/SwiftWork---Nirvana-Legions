@@ -1,6 +1,22 @@
 document.getElementById('submitWorkForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
+    // Get the gig ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const gigId = urlParams.get('gigId');
+
+    // Check if gigId exists
+    if (!gigId) {
+        const statusMessageDiv = document.getElementById('statusMessage');
+        statusMessageDiv.classList.remove('hidden');
+        statusMessageDiv.innerHTML = `
+            <div class="bg-red-100 text-red-800 border border-red-300 rounded-md p-4">
+                <p><strong>Error:</strong> No Gig ID found. Please navigate from the correct page.</p>
+            </div>
+        `;
+        return;
+    }
+
     // Get the form data (including files and message)
     const formData = new FormData();
     const message = document.getElementById('message').value;
@@ -24,9 +40,6 @@ document.getElementById('submitWorkForm').addEventListener('submit', async funct
     for (let i = 0; i < files.length; i++) {
         formData.append('files', files[i]);
     }
-
-    // Get the gig ID dynamically (Example: extracting it from URL)
-    const gigId = '67534bf557c99cdfb4d065c2' // Assuming gigId is the last part of the URL
 
     try {
         const response = await fetch(`/api/v1/gigs/${gigId}/files`, {
