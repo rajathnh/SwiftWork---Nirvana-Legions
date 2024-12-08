@@ -12,7 +12,7 @@ const cloudinary = require('cloudinary').v2;
 const { Server } = require('socket.io');
 const http = require('http');
 const path = require('path');
-
+const Message = require('./models/Message')
 // Middleware imports
 const rateLimiter = require('express-rate-limit');
 const helmet = require('helmet');
@@ -63,7 +63,7 @@ app.use(cookieParser(process.env.JWT_SECRET));
 // Rate limiting
 app.use(rateLimiter({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 1000, // limit each IP to 100 requests per windowMs
 }));
 
 // Socket.IO Configuration
@@ -132,16 +132,48 @@ io.on('connection', (socket) => {
   console.log('A user connected');
 
   // Listen for users joining a specific room (gigId)
-  socket.on('joinRoom', (gigId) => {
+  socket.on('joinRoom', async (gigId) => {
     socket.join(gigId); // Users join the room based on gigId
     console.log(`User joined room ${gigId}`);
+
+    // Fetch the previous messages for this gigId from the database
+    const messages = await Message.find({ gigId })
+      .sort({ timestamp: 1 }) // Sort messages by timestamp in ascending order
+      .limit(50); // Limit to the most recent 50 messages
+
+    // Send the previous messages to the user who just joined the room
+    socket.emit('chatHistory', messages);
   });
 
   // Listen for sending messages
-  socket.on('sendMessage', (message) => {
-    // Broadcast message to the room
-    io.to(message.gigId).emit('receiveMessage', message); // Send message only to the specific room (gigId)
-    console.log(`Message sent in gig ${message.gigId}`);
+  socket.on('sendMessage', async (messageData) => {
+    // Ensure sender is defined
+    console.log("Received message data:", messageData);
+    if (!messageData.senderId) {
+      console.error("Sender ID is required.");
+      return;
+    }
+
+    const message = new Message({
+      text: messageData.text,
+      sender: messageData.senderId, // Ensure senderId is assigned here
+      senderType: messageData.senderType, // Ensure senderType is assigned here
+      timestamp: new Date().toISOString(),
+      gigId: messageData.gigId, // Include gigId in the message
+      attachments: messageData.attachments || [] // Optional, in case there are no attachments
+    });
+
+    // Save the message to the database
+    try {
+      await message.save();
+      console.log("Message saved successfully!");
+
+      // Broadcast the message to the room
+      io.to(messageData.gigId).emit('receiveMessage', message); // Send message only to the specific room (gigId)
+      console.log(`Message sent in gig ${messageData.gigId}`);
+    } catch (err) {
+      console.error("Error saving message:", err);
+    }
   });
 
   // Handle user disconnect

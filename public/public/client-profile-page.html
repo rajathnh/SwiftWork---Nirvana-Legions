@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="src/output.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=notifications" />
+</head>
+<body class="bg-gray-100">
+    
+    <header class="shadow-md">
+        <div class="container mx-auto flex justify-between items-center px-4 py-3">
+          <!-- Logo -->
+          <a href="#" class="text-xl font-bold md:text-2xl text-blue-600">Swiftwork</a>
+      
+          <!-- Right Section -->
+          <div class="flex items-center space-x-4">
+            <!-- Notification Icon -->
+            <button class="relative">
+              <span class="material-symbols-outlined">
+                notifications
+                </span>
+            </button>
+          </div>
+          </div>
+        </header>
+
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Profile</h3>
+    <div class="bg-white mx-auto my-6 shadow-lg rounded-lg p-6 max-w-sm w-full text-center">
+        <!-- Profile Picture -->
+        <div class="w-32 h-32 mx-auto mb-4 relative">
+            <img 
+                id="profile-img" 
+                src="https://via.placeholder.com/150" 
+                alt="Profile Picture"
+                class="rounded-full border-4 border-blue-500 w-full h-full object-cover cursor-pointer"
+                onclick="document.getElementById('file-input').click();"
+            />
+            <!-- Hidden file input to change image -->
+            <input 
+                type="file" 
+                id="file-input" 
+                class="hidden" 
+                accept="image/*"
+                onchange="updateProfileImage(event)"
+            />
+        </div>
+        <!-- Client Name -->
+        <h2 class="text-2xl font-semibold text-gray-800">John Doe</h2>
+        <!-- Email -->
+
+        <p class="text-gray-600 mt-4 ">johndoe@example.com</p>
+        <!-- Optional Actions -->
+        <div class="mt-4">
+            <button class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600">
+                Message
+            </button>
+            
+        </div>
+
+    </div>
+
+    <div class="relative left-1/2 transform -translate-x-1/2 top-0 w-24 h-1 bg-blue-500"></div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Gig Orders</h3>
+        <div class=" shadow-md rounded-lg p-4 mb-4 grid md:grid-cols-2 ">
+        <!-- Order 1 -->
+        <div class="bg-white shadow-md rounded-lg p-4 mb-4 hover:outline hover:outline-2 hover:outline-blue-300 md:mx-4">
+        <h4 class="text-lg font-semibold text-gray-800">Website Design</h4>
+            <p class="text-gray-600 text-sm">Assigned to: <span class="font-medium text-gray-800">Jane Smith</span></p>
+            <p class="text-gray-600 text-sm">Due Date: <span class="font-medium text-red-500">December 5, 2024</span></p>
+        </div>
+        <!-- Order 2 -->
+        <div class="bg-white shadow-md rounded-lg p-4 mb-4 hover:outline hover:outline-2 hover:outline-blue-300 md:mx-4">
+            <h4 class="text-lg font-semibold text-gray-800">Logo Creation</h4>
+            <p class="text-gray-600 text-sm">Assigned to: <span class="font-medium text-gray-800">Tom Brown</span></p>
+            <p class="text-gray-600 text-sm">Due Date: <span class="font-medium text-red-500">December 10, 2024</span></p>
+        </div>
+        <!-- Order 3 -->
+        <div class="bg-white shadow-md rounded-lg p-4 mb-4 hover:outline hover:outline-2 hover:outline-blue-300 md:mx-4">
+            <h4 class="text-lg font-semibold text-gray-800">SEO Optimization</h4>
+            <p class="text-gray-600 text-sm">Assigned to: <span class="font-medium text-gray-800">Emily Davis</span></p>
+            <p class="text-gray-600 text-sm">Due Date: <span class="font-medium text-red-500">December 15, 2024</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Function to update the profile image when the user selects a new file
+        function updateProfileImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-img').src = e.target.result;
+                };
+                reader.readAsDataURL(file);  // Read the selected file as a data URL
+            }
+        }
+    </script>
+</body>
+</html>

@@ -48,7 +48,7 @@ const getProposalsForFreelancer = async (req, res) => {
     const freelancerId = req.params.id;
 
     const proposals = await Proposal.find({ freelancer: freelancerId })
-      .populate('gig', 'title description budget deadline') // Populate gig fields
+      .populate('gig', 'title description budget deadline status') // Populate gig fields
       .populate('freelancer', 'name email'); // Populate freelancer fields
 
     if (!proposals || proposals.length === 0) {

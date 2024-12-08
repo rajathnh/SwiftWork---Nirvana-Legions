@@ -52,7 +52,7 @@ const getClientById = async (req, res) => {
       const { id } = req.params;
   
       // Find the client by ID
-      const client = await Client.findById(id).populate({path:'gigs',select:'title description budget'});
+      const client = await Client.findById(id).populate({path:'gigs',select:'title description budget status'});
       if (!client) {
         throw new CustomError.NotFoundError('Client not found');
       }
