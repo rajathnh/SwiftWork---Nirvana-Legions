@@ -149,10 +149,10 @@ function displayFreelancerProposals(proposals) {
     proposalsSection.innerHTML = '';
 
     // Display categorized gigs
-    displayGigCategory(proposalsSection, 'Open Gigs💀💀', openGigs);
-    displayGigCategory(proposalsSection, 'Assigned Gigs💀💀', assignedGigs);
-    displayGigCategory(proposalsSection, 'Approval Pending Gigs💀💀', approvalPendingGigs);
-    displayGigCategory(proposalsSection, 'Assigned to Others Gigs💀💀', assignedToOthersGigs);
+    displayGigCategory(proposalsSection, 'Open Gigs', openGigs);
+    displayGigCategory(proposalsSection, 'Assigned Gigs', assignedGigs);
+    displayGigCategory(proposalsSection, 'Approval Pending Gigs', approvalPendingGigs);
+    displayGigCategory(proposalsSection, 'Assigned to Others Gigs', assignedToOthersGigs);
 }
 
 function displayGigCategory(proposalsSection, categoryTitle, gigs) {
