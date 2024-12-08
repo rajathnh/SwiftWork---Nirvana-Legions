@@ -44,22 +44,24 @@ const ReviewSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please provide review text'],
     },
-    user: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Client',
-      // required: true,
-    },
     freelancer: {
       type: mongoose.Schema.ObjectId,
       ref: 'Freelancer',
       required: true,
     },
+    gig: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Gig',
+      required: true,
+    }
   },
-  { timestamps: true }
+  { 
+    timestamps: true 
+  }
 );
 
-// Index to prevent duplicate reviews by the same user
-ReviewSchema.index({ freelancer: 1, user: 1 }, { unique: true });
+// Create a unique index for freelancer and gig combination
+ReviewSchema.index({ freelancer: 1, gig: 1 }, { unique: true });
 
 // Static method to calculate average rating and factors
 ReviewSchema.statics.calculateAverageRatings = async function (freelancerId) {
