@@ -4,9 +4,9 @@ const {StatusCodes} = require('http-status-codes')
 const CustomError = require('../errors')
 
 const SubmitProposal = async (req, res) => {
-  const { gigId, bidAmount, proposalMessage } = req.body;
-  const freelancerId = req.user.userId;
+  const { gigId, bidAmount, proposalMessage, freelancerId } = req.body;
 
+  console.log("♨️FREELANCER PROPOSAL♨️", req.body);
   if (!gigId) {
     return res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Gig ID is required' });
   }
