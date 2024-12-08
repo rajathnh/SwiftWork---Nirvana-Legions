@@ -1,103 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Client Portfolio</title>
-  <!-- <link rel="stylesheet" href="client-portfolio.css"> -->
-  <link rel="stylesheet" href="src/output.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftWork - Client Portfolio</title>
+    <link rel="stylesheet" href="src/output.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-
-<body  class="portfolio-body m-0 "></body>> 
-<header class="bg-gray-100 font-[Montserrat-bold] shadow-md m-0">
-  <nav class="flex  items-center w-[92%] text-xl mx-auto py-4 md:justify-between justify-center m-0">
-    <!-- Logo -->
-    <div class="md:text-left text-center">
-      <h1 class="text-3xl text-blue-500 font-bold">Swiftwork</h1>
-    </div>
-
-    <div class="flex items-center justify-center mx-auto"><span class="text-2xl">Client Portfolio</span>
-    </div>
-
-    <!-- Navigation Links -->
-    <div
-      class="nav-links md:static absolute bg-gray-100 md:min-h-fit min-h-[60vh] left-0 top-[-100%] w-auto items-center px-5 hidden md:block"
-    >
-      <ul
-        class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8"
-      >
-        <li>
-          <a class="hover:text-blue-500 transition-colors" href="index.html#home">Home</a>
-        </li>
-        <li>
-          <a class="hover:text-blue-500 transition-colors" href="index.html#about-us">About</a>
-        </li>
-        <li>
-          <a class="hover:text-blue-500 transition-colors" href="index.html#contact-us">Contact us</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</header>
-
-  
-  <div class="portfolio-container flex flex-row space-x-10">
-
-    
-    <div class="client-profile  p-4 rounded-lg shadow-2xl flex flex-col items-center justify-center space-y-4 w-2/5 mt-16 mb-10 ml-10">
-<!-- <img id="profile-pic" src="default-profile-pic.jpg" alt="Profile Picture" class="profile-pic"> -->
-<img id="profile-pic" class="w-40 h-40 rounded-full" src="uploads/default.jpg" alt="Profile Picture">  
-
-<p id="client-name">Loading client name...</p>
-<p id="client-email">Loading client email...</p>
-    </div>
-
-    <div class="client-profile  p-4 rounded-lg shadow-2xl w-2/5  mt-16 mb-10 ml-10"></div>
-  </div>
-
-
-
-    <div class ="flex items-center justify-center">
-      <h1 class="text-3xl font-bold mb-6 mt-6">
-        Gigs
-       </h1>
-    </div>
-    <ul id="gigs-list" class="gigs-list"></ul>
-
-    <div class ="flex items-center justify-center">
-      <h1 class="text-3xl font-bold mb-2 mt-6">
-        Previous Job Listings
-       </h1>
-    </div>
-  <div id="gigs-container" class="grid grid-cols-1 md:grid-cols-2  gap-14 place-items-center  min-h-96 mx-20 py-12">
-  </div>
-
-
-
-<div  class = "flex items-center justify-center">
-<button id="create-gig-button" 
-onclick="window.location.href='gig-create.html'" 
-style="display: none; margin-top: 3rem; margin-bottom: 3rem; padding: 0.75rem 1.5rem; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;">
-Post a job
-</button>
-</div>
-
-<footer class="relative bg-blueGray-200 pt-8 pb-6 bg-blue-950">
-  <div class="container mx-auto px-4">
-    <hr class="my-6 border-blueGray-300">
-          <div class="flex flex-wrap items-center md:justify-between justify-center">
-            <div class="w-full md:w-4/12 px-4 mx-auto text-center">
-              <div class="text-sm text-blueGray-500 font-semibold py-1 text-gray-100">
-                © 2024 <span id="get-current-year">SwiftWork.</span><a href="#home" class="text-blueGray-500 hover:text-gray-800" target="_blank"> All rights reserved.
-                
-              </div>
+<body class="bg-gray-100 min-h-screen font-inter text-gray-800">
+    <!-- Navbar -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-2xl font-bold text-blue-600">SwiftWork</h1>
             </div>
-          </div>
+            <nav class="flex space-x-6">
+                <a href="#" class="text-gray-600 hover:text-blue-600">Dashboard</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Gigs</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Messages</a>
+            </nav>
         </div>
-</footer>
+    </header>
 
-  <script src="client-portfolio.js"></script>
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Profile Header -->
+        <section class="bg-white rounded-xl shadow-md p-8 mb-12 flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <img id="profile-pic" src="uploads/default.jpg" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover border-4 border-blue-100">
+                <div>
+                    <h2 id="client-name" class="text-3xl font-bold text-gray-800 mb-2">John Doe</h2>
+                    <p id="client-email" class="text-gray-600">john.doe@example.com</p>
+                </div>
+            </div>
+            <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors">
+                Edit Profile
+            </button>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Active Gigs Column -->
+            <div class="md:col-span-2 space-y-8">
+                <div class="bg-white rounded-xl shadow-md p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">Active Gigs</h3>
+                    <div id="gigs-container" class="space-y-4">
+                        <!-- Dynamically populated gigs will go here -->
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 flex justify-between items-center">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-2">Web Development Project</h4>
+                                <p class="text-gray-600">In Progress - Budget: $2,500</p>
+                            </div>
+                            <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full">Ongoing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Gigs -->
+                <div class="bg-white rounded-xl shadow-md p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">Completed Projects</h3>
+                    <div class="space-y-4">
+                        <div class="bg-green-50 p-6 rounded-lg border border-green-200 flex justify-between items-center">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-2">Mobile App Design</h4>
+                                <p class="text-gray-600">Completed on Jan 15, 2024</p>
+                            </div>
+                            <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full">Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Column -->
+            <div class="md:col-span-1 space-y-8">
+                <!-- Quick Stats -->
+                <div class="bg-white rounded-xl shadow-md p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">Quick Stats</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-gray-600">Total Gigs</p>
+                            <p class="text-2xl font-bold text-blue-600">12</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-gray-600">Earnings</p>
+                            <p class="text-2xl font-bold text-green-600">$45,000</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="bg-white rounded-xl shadow-md p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">Actions</h3>
+                    <div class="space-y-4">
+                        <button class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">
+                            Create New Gig
+                        </button>
+                        <button class="w-full bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300">
+                            View All Projects
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-8 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-600">&copy; 2024 SwiftWork. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="client-portfolio.js"></script>
 </body>
-
 </html>
