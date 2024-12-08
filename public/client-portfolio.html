@@ -33,7 +33,7 @@
                     <p id="client-email" class="text-gray-600">john.doe@example.com</p>
                 </div>
             </div>
-            <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors">
+            <button id="edit-profile-button" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors">
                 Edit Profile
             </button>
         </section>
@@ -45,7 +45,7 @@
                 <div class="bg-white rounded-xl shadow-md p-8">
                     <h3 class="text-2xl font-bold mb-6 text-gray-800">Active Gigs</h3>
                     <div id="gigs-container" class="space-y-4">
-                        <!-- Dynamically populated gigs will go here -->
+                        <!-- Dynamically populated gigs will go here 
                         <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 flex justify-between items-center">
                             <div>
                                 <h4 class="text-lg font-semibold text-gray-800 mb-2">Web Development Project</h4>
@@ -54,9 +54,9 @@
                             <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full">Ongoing</span>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
-                <!-- Completed Gigs -->
+                <!-- Completed Gigs
                 <div class="bg-white rounded-xl shadow-md p-8">
                     <h3 class="text-2xl font-bold mb-6 text-gray-800">Completed Projects</h3>
                     <div class="space-y-4">
@@ -69,11 +69,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- Sidebar Column -->
+            <!-- Sidebar Column 
             <div class="md:col-span-1 space-y-8">
-                <!-- Quick Stats -->
+                 Quick Stats
                 <div class="bg-white rounded-xl shadow-md p-8">
                     <h3 class="text-2xl font-bold mb-6 text-gray-800">Quick Stats</h3>
                     <div class="space-y-4">
@@ -86,9 +86,9 @@
                             <p class="text-2xl font-bold text-green-600">$45,000</p>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <!-- Action Buttons -->
+                <!-- Action Buttons 
                 <div class="bg-white rounded-xl shadow-md p-8">
                     <h3 class="text-2xl font-bold mb-6 text-gray-800">Actions</h3>
                     <div class="space-y-4">
@@ -101,9 +101,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </main>
-
+    <button id="create-gig-button" 
+onclick="window.location.href='gig-create.html'" 
+style="display: none; margin-top: 1.5rem; padding: 0.75rem 1.5rem; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;">
+Add New Gig
+</button>
     <!-- Footer -->
     <footer class="bg-white border-t border-gray-200 py-8 mt-12">
         <div class="container mx-auto px-6 text-center">

@@ -1,0 +1,53 @@
+/* style.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7fafc;
+}
+
+.container {
+    max-width: 800px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
+    background-color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+button {
+    background-color: #4299e1;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2b6cb0;
+}
+
+input:focus {
+    outline: none;
+    border-color: #63b3ed;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+#successMessage, #errorMessage {
+    margin-top: 12px;
+    font-size: 1rem;
+}

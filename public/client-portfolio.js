@@ -11,8 +11,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const userRole = localStorage.getItem("swiftWork_role");
   const createGigButton = document.getElementById("create-gig-button");
+  const editProfileButton = document.getElementById("edit-profile-button");
+
+  // Display the "Create Gig" button only if the user is a client
   if (createGigButton) {
     createGigButton.style.display = userRole === "client" ? "block" : "none";
+  }
+
+  // Display the "Edit Profile" button only if the user is a client
+  if (editProfileButton) {
+    editProfileButton.style.display = userRole === "client" ? "block" : "none";
   }
 
   try {
@@ -92,7 +100,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                       Leave a Review
                     </button>
                   ` : ''}
-                  
                 </div>
               `;
               categoryDiv.appendChild(gigCard);
@@ -122,5 +129,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   } catch (error) {
     console.error(error);
     alert("Failed to fetch client data.");
+  }
+
+  // Event listener for the Edit Profile button
+  if (editProfileButton) {
+    editProfileButton.addEventListener("click", function () {
+      // Redirect to the edit profile page with the clientId in the URL
+      window.location.href = `client-update.html?clientId=${swiftWorkID}`;
+    });
   }
 });
