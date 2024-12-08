@@ -140,7 +140,7 @@ function displayFreelancerProposals(proposals) {
     
     const assignedToOthersGigs = proposals.filter(proposal => 
         proposal.gig?.status === 'assigned' && 
-        proposal.gig.assignedFreelancer !== freelancerId
+        proposal.freelancer._id !== freelancerId
     );
     
     console.log("♨️ASSIGNED TO OTHERs GIGS♨️", assignedToOthersGigs);
