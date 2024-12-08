@@ -41,6 +41,9 @@ document.getElementById('submitWorkForm').addEventListener('submit', async funct
         formData.append('files', files[i]);
     }
 
+    // Get the gig ID dynamically (Example: extracting it from URL)
+   
+
     try {
         const response = await fetch(`/api/v1/gigs/${gigId}/files`, {
             method: 'POST',
