@@ -40,6 +40,7 @@ const createReview = async (req, res) => {
     comment,
     // user: req.user.userId,
     freelancer: gig.assignedFreelancer,
+    gig: gigId
   });
 
   // Mark the gig as completed
