@@ -182,6 +182,18 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
                     <p><strong>Status:</strong> ${gigStatus}</p>
                 </a>
             `;
+
+            // Add Submit Project button for Assigned Gigs
+            if (categoryTitle === 'Assigned Gigs') {
+                const submitProjectBtn = document.createElement('button');
+                submitProjectBtn.classList.add('submit-project-btn');
+                submitProjectBtn.innerText = 'Submit Project';
+                submitProjectBtn.addEventListener('click', () => {
+                    window.location.href = `submit-project.html?gigId=${gig._id}`;
+                });
+                proposalDiv.appendChild(submitProjectBtn);
+            }
+
             categoryDiv.appendChild(proposalDiv);
         });
 
