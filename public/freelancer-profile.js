@@ -188,6 +188,18 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
         proposalsSection.appendChild(categoryDiv);
     }
 }
+document.addEventListener("DOMContentLoaded", () => {
+    const viewAllGigsBtn = document.getElementById("view-all-gigs-btn");
+  
+    // Add event listener to the "View All Gigs" button
+    viewAllGigsBtn.addEventListener("click", () => {
+      // Redirect to the page that shows all gigs
+      window.location.href = "display-all-gigs.html";
+  
+      // Alternatively, fetch and display gigs dynamically
+      // fetchAndDisplayAllGigs();
+    });
+  });
 
 // Initialize profile loading on page load
 document.addEventListener('DOMContentLoaded', () => {
