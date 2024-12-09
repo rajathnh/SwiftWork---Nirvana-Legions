@@ -8,7 +8,8 @@ document.getElementById("create-gig-form").addEventListener("submit", async func
         title: formData.get('title'),
         description: formData.get('description'),
         budget: formData.get('budget'),
-        deadline: formData.get('deadline')
+        deadline: formData.get('deadline'),
+        client: localStorage.getItem('swiftWork_ID')
     };
     
 

@@ -17,7 +17,8 @@ async function getFreelancerData(freelancerId) {
         }
         const data = await response.json();
         displayFreelancerData(data.freelancer);
-        getFreelancerProposals(freelancerId); // Fetch proposals after displaying profile
+        getFreelancerProposals(freelancerId); 
+       
     } catch (error) {
         console.error("Error:", error);
         alert("An error occurred while fetching freelancer data. Please try again later.");
@@ -51,6 +52,7 @@ function displayFreelancerData(freelancer) {
             <h2>${freelancer.name || 'No Name Provided'}</h2>
             <p><strong>Email:</strong> ${freelancer.email || 'Not Provided'}</p>
             <p><strong>Skills:</strong> ${freelancer.skills && freelancer.skills.length ? freelancer.skills.join(', ') : 'No Skills Provided'}</p>
+            <button id="editProfileBtn" class="btn">Edit Profile</button>
         </div>
 
         <div class="bio">
@@ -75,6 +77,13 @@ function displayFreelancerData(freelancer) {
             <p><strong>Number of Reviews:</strong> ${freelancer.numOfReviews || 0}</p>
         </div>
     `;
+    
+    // Add event listener to the Edit Profile button
+    document.getElementById('editProfileBtn').addEventListener('click', function () {
+        window.location.href = 'freelancer-update.html'; // Or whatever URL for editing the profile
+    });
+
+    // Add event listener for the "View All Gigs" button
     document.getElementById('view-all-gigs-btn').addEventListener('click', function () {
         window.location.href = 'display-all-gigs.html';
     });
@@ -109,32 +118,41 @@ function displayReviews(reviews) {
 // Display proposals dynamically
 function displayFreelancerProposals(proposals) {
     const proposalsSection = document.getElementById('proposals-section');
-    //console.log('Proposals:', proposals);
-    // Check if the element exists before attempting to update its innerHTML
     if (!proposalsSection) {
         console.error('Proposals section not found');
         return;
     }
 
-   
     // Get the logged-in freelancer's ID from local storage
     const freelancerId = getFreelancerIdFromLocalStorage();
-    console.log('Logged-in freelancer ID:', freelancerId);
 
-    // Categorize gigs based on their status and the assigned freelancer
-    const openGigs = proposals.filter(proposal => {
-        console.log('Checking open gig proposal:', proposal.gig);
-        return proposal.gig?.status === 'open';
-    });
+    // Categorize gigs based on their status
+    const openGigs = proposals.filter(proposal => 
+        proposal.gig?.status === 'open'
+    );
 
-    const assignedGigs = proposals.filter(proposal => {
-        console.log('Checking assigned gig proposal:', proposal.gig);
-        console.log('Assigned freelancer:', proposal.assignedFreelancer);
-        return proposal.gig?.status === 'assigned' && proposal.assignedFreelancer === freelancerId;
-    });
+    console.log("♨️OPEN GIGS♨️", openGigs);
+    
+    const assignedGigs = proposals.filter(proposal => 
+        proposal.gig?.status === 'assigned' && 
+        proposal.freelancer._id === freelancerId
+    );
+    
+    console.log("ASSIGED GIGS♨️", assignedGigs);
+    
+    const approvalPendingGigs = proposals.filter(proposal => 
+        proposal.gig?.status === 'approval pending' && 
+        proposal.freelancer._id === freelancerId
+    );
 
-    const approvalPendingGigs = proposals.filter(proposal => proposal.gig?.status === 'approval pending');
-    const assignedToOthersGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.assignedFreelancer !== freelancerId);
+    console.log("♨️APPROVAL PENDING GIGS♨️", approvalPendingGigs);
+    
+    const assignedToOthersGigs = proposals.filter(proposal => 
+        proposal.gig?.status === 'assigned' && 
+        proposal.gig.assignedFreelancer !== freelancerId
+    );
+    
+    console.log("♨️ASSIGNED TO OTHERs GIGS♨️", assignedToOthersGigs);
 
     // Clear the section
     proposalsSection.innerHTML = '';
@@ -146,7 +164,6 @@ function displayFreelancerProposals(proposals) {
     displayGigCategory(proposalsSection, 'Assigned to Others Gigs', assignedToOthersGigs);
 }
 
-// Helper function to display a categorized section
 function displayGigCategory(proposalsSection, categoryTitle, gigs) {
     if (gigs.length > 0) {
         const categoryDiv = document.createElement('div');
@@ -157,11 +174,10 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
         categoryDiv.appendChild(heading);
 
         gigs.forEach(proposal => {
-            const gig = proposal.gig; // Get the gig from the proposal
+            const gig = proposal.gig;
             const gigLink = `gig-details.html?gigId=${gig._id}`;
             const gigStatus = gig.status || 'Pending';
 
-            // Create a proposal display
             const proposalDiv = document.createElement('div');
             proposalDiv.classList.add('proposal');
             proposalDiv.innerHTML = `
@@ -172,14 +188,21 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
                     <p><strong>Deadline:</strong> ${new Date(gig.deadline).toDateString() || 'N/A'}</p>
                     <p><strong>Bid Amount:</strong> ${proposal.bidAmount || 'N/A'}</p>
                     <p><strong>Proposal Message:</strong> ${proposal.proposalMessage || 'No Message Provided'}</p>
-                    <p><strong>Status:</strong> ${gigStatus}</p> <!-- Gig status -->
+                    <p><strong>Status:</strong> ${gigStatus}</p>
                 </a>
-
-                <!-- Show the 'Submit Final Project' button if the gig is assigned to this freelancer -->
-                ${gig.assignedFreelancer && gig.assignedFreelancer === getFreelancerIdFromLocalStorage() ? `
-                    <button class="submit-project-btn" onclick="submitProject('${gig._id}')">Submit Final Project</button>
-                ` : ''}
             `;
+
+            // Add Submit Project button for Assigned Gigs
+            if (categoryTitle === 'Assigned Gigs') {
+                const submitProjectBtn = document.createElement('button');
+                submitProjectBtn.classList.add('submit-project-btn');
+                submitProjectBtn.innerText = 'Submit Project';
+                submitProjectBtn.addEventListener('click', () => {
+                    window.location.href = `submit-project.html?gigId=${gig._id}`;
+                });
+                proposalDiv.appendChild(submitProjectBtn);
+            }
+
             categoryDiv.appendChild(proposalDiv);
         });
 

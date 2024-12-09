@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Freelancer Profile</title>
+  <link href="src/output.css" rel="stylesheet">
+  <link rel="stylesheet" href="freelancer-update.css">
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-3xl mx-auto p-6 bg-white rounded shadow-lg mt-10">
+    <h1 class="text-2xl font-semibold text-center mb-6">Update Freelancer Profile</h1>
+    
+    <form id="updateFreelancerForm" enctype="multipart/form-data">
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+        <input type="text" id="name" name="name" class="w-full mt-1 p-2 border border-gray-300 rounded" placeholder="Enter your name" required>
+      </div>
+      
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" id="email" name="email" class="w-full mt-1 p-2 border border-gray-300 rounded" placeholder="Enter your email" required>
+      </div>
+
+     <!--- <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" id="password" name="password" class="w-full mt-1 p-2 border border-gray-300 rounded" placeholder="Enter a new password">
+      </div> -->
+
+      <div class="mb-4">
+        <label for="skills" class="block text-sm font-medium text-gray-700">Skills</label>
+        <input type="text" id="skills" name="skills" class="w-full mt-1 p-2 border border-gray-300 rounded" placeholder="Enter your skills" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
+        <textarea id="bio" name="bio" class="w-full mt-1 p-2 border border-gray-300 rounded" placeholder="Write a brief bio"></textarea>
+      </div>
+
+      <div class="mb-4">
+        <label for="portfolio" class="block text-sm font-medium text-gray-700">Portfolio URL</label>
+        <input type="url" id="portfolio" name="portfolio" class="w-full mt-1 p-2 border border-gray-300 rounded" placeholder="Enter your portfolio link">
+      </div>
+
+      <div class="mb-4">
+        <label for="profilePic" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+        <input type="file" id="profilePic" name="profilePic" class="w-full mt-1 p-2 border border-gray-300 rounded">
+      </div>
+
+      <div class="mb-4">
+        <label for="image1" class="block text-sm font-medium text-gray-700">Additional Image 1</label>
+        <input type="file" id="image1" name="image1" class="w-full mt-1 p-2 border border-gray-300 rounded">
+      </div>
+
+      <button type="submit" id="submitBtn" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Update Profile</button>
+
+      <div id="successMessage" class="hidden mt-4 text-green-500">Profile updated successfully!</div>
+      <div id="errorMessage" class="hidden mt-4 text-red-500">Error updating profile.</div>
+    </form>
+  </div>
+
+  <script src="freelancer-update.js"></script>
+</body>
+</html>

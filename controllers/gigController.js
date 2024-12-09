@@ -6,9 +6,11 @@ const CustomError = require('../errors');
 const upload = require('../middleware/multer')
 const cloudinary = require('cloudinary')
 // Create a new gig
+
 const createGig = async (req, res) => {
+    console.log("♨️♨️♨️♨️♨️♨️", req.body);
     const { title, description, budget, deadline } = req.body;
-    req.body.client = req.user.userId;
+    // req.body.client = req.user.userId;
     const gig = await Gig.create(req.body);
     res.status(StatusCodes.CREATED).json({ gig });
 };

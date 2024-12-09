@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
   
         try {
+          console.log("♨️FORM DATAAAAA♨️", formData);
           // Send the data to the server via fetch (POST request)
           const response = await fetch('http://localhost:5000/api/v1/review', {
             method: 'POST',
@@ -34,7 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
           if (response.ok) {
             const data = await response.json();
             console.log('Review submitted:', data);
-            // Show success message or redirect
+            alert('Review Submitted Successfully')
+            window.location.href = 'client-portfolio.html'; // Redirect to client portfolio page
+
           } else {
             const error = await response.json();
             alert(`Error: ${error.message}`);

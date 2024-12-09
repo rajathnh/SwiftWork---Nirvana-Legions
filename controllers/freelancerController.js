@@ -71,7 +71,7 @@ const uploadImageSafely = async (file) => {
       }
   
       // Handle image uploads if files exist
-      const profilePic = req.files?.profilePic?await uploadImageSafely(req.files.profilePic):freelancer.profilePic;
+      const profilePic = req.files?.profilePic ? await uploadImageSafely(req.files.profilePic) : freelancer.profilePic;
       const image1 = req.files?.image1 ? await uploadImageSafely(req.files.image1) : freelancer.image1;
       const image2 = req.files?.image2 ? await uploadImageSafely(req.files.image2) : freelancer.image2;
       const image3 = req.files?.image3 ? await uploadImageSafely(req.files.image3) : freelancer.image3;
@@ -80,7 +80,12 @@ const uploadImageSafely = async (file) => {
       // Update freelancer details
       freelancer.name = name || freelancer.name;
       freelancer.email = email || freelancer.email;
-      freelancer.password = password ? await bcrypt.hash(password, 10) : freelancer.password;
+      
+      // Only update password if it's provided
+      if (password) {
+        freelancer.password = await bcrypt.hash(password, 10);
+      }
+  
       freelancer.skills = skills || freelancer.skills;
       freelancer.bio = bio || freelancer.bio;
       freelancer.portfolio = portfolio || freelancer.portfolio;
@@ -92,6 +97,7 @@ const uploadImageSafely = async (file) => {
       freelancer.image3 = image3;
       freelancer.image4 = image4;
   
+      // Save updated freelancer
       await freelancer.save();
   
       res.status(StatusCodes.OK).json({
@@ -103,7 +109,7 @@ const uploadImageSafely = async (file) => {
           skills: freelancer.skills,
           bio: freelancer.bio,
           portfolio: freelancer.portfolio,
-          profilePic:freelancer.profilePic,
+          profilePic: freelancer.profilePic,
           image1: freelancer.image1,
           image2: freelancer.image2,
           image3: freelancer.image3,
@@ -112,9 +118,13 @@ const uploadImageSafely = async (file) => {
       });
     } catch (error) {
       console.error(error);
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: 'Server Error', error: error.message });
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        msg: 'Server Error',
+        error: error.message,
+      });
     }
   };
+  
   
 
 const deleteFreelancer = async(req,res) =>{

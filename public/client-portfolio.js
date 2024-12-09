@@ -11,8 +11,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const userRole = localStorage.getItem("swiftWork_role");
   const createGigButton = document.getElementById("create-gig-button");
+  const editProfileButton = document.getElementById("edit-profile-button");
+
+  // Display the "Create Gig" button only if the user is a client
   if (createGigButton) {
     createGigButton.style.display = userRole === "client" ? "block" : "none";
+  }
+
+  // Display the "Edit Profile" button only if the user is a client
+  if (editProfileButton) {
+    editProfileButton.style.display = userRole === "client" ? "block" : "none";
+
+    // Event listener for the Edit Profile button
+    editProfileButton.addEventListener("click", function () {
+      // Redirect to the edit profile page with the clientId in the URL
+      window.location.href = `client-update.html?clientId=${swiftWorkID}`;
+    });
   }
 
   try {
@@ -48,18 +62,68 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       const gigsContainer = document.getElementById("gigs-container");
       if (gigsContainer && data.client.gigs && data.client.gigs.length > 0) {
-        data.client.gigs.forEach((gig) => {
-          const gigCard = document.createElement("div");
-          gigCard.className =
-            "bg-white p-6 rounded-lg shadow-lg  w-2/5 flex flex-col bg-slate-300 space-y-3 items-center justify-center";
-          gigCard.innerHTML = `
-           <h3 class="text-lg font-bold">${gig.title}</h3>
-           <p class="text-gray-700 ">Budget: $${gig.budget}</p>
-            <a href="gig-details.html?gigId=${gig._id}" class="view-details inline-block bg-blue-500 mt-4 text-white px-4 py-2 rounded hover:bg-blue-700">View Details</a> </div>
-          `;
+        // Categorize gigs by status
+        const openGigs = data.client.gigs.filter((gig) => gig.status === "open");
+        const assignedGigs = data.client.gigs.filter(
+          (gig) => gig.status === "assigned"
+        );
+        const approvalPendingGigs = data.client.gigs.filter(
+          (gig) => gig.status === "approval pending"
+        );
+        const completedGigs = data.client.gigs.filter(
+          (gig) => gig.status === "completed"
+        );
 
-          gigsContainer.appendChild(gigCard);
-        });
+        // Helper function to display a gig category
+        const displayGigCategory = (categoryTitle, gigs) => {
+          const categoryDiv = document.createElement("div");
+          categoryDiv.className = "category-section";
+
+          const heading = document.createElement("h3");
+          heading.className = "text-xl font-semibold mb-2 mt-4";
+          heading.textContent = categoryTitle;
+          categoryDiv.appendChild(heading);
+
+          if (gigs.length > 0) {
+            gigs.forEach((gig) => {
+              const gigCard = document.createElement("div");
+              gigCard.className =
+                "bg-white p-4 rounded-lg shadow-md w-3/5";
+
+              gigCard.innerHTML = `
+                <div>
+                  <h3 class="text-lg font-bold">${gig.title}</h3>
+                  <p class="text-gray-700">Budget: $${gig.budget}</p>
+                  <a href="gig-details.html?gigId=${gig._id}" class="view-details inline-block bg-blue-500 mt-4 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    View Details
+                  </a>
+                  ${gig.status === "approval pending" ? `
+                    <button 
+                      onclick="location.href='review-form.html?gigId=${gig._id}'" 
+                      class="view-details inline-block bg-blue-500 mt-4 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                      Leave a Review
+                    </button>
+                  ` : ""}
+                </div>
+              `;
+              categoryDiv.appendChild(gigCard);
+            });
+          } else {
+            const noGigsMessage = document.createElement("p");
+            noGigsMessage.className = "text-gray-500 mt-4";
+            noGigsMessage.textContent = `No gigs available in the ${categoryTitle}.`;
+            categoryDiv.appendChild(noGigsMessage);
+          }
+
+          gigsContainer.appendChild(categoryDiv);
+        };
+
+        // Display categorized gigs
+        displayGigCategory("Open Gigs", openGigs);
+        displayGigCategory("Assigned Gigs", assignedGigs);
+        displayGigCategory("Approval Pending Gigs", approvalPendingGigs);
+        displayGigCategory("Completed Gigs", completedGigs);
       } else {
         const noGigsMessage = document.createElement("p");
         noGigsMessage.className = "text-gray-500 mt-4";
