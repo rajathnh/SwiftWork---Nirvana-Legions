@@ -106,13 +106,15 @@ function displayPortfolioImages(freelancer) {
 // Display reviews dynamically
 function displayReviews(reviews) {
     if (reviews && reviews.length > 0) {
-        return reviews.map(review => `
-            <div class="review">
-                <p><strong>${review.user?.name || 'Anonymous'}</strong> rated <strong>${review.rating || 'N/A'}</strong></p>
-                <p><strong>Title:</strong> ${review.title || 'No Title'}</p>
-                <p>${review.comment || 'No Comment Provided'}</p>
-            </div>
-        `).join('');
+        return reviews.map(review => {
+            return `
+                <div class="review">
+                    <p><strong>${review.user?.name || 'Anonymous'}</strong> rated <strong>${review.rating || 'N/A'}</strong></p>
+                    <p><strong>Title:</strong> ${review.title || 'No Title'}</p>
+                    <p>${review.comment || 'No Comment Provided'}</p>
+                </div>
+            `;
+        }).join('');
     } else {
         return "<p>No reviews yet.</p>";
     }
@@ -127,23 +129,26 @@ function displayFreelancerProposals(proposals) {
     }
 
     const freelancerId = getFreelancerIdFromLocalStorage();
+
+    // Categorize gigs based on their status
     const openGigs = proposals.filter(proposal => proposal.gig?.status === 'open');
-    const assignedGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.assignedFreelancer === freelancerId);
-    const approvalPendingGigs = proposals.filter(proposal => proposal.gig?.status === 'approval pending');
-    const assignedToOthersGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.assignedFreelancer !== freelancerId);
+    const assignedGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.freelancer._id === freelancerId);
+    const approvalPendingGigs = proposals.filter(proposal => proposal.gig?.status === 'approval pending' && proposal.freelancer._id === freelancerId);
+    const assignedToOthersGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.freelancer._id !== freelancerId);
 
     proposalsSection.innerHTML = '';
+
     displayGigCategory(proposalsSection, 'Open Gigs', openGigs);
     displayGigCategory(proposalsSection, 'Assigned Gigs', assignedGigs);
     displayGigCategory(proposalsSection, 'Approval Pending Gigs', approvalPendingGigs);
     displayGigCategory(proposalsSection, 'Assigned to Others Gigs', assignedToOthersGigs);
 }
 
-// Helper function to display a categorized section
 function displayGigCategory(proposalsSection, categoryTitle, gigs) {
     if (gigs.length > 0) {
         const categoryDiv = document.createElement('div');
         categoryDiv.classList.add('gig-category');
+
         const heading = document.createElement('h3');
         heading.innerText = categoryTitle;
         categoryDiv.appendChild(heading);
@@ -151,26 +156,41 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
         gigs.forEach(proposal => {
             const gig = proposal.gig;
             const gigLink = `gig-details.html?gigId=${gig._id}`;
-            categoryDiv.innerHTML += `
-                <div class="proposal">
-                    <a href="${gigLink}">
-                        <p><strong>Gig:</strong> ${gig.title || 'No Title'}</p>
-                        <p><strong>Description:</strong> ${gig.description || 'No Description'}</p>
-                        <p><strong>Status:</strong> ${gig.status || 'Pending'}</p>
-                    </a>
-                </div>`;
+            const gigStatus = gig.status || 'Pending';
+
+            const proposalDiv = document.createElement('div');
+            proposalDiv.classList.add('proposal');
+            proposalDiv.innerHTML = `
+                <a href="${gigLink}" class="proposal-link">
+                    <p><strong>Gig:</strong> ${gig.title || 'No Title'}</p>
+                    <p><strong>Description:</strong> ${gig.description || 'No Description'}</p>
+                    <p><strong>Budget:</strong> ${gig.budget || 'N/A'}</p>
+                    <p><strong>Deadline:</strong> ${new Date(gig.deadline).toDateString() || 'N/A'}</p>
+                    <p><strong>Bid Amount:</strong> ${proposal.bidAmount || 'N/A'}</p>
+                    <p><strong>Proposal Message:</strong> ${proposal.proposalMessage || 'No Message Provided'}</p>
+                    <p><strong>Status:</strong> ${gigStatus}</p>
+                </a>
+            `;
+
+            if (categoryTitle === 'Assigned Gigs') {
+                const submitProjectBtn = document.createElement('button');
+                submitProjectBtn.classList.add('submit-project-btn');
+                submitProjectBtn.innerText = 'Submit Project';
+                submitProjectBtn.addEventListener('click', () => {
+                    window.location.href = `submit-project.html?gigId=${gig._id}`;
+                });
+                proposalDiv.appendChild(submitProjectBtn);
+            }
+
+            categoryDiv.appendChild(proposalDiv);
         });
 
         proposalsSection.appendChild(categoryDiv);
-    } else {
-        const noGigsMessage = document.createElement('p');
-        noGigsMessage.innerText = `No gigs available in the ${categoryTitle}.`;
-        proposalsSection.appendChild(noGigsMessage);
     }
 }
 
-// Wait for the DOM to be fully loaded before running the script
-document.addEventListener('DOMContentLoaded', function () {
+// Initialize profile loading on page load
+document.addEventListener('DOMContentLoaded', () => {
     const freelancerId = getFreelancerIdFromLocalStorage();
     getFreelancerData(freelancerId);
 });

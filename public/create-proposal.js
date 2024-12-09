@@ -1,6 +1,6 @@
 // Fetch the gig ID from the URL (you should pass this ID when linking to this page)
 const gigId = new URLSearchParams(window.location.search).get('gigId');
-const userId = localStorage.getItem('userId');  // Assuming user ID is stored in localStorage
+const userId = localStorage.getItem('swiftWork_ID');  // Assuming user ID is stored in localStorage
 const token = localStorage.getItem('authToken'); // Assuming auth token is stored in localStorage
 
 // Elements
@@ -59,8 +59,10 @@ async function submitProposal() {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ gigId, bidAmount, proposalMessage, userId })
+            body: JSON.stringify({ gigId, bidAmount, proposalMessage, freelancerId: userId })
         });
+
+        console.log("♨️PROPOSAL CREATE ✨✨💀♨️", JSON.stringify({ gigId, bidAmount, proposalMessage, freelancerId: userId }));
 
         if (!response.ok) {
             const errorData = await response.json();
