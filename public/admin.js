@@ -377,14 +377,226 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 };
 
-  window.viewClientDetails = (id) => {
-    // Implement modal or detailed view for client
-    console.log(`Viewing details for client ${id}`);
-  };
+  window.viewClientDetails = async (id) => {
+    try {
+        const { client } = await fetchClientDetails(id);
+        
+        if (!client) {
+            alert('Could not fetch client details');
+            return;
+        }
 
-  window.viewGigDetails = (id) => {
-    // Implement modal or detailed view for gig
-    console.log(`Viewing details for gig ${id}`);
-  };
+        // Ensure gigs is an array, defaulting to empty array if undefined
+        const gigs = Array.isArray(client.gigs) ? client.gigs : [];
+
+        // Create modal container if it doesn't exist
+        let modalContainer = document.getElementById('clientDetailsModal');
+        if (!modalContainer) {
+            modalContainer = document.createElement('div');
+            modalContainer.id = 'clientDetailsModal';
+            modalContainer.style.display = 'none';
+            modalContainer.style.position = 'fixed';
+            modalContainer.style.zIndex = '1000';
+            modalContainer.style.left = '0';
+            modalContainer.style.top = '0';
+            modalContainer.style.width = '100%';
+            modalContainer.style.height = '100%';
+            modalContainer.style.overflow = 'auto';
+            modalContainer.style.backgroundColor = 'rgba(0,0,0,0.4)';
+            document.body.appendChild(modalContainer);
+
+            // Add click outside to close
+            modalContainer.addEventListener('click', (event) => {
+                if (event.target === modalContainer) {
+                    closeClientDetailsModal();
+                }
+            });
+        }
+
+        // Create modal content
+        modalContainer.innerHTML = `
+            <div style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 800px; max-height: 90%; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                    <h2>Client Details</h2>
+                    <button onclick="closeClientDetailsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+                </div>
+                
+                <div style="display: flex; margin-top: 20px;">
+                    <div style="width: 200px; margin-right: 20px;">
+                        <img src="${client.profilePic || '/uploads/default.jpg'}" 
+                             alt="${client.name}" 
+                             style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    
+                    <div style="flex-grow: 1;">
+                        <h3>${client.name}</h3>
+                        <p><strong>Email:</strong> ${client.email}</p>
+                        <p><strong>Client ID:</strong> ${client.id}</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h4>Client's Gigs (${gigs.length})</h4>
+                    ${gigs.length > 0 ? `
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Title</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Description</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Budget</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Status</th>
+                            </tr>
+                            ${gigs.map(gig => `
+                                <tr>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">${gig.title || 'Untitled'}</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">${gig.description || 'No description'}</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">$${gig.budget.toLocaleString() || 'N/A'}</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">${gig.status || 'Unknown'}</td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    ` : '<p>No gigs found</p>'}
+                </div>
+            </div>
+        `;
+
+        // Show the modal
+        modalContainer.style.display = 'block';
+    } catch (error) {
+        console.error('Error in viewClientDetails:', error);
+        
+        // Create an error modal
+        const modalContainer = document.getElementById('clientDetailsModal');
+        modalContainer.innerHTML = `
+            <div style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 600px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                    <h2>Error</h2>
+                    <button onclick="closeClientDetailsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+                </div>
+                <p>An error occurred while fetching client details. Please try again later.</p>
+                <p>Error Details: ${error.message}</p>
+            </div>
+        `;
+        modalContainer.style.display = 'block';
+    }
+};
+
+window.viewGigDetails = async (id) => {
+  try {
+      const { gig } = await fetchGigDetails(id);
+      
+      if (!gig) {
+          alert('Could not fetch gig details');
+          return;
+      }
+
+      // Create modal container if it doesn't exist
+      let modalContainer = document.getElementById('gigDetailsModal');
+      if (!modalContainer) {
+          modalContainer = document.createElement('div');
+          modalContainer.id = 'gigDetailsModal';
+          modalContainer.style.display = 'none';
+          modalContainer.style.position = 'fixed';
+          modalContainer.style.zIndex = '1000';
+          modalContainer.style.left = '0';
+          modalContainer.style.top = '0';
+          modalContainer.style.width = '100%';
+          modalContainer.style.height = '100%';
+          modalContainer.style.overflow = 'auto';
+          modalContainer.style.backgroundColor = 'rgba(0,0,0,0.4)';
+          document.body.appendChild(modalContainer);
+
+          // Add click outside to close
+          modalContainer.addEventListener('click', (event) => {
+              if (event.target === modalContainer) {
+                  closeGigDetailsModal();
+              }
+          });
+      }
+
+      // Create modal content
+      modalContainer.innerHTML = `
+          <div style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 800px; max-height: 90%; overflow-y: auto;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                  <h2>Gig Details</h2>
+                  <button onclick="closeGigDetailsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+              </div>
+              
+              <div style="margin-top: 20px;">
+                  <h3>${gig.title}</h3>
+                  <p><strong>Description:</strong> ${gig.description}</p>
+                  
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                      <div>
+                          <h4>Gig Details</h4>
+                          <p><strong>Budget:</strong> $${gig.budget.toLocaleString()}</p>
+                          <p><strong>Status:</strong> ${gig.status}</p>
+                          <p><strong>Category:</strong> ${gig.category || 'Not specified'}</p>
+                      </div>
+                      
+                      <div>
+                          <h4>Client Information</h4>
+                          <p><strong>Name:</strong> ${gig.client?.name || 'Not available'}</p>
+                          <p><strong>Email:</strong> ${gig.client?.email || 'Not available'}</p>
+                      </div>
+                  </div>
+
+                  <div style="margin-top: 20px;">
+                      <h4>Skills Required</h4>
+                      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                          ${gig.skills ? gig.skills.map(skill => 
+                              `<span style="background-color: #f0f0f0; padding: 5px 10px; border-radius: 5px;">${skill}</span>`
+                          ).join('') : 'No specific skills required'}
+                      </div>
+                  </div>
+
+                  <div style="margin-top: 20px;">
+                      <h4>Additional Information</h4>
+                      <p><strong>Created At:</strong> ${new Date(gig.createdAt).toLocaleString()}</p>
+                      <p><strong>Updated At:</strong> ${new Date(gig.updatedAt).toLocaleString()}</p>
+                  </div>
+
+                  ${gig.proposals && gig.proposals.length > 0 ? `
+                      <div style="margin-top: 20px;">
+                          <h4>Proposals (${gig.proposals.length})</h4>
+                          <table style="width: 100%; border-collapse: collapse;">
+                              <tr>
+                                  <th style="border: 1px solid #ddd; padding: 8px;">Freelancer</th>
+                                  <th style="border: 1px solid #ddd; padding: 8px;">Bid Amount</th>
+                                  <th style="border: 1px solid #ddd; padding: 8px;">Status</th>
+                              </tr>
+                              ${gig.proposals.map(proposal => `
+                                  <tr>
+                                      <td style="border: 1px solid #ddd; padding: 8px;">${proposal.freelancer?.name || 'Anonymous'}</td>
+                                      <td style="border: 1px solid #ddd; padding: 8px;">$${proposal.bidAmount.toLocaleString()}</td>
+                                      <td style="border: 1px solid #ddd; padding: 8px;">${proposal.status}</td>
+                                  </tr>
+                              `).join('')}
+                          </table>
+                      </div>
+                  ` : ''}
+              </div>
+          </div>
+      `;
+
+      // Show the modal
+      modalContainer.style.display = 'block';
+  } catch (error) {
+      console.error('Error in viewGigDetails:', error);
+      
+      // Create an error modal
+      const modalContainer = document.getElementById('gigDetailsModal');
+      modalContainer.innerHTML = `
+          <div style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 600px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                  <h2>Error</h2>
+                  <button onclick="closeGigDetailsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+              </div>
+              <p>An error occurred while fetching gig details. Please try again later.</p>
+              <p>Error Details: ${error.message}</p>
+          </div>
+      `;
+      modalContainer.style.display = 'block';
+  }
+};
 });
 
