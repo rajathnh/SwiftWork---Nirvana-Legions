@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Improved error handling function
   function showError(message) {
-      errorContainer.innerHTML = `
+    errorContainer.innerHTML = `
           <div class="error-message">
               <p>${message}</p>
               <button onclick="this.parentElement.remove()">Close</button>
@@ -22,42 +22,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Tab switching
   freelancersTab.addEventListener('click', async () => {
-      console.log("Freelancers Tab Clicked");
-      showSection(freelancersSection);
-      
-      try {
-          console.log("Fetching from endpoint: /api/v1/admin/getAllFreelancers");
-          
-          const response = await fetch('/api/v1/admin/getAllFreelancers', {
-              method: 'GET',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${localStorage.getItem('adminToken')}` // Added token authorization
-              }
-          });
+    console.log("Freelancers Tab Clicked");
+    showSection(freelancersSection);
 
-          console.log("Response status:", response.status);
+    try {
+      console.log("Fetching from endpoint: /api/v1/admin/getAllFreelancers");
 
-          if (!response.ok) {
-              const errorText = await response.text();
-              console.error("Error response:", errorText);
-              throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-          }
+      const response = await fetch('/api/v1/admin/getAllFreelancers', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}` // Added token authorization
+        }
+      });
 
-          const data = await response.json();
-          
-          console.log("Received Freelancer Data:", data);
+      console.log("Response status:", response.status);
 
-          // Updated to correctly parse the nested structure
-          const freelancers = data.freelancer || [];
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
 
-          if (freelancers.length === 0) {
-              freelancersTable.innerHTML = '<tr><td colspan="6">No freelancers found</td></tr>';
-              return;
-          }
+      const data = await response.json();
 
-          freelancersTable.innerHTML = freelancers
-              .map(f => `
+      console.log("Received Freelancer Data:", data);
+
+      // Updated to correctly parse the nested structure
+      const freelancers = data.freelancer || [];
+
+      if (freelancers.length === 0) {
+        freelancersTable.innerHTML = '<tr><td colspan="6">No freelancers found</td></tr>';
+        return;
+      }
+
+      freelancersTable.innerHTML = freelancers
+        .map(f => `
                   <tr>
                       <td>${f._id || 'N/A'}</td>
                       <td>${f.name || 'Unnamed'}</td>
@@ -74,60 +74,60 @@ document.addEventListener('DOMContentLoaded', () => {
                       </td>
                   </tr>
               `)
-              .join('');
+        .join('');
 
-      } catch (error) {
-          console.error("Fetch error:", error);
-          freelancersTable.innerHTML = `<tr><td colspan="6">Error: ${error.message}</td></tr>`;
-      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      freelancersTable.innerHTML = `<tr><td colspan="6">Error: ${error.message}</td></tr>`;
+    }
   });
 
   clientsTab.addEventListener('click', () => {
-      showSection(clientsSection);
-      fetchData('/api/v1/admin/getAllClients', renderClients);
+    showSection(clientsSection);
+    fetchData('/api/v1/admin/getAllClients', renderClients);
   });
 
   gigsTab.addEventListener('click', () => {
-      showSection(gigsSection);
-      fetchData('/api/v1/admin/getAllGigs', renderGigs);
+    showSection(gigsSection);
+    fetchData('/api/v1/admin/getAllGigs', renderGigs);
   });
 
   function showSection(section) {
-      [freelancersSection, clientsSection, gigsSection].forEach(sec => {
-          sec.classList.add('hidden');
-      });
-      section.classList.remove('hidden');
+    [freelancersSection, clientsSection, gigsSection].forEach(sec => {
+      sec.classList.add('hidden');
+    });
+    section.classList.remove('hidden');
   }
 
   async function fetchData(endpoint, callback) {
-      try {
-          const response = await fetch(endpoint, {
-              method: 'GET',
-              headers: {
-                  'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
-                  'Content-Type': 'application/json'
-              }
-          });
+    try {
+      const response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
-          if (!response.ok) {
-              const errorData = await response.json();
-              throw new Error(errorData.message || `HTTP Error: ${response.status}`);
-          }
-
-          const data = await response.json();
-          callback(data);
-      } catch (error) {
-          console.error('Failed to fetch data:', error.message);
-          showError(`Unable to load data: ${error.message}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `HTTP Error: ${response.status}`);
       }
+
+      const data = await response.json();
+      callback(data);
+    } catch (error) {
+      console.error('Failed to fetch data:', error.message);
+      showError(`Unable to load data: ${error.message}`);
+    }
   }
 
   function renderClients(data) {
-      const table = document.getElementById('clientsTable');
-      const clients = data.clients || (Array.isArray(data) ? data : [data]);
-      
-      table.innerHTML = clients
-          .map(c => `
+    const table = document.getElementById('clientsTable');
+    const clients = data.clients || (Array.isArray(data) ? data : [data]);
+
+    table.innerHTML = clients
+      .map(c => `
               <tr>
                   <td>${c._id}</td>
                   <td>${c.name}</td>
@@ -137,15 +137,15 @@ document.addEventListener('DOMContentLoaded', () => {
                   </td>
               </tr>
           `)
-          .join('');
+      .join('');
   }
 
   function renderGigs(data) {
-      const table = document.getElementById('gigsTable');
-      const gigs = data.gigs || (Array.isArray(data) ? data : [data]);
-      
-      table.innerHTML = gigs
-          .map(g => `
+    const table = document.getElementById('gigsTable');
+    const gigs = data.gigs || (Array.isArray(data) ? data : [data]);
+
+    table.innerHTML = gigs
+      .map(g => `
               <tr>
                   <td>${g.title}</td>
                   <td>${g.description}</td>
@@ -156,22 +156,157 @@ document.addEventListener('DOMContentLoaded', () => {
                   </td>
               </tr>
           `)
-          .join('');
+      .join('');
   }
 
+  const modalContainer = document.createElement('div');
+  modalContainer.id = 'freelancerDetailsModal';
+  modalContainer.style.display = 'none';
+  modalContainer.style.position = 'fixed';
+  modalContainer.style.zIndex = '1000';
+  modalContainer.style.left = '0';
+  modalContainer.style.top = '0';
+  modalContainer.style.width = '100%';
+  modalContainer.style.height = '100%';
+  modalContainer.style.overflow = 'auto';
+  modalContainer.style.backgroundColor = 'rgba(0,0,0,0.4)';
+
+  document.body.appendChild(modalContainer);
+
+  async function fetchFreelancerDetails(id) {
+    try {
+        const response = await fetch(`/api/v1/freelancer/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch freelancer details');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching freelancer details:', error);
+        return null;
+    }
+}
+
   // Placeholder functions for potential modal/detailed view
-  window.viewFreelancerDetails = (id) => {
-      // Implement modal or detailed view for freelancer
-      console.log(`Viewing details for freelancer ${id}`);
-  };
+  window.viewFreelancerDetails = async (id) => {
+    try {
+        const { freelancer } = await fetchFreelancerDetails(id);
+        
+        if (!freelancer) {
+            alert('Could not fetch freelancer details');
+            return;
+        }
+
+        // Ensure reviews is an array, defaulting to empty array if undefined
+        const reviews = Array.isArray(freelancer.reviews) ? freelancer.reviews : [];
+
+        // Create modal content
+        modalContainer.innerHTML = `
+            <div style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 800px; max-height: 90%; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                    <h2>Freelancer Details</h2>
+                    <button onclick="closeFreelancerDetailsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+                </div>
+                
+                <div style="display: flex; margin-top: 20px;">
+                    <div style="width: 200px; margin-right: 20px;">
+                        <img src="${freelancer.profilePic || freelancer.image1 || '/uploads/default.jpg'}" 
+                             alt="${freelancer.name}" 
+                             style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    
+                    <div style="flex-grow: 1;">
+                        <h3>${freelancer.name}</h3>
+                        <p><strong>Email:</strong> ${freelancer.email}</p>
+                        <p><strong>Bio:</strong> ${freelancer.bio || 'No bio provided'}</p>
+                        <p><strong>Skills:</strong> ${freelancer.skills ? freelancer.skills.join(', ') : 'No skills listed'}</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h4>Performance Overview</h4>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Average Rating</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Number of Reviews</th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${freelancer.averageRating || 'N/A'}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${freelancer.numOfReviews || 0}</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h4>Portfolio Images</h4>
+                    <div style="display: flex; gap: 10px;">
+                        ${['image1', 'image2', 'image3', 'image4']
+                            .filter(img => freelancer[img] && freelancer[img] !== '/uploads/default.jpg')
+                            .map(img => `
+                                <img src="${freelancer[img]}" 
+                                     alt="Portfolio Image" 
+                                     style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px;">
+                            `).join('')}
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <h4>Reviews (${reviews.length})</h4>
+                    ${reviews.length > 0 ? `
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Rating</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Title</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Comment</th>
+                            </tr>
+                            ${reviews.map(review => `
+                                <tr>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${review.rating || 'N/A'}/5</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">${review.title || 'No Title'}</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">${review.comment || 'No Comment'}</td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    ` : '<p>No reviews yet</p>'}
+                </div>
+            </div>
+        `;
+
+        // Show the modal
+        modalContainer.style.display = 'block';
+    } catch (error) {
+        console.error('Error in viewFreelancerDetails:', error);
+        
+        // Create an error modal
+        modalContainer.innerHTML = `
+            <div style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 600px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                    <h2>Error</h2>
+                    <button onclick="closeFreelancerDetailsModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+                </div>
+                <p>An error occurred while fetching freelancer details. Please try again later.</p>
+                <p>Error Details: ${error.message}</p>
+            </div>
+        `;
+        modalContainer.style.display = 'block';
+    }
+};
 
   window.viewClientDetails = (id) => {
-      // Implement modal or detailed view for client
-      console.log(`Viewing details for client ${id}`);
+    // Implement modal or detailed view for client
+    console.log(`Viewing details for client ${id}`);
   };
 
   window.viewGigDetails = (id) => {
-      // Implement modal or detailed view for gig
-      console.log(`Viewing details for gig ${id}`);
+    // Implement modal or detailed view for gig
+    console.log(`Viewing details for gig ${id}`);
   };
 });
+
