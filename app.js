@@ -116,7 +116,7 @@ const routes = [
   { path: '/api/v1/proposal', router: require('./routes/proposalRoutes') },
   { path: '/api/v1/chat', router: require('./routes/messageRoutes') },
   { path: '/api/v1/payment',router:require('./routes/paymentRoutes')},
-  { path: '/api/vi/admin', router:require('./routes/adminRoutes')}
+  { path: '/api/v1/admin', router:require('./routes/adminRoutes')}
 ];
 
 routes.forEach(route => app.use(route.path, route.router));
