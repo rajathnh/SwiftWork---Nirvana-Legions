@@ -7,7 +7,13 @@ loginForm.addEventListener('submit', async (e) => {
   const password = document.getElementById('password').value;
 
   try {
-    // Send the login request to the server
+    if (email === 'admin@admin.com' && password === 'admin123123') {
+      // Redirect to admin page if admin credentials are used
+      window.location.href = 'admin.html';
+      return;
+    }
+
+    // Send the login request to the server for normal users
     const response = await fetch('http://localhost:5000/api/v1/auth/login', {
       method: 'POST',
       headers: {
@@ -19,22 +25,18 @@ loginForm.addEventListener('submit', async (e) => {
     const data = await response.json();
 
     if (response.ok) {
-      // Store the user ID in localStorage
+      // Store the user ID and role in localStorage
       const userId = data.userId;
-      localStorage.setItem('swiftWork_ID', userId);
-      // Example: Store user role after login
-      localStorage.setItem('swiftWork_role', 'client'); // or 'freelancer'
-
-      // Store the userType to handle redirection
       const userType = data.userType;
+
+      localStorage.setItem('swiftWork_ID', userId);
+      localStorage.setItem('swiftWork_role', userType);
 
       // Redirect based on user type
       if (userType === 'freelancer') {
-        localStorage.setItem('swiftWork_role', 'freelancer'); 
-        window.location.href = 'freelancer-profile.html'; // Redirect to freelancer profile page
+        window.location.href = 'freelancer-profile.html';
       } else if (userType === 'client') {
-        localStorage.setItem('swiftWork_role', 'client'); 
-        window.location.href = 'client-portfolio.html'; // Redirect to client portfolio page
+        window.location.href = 'client-portfolio.html';
       }
     } else {
       alert(data.message); // Show error message if login failed
