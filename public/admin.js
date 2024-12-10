@@ -23,21 +23,21 @@ document.addEventListener('DOMContentLoaded', () => {
   window.closeFreelancerDetailsModal = () => {
     const modalContainer = document.getElementById('freelancerDetailsModal');
     if (modalContainer) {
-        modalContainer.style.display = 'none';
-        modalContainer.innerHTML = ''; // Clear the modal content
+      modalContainer.style.display = 'none';
+      modalContainer.innerHTML = ''; // Clear the modal content
     }
-};
+  };
 
-document.addEventListener('DOMContentLoaded', () => {
-  const modalContainer = document.getElementById('freelancerDetailsModal');
-  
-  modalContainer.addEventListener('click', (event) => {
+  document.addEventListener('DOMContentLoaded', () => {
+    const modalContainer = document.getElementById('freelancerDetailsModal');
+
+    modalContainer.addEventListener('click', (event) => {
       // Close modal if clicked outside the modal content
       if (event.target === modalContainer) {
-          closeFreelancerDetailsModal();
+        closeFreelancerDetailsModal();
       }
+    });
   });
-});
 
   // Tab switching
   freelancersTab.addEventListener('click', async () => {
@@ -202,14 +202,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch freelancer details');
-        }
+      if (!response.ok) {
+        throw new Error('Failed to fetch freelancer details');
+      }
 
-        return await response.json();
+      return await response.json();
     } catch (error) {
-        console.error('Error fetching freelancer details:', error);
-        return null;
+      console.error('Error fetching freelancer details:', error);
+      return null;
     }
   }
 
@@ -275,18 +275,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Placeholder functions for potential modal/detailed view
   window.viewFreelancerDetails = async (id) => {
     try {
-        const { freelancer } = await fetchFreelancerDetails(id);
-        
-        if (!freelancer) {
-            alert('Could not fetch freelancer details');
-            return;
-        }
+      const { freelancer } = await fetchFreelancerDetails(id);
 
-        // Ensure reviews is an array, defaulting to empty array if undefined
-        const reviews = Array.isArray(freelancer.reviews) ? freelancer.reviews : [];
+      if (!freelancer) {
+        alert('Could not fetch freelancer details');
+        return;
+      }
 
-        // Create modal content
-        modalContainer.innerHTML = `
+      // Ensure reviews is an array, defaulting to empty array if undefined
+      const reviews = Array.isArray(freelancer.reviews) ? freelancer.reviews : [];
+
+      // Create modal content
+      modalContainer.innerHTML = `
             <div style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 800px; max-height: 90%; overflow-y: auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
                     <h2>Freelancer Details</h2>
@@ -326,8 +326,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h4>Portfolio Images</h4>
                     <div style="display: flex; gap: 10px;">
                         ${['image1', 'image2', 'image3', 'image4']
-                            .filter(img => freelancer[img] && freelancer[img] !== '/uploads/default.jpg')
-                            .map(img => `
+          .filter(img => freelancer[img] && freelancer[img] !== '/uploads/default.jpg')
+          .map(img => `
                                 <img src="${freelancer[img]}" 
                                      alt="Portfolio Image" 
                                      style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px;">
@@ -357,13 +357,13 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Show the modal
-        modalContainer.style.display = 'block';
+      // Show the modal
+      modalContainer.style.display = 'block';
     } catch (error) {
-        console.error('Error in viewFreelancerDetails:', error);
-        
-        // Create an error modal
-        modalContainer.innerHTML = `
+      console.error('Error in viewFreelancerDetails:', error);
+
+      // Create an error modal
+      modalContainer.innerHTML = `
             <div style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 600px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
                     <h2>Error</h2>
@@ -373,9 +373,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>Error Details: ${error.message}</p>
             </div>
         `;
-        modalContainer.style.display = 'block';
+      modalContainer.style.display = 'block';
     }
-};
+  };
 
   window.viewClientDetails = async (id) => {
     try {
