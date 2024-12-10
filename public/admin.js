@@ -20,6 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
   }
 
+  window.closeFreelancerDetailsModal = () => {
+    const modalContainer = document.getElementById('freelancerDetailsModal');
+    if (modalContainer) {
+        modalContainer.style.display = 'none';
+        modalContainer.innerHTML = ''; // Clear the modal content
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const modalContainer = document.getElementById('freelancerDetailsModal');
+  
+  modalContainer.addEventListener('click', (event) => {
+      // Close modal if clicked outside the modal content
+      if (event.target === modalContainer) {
+          closeFreelancerDetailsModal();
+      }
+  });
+});
+
   // Tab switching
   freelancersTab.addEventListener('click', async () => {
     console.log("Freelancers Tab Clicked");
