@@ -194,13 +194,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchFreelancerDetails(id) {
     try {
-        const response = await fetch(`/api/v1/freelancer/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-            }
-        });
+      const response = await fetch(`/api/v1/freelancer/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
 
         if (!response.ok) {
             throw new Error('Failed to fetch freelancer details');
@@ -211,7 +211,66 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error fetching freelancer details:', error);
         return null;
     }
+  }
+
+  async function fetchClientDetails(id) {
+    try {
+      const response = await fetch(`/api/v1/client/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch client details');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching client details:', error);
+      return null;
+    }
+  }
+
+  window.closeClientDetailsModal = () => {
+    const modalContainer = document.getElementById('clientDetailsModal');
+    if (modalContainer) {
+      modalContainer.style.display = 'none';
+      modalContainer.innerHTML = ''; // Clear the modal content
+    }
+  };
+
+  window.closeGigDetailsModal = () => {
+    const modalContainer = document.getElementById('gigDetailsModal');
+    if (modalContainer) {
+        modalContainer.style.display = 'none';
+        modalContainer.innerHTML = ''; // Clear the modal content
+    }
+};
+
+  async function fetchGigDetails(id) {
+    try {
+        const response = await fetch(`/api/v1/gigs/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch gig details');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching gig details:', error);
+        return null;
+    }
 }
+
 
   // Placeholder functions for potential modal/detailed view
   window.viewFreelancerDetails = async (id) => {
