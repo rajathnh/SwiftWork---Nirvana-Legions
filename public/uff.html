@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uber for Freelancers</title>
+    <link rel="stylesheet" href="src/output.css">
+  </head>
+  <body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-gray-50 shadow-md">
+      <div
+        class="container mx-auto flex justify-between items-center py-4 px-6"
+      >
+        <div class="text-blue-500 text-3xl font-bold">SwiftWork</div>
+        <nav class="flex space-x-6">
+          <a href="#home" class="text-black text-sm hover:underline">Home</a>
+          <a href="#about" class="text-black text-sm hover:underline">About</a>
+          <a href="#contact" class="text-black text-sm hover:underline"
+            >Contact Us</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex items-center justify-center min-h-screen">
+      <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+          Uber for Freelancers
+        </h1>
+        <form>
+          
+          <!-- Select Deadline -->
+          <div class="mb-6">
+            <label for="deadline" class="block text-gray-700 font-medium mb-2"
+              >Select Deadline</label
+            >
+            <input
+              type="date"
+              id="deadline"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <!-- Add Description -->
+          <div class="mb-6">
+            <label
+              for="description"
+              class="block text-gray-700 font-medium mb-2"
+              >Add Description About Your Job</label
+            >
+            <textarea
+              id="description"
+              rows="4"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button onclick="submitDetails(event)"
+            type="button"
+            class="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Find Freelancers
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <div id="result" class="text-center mt-4 text-lg text-green-600"></div>
+
+
+    <!-- Footer -->
+    <footer class="mt-3 relative bg-blueGray-200 pt-8 pb-6 bg-blue-950">
+        <div class="container mx-auto px-4">
+          <hr class="my-6 border-blueGray-300">
+                <div class="flex flex-wrap items-center md:justify-between justify-center">
+                  <div class="w-full md:w-4/12 px-4 mx-auto text-center">
+                    <div class="text-sm text-blueGray-500 font-semibold py-1 text-gray-100">
+                      © 2024 <span id="get-current-year">SwiftWork.</span><a href="#home" class="text-blueGray-500 hover:text-gray-800" target="_blank"> All rights reserved.
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+      </footer>
+
+    
+  <script>
+async function submitDetails(event) {
+  if(event) event.preventDefault(); // Prevent page refresh
+
+  // Get the values from input elements
+  const description = document.getElementById("description").value;
+  const deadline = document.getElementById("deadline").value;
+
+  // Validate inputs
+  if (!description || !deadline) {
+    alert("Please fill in both description and deadline.");
+    return;
+  }
+
+  // Validate the deadline is in the future
+  const currentDate = new Date();
+  const selectedDate = new Date(deadline);
+
+  if (selectedDate <= currentDate) {
+    alert("Please select a future date for the deadline.");
+    return;
+  }
+
+  try {
+    // Send the data to the backend route
+    const response = await fetch("/api/v1/predict/calculate-price", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        description: description,
+        deadline: deadline
+      })
+    });
+
+    // Parse the JSON response
+    const data = await response.json();
+
+    if (response.ok) {
+      // Display the result dynamically on the page
+      document.getElementById("result").innerText = `Total Price: INR ${data.totalPrice}`;
+    } else {
+      // Handle errors from the backend
+      alert(`Error: ${data.error}`);
+    }
+  } catch (error) {
+    // Handle network or other errors
+    console.error("Error:", error);
+    alert("Something went wrong. Please try again.");
+  }
+}
+
+</script>
+      
+  </body>
+</html>

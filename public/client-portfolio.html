@@ -1,54 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SwiftWork - Client Portfolio</title>
-    <link rel="stylesheet" href="src/output.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body class="bg-gray-100 min-h-screen font-montserrat text-gray-800">
+    <link rel="stylesheet" href="src/output.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen font-montserrat text-gray-800">
     <!-- Navbar -->
     <header class="bg-gray-100 font-[Montserrat-bold] shadow-md">
-        <nav class="flex items-center w-[92%] text-xl mx-auto py-4 md:justify-between justify-center">
-          <!-- Logo -->
-          <div class="md:text-left text-center">
-            <h1 class="text-3xl text-blue-500 font-bold">SwiftWork</h1>
-          </div>
-    
-          <!-- Navigation Links -->
-          <div class="nav-links md:static absolute bg-gray-100 md:min-h-fit min-h-[60vh] left-0 top-[-100%] w-auto items-center px-5 hidden md:block">
-            <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
-              <li>
-                <a class="hover:text-blue-500 transition-colors" href="index.html#home">Home</a>
-              </li>
-              <li>
-                <a class="hover:text-blue-500 transition-colors" href="index.html#about-us">About</a>
-              </li>
-              <li>
-                <a class="hover:text-blue-500 transition-colors" href="index.html#contact-us">Contact us</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
-    <!-- Profile Section -->
-    <div class="flex flex-row space-x-10 mx-auto mt-14 justify-center items-center">
-        <!-- Client Profile Section -->
-        <div class="client-profile p-6 rounded-xl shadow-xl flex flex-col items-center justify-center space-y-4 w-80 bg-white hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105 border border-slate-300 hover:border-slate-400">
-            <img id="profile-pic" src="uploads/default.jpg" alt="Profile Picture" class="w-32 h-32 rounded-full border-4 border-blue-200">
-            <p id="client-name" class="text-xl font-semibold text-gray-800">John Doe</p>
-            <p id="client-email" class="text-gray-600">john.doe@example.com</p>
-            <button id="edit-profile-button" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors transform hover:scale-105">
-                Edit Profile
-            </button>
+      <nav
+        class="flex items-center w-[92%] text-xl mx-auto py-4 md:justify-between justify-center"
+      >
+        <!-- Logo -->
+        <div class="md:text-left text-center">
+          <h1 class="text-3xl text-blue-500 font-bold">SwiftWork</h1>
         </div>
-        
-        <!-- Client Reviews Section -->
-        <!-- <div class="client-profile p-6 rounded-xl shadow-xl w-80 bg-white hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105 border border-slate-300 hover:border-slate-400 ">
+
+        <!-- Navigation Links -->
+        <div
+          class="nav-links md:static absolute bg-gray-100 md:min-h-fit min-h-[60vh] left-0 top-[-100%] w-auto items-center px-5 hidden md:block"
+        >
+          <ul
+            class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8"
+          >
+            <li>
+              <a
+                class="hover:text-blue-500 transition-colors"
+                href="index.html#home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                class="hover:text-blue-500 transition-colors"
+                href="index.html#about-us"
+                >About</a
+              >
+            </li>
+            <li>
+              <a
+                class="hover:text-blue-500 transition-colors"
+                href="index.html#contact-us"
+                >Contact us</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <!-- Profile Section -->
+    <div
+      class="flex flex-row space-x-10 mx-auto mt-14 justify-center items-center"
+    >
+      <!-- Client Profile Section -->
+      <div
+        class="client-profile p-6 rounded-xl shadow-xl flex flex-col items-center justify-center space-y-4 w-80 bg-white hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105 border border-slate-300 hover:border-slate-400"
+      >
+        <img
+          id="profile-pic"
+          src="uploads/default.jpg"
+          alt="Profile Picture"
+          class="w-32 h-32 rounded-full border-4 border-blue-200"
+        />
+        <p id="client-name" class="text-xl font-semibold text-gray-800">
+          John Doe
+        </p>
+        <p id="client-email" class="text-gray-600">john.doe@example.com</p>
+        <button
+          id="edit-profile-button"
+          class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors transform hover:scale-105"
+        >
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- Client Reviews Section -->
+      <!-- <div class="client-profile p-6 rounded-xl shadow-xl w-80 bg-white hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105 border border-slate-300 hover:border-slate-400 ">
             <h3 class="text-xl font-semibold text-gray-800">Reviews from Freelancers</h3> -->
-            <!-- Add dynamically populated reviews here -->
-            <!-- <div class="space-y-4 mt-4">
+      <!-- Add dynamically populated reviews here -->
+      <!-- <div class="space-y-4 mt-4">
                 <div class="review p-4 bg-gray-50 rounded-lg shadow-sm">
                     <p class="text-gray-600">"Great service, very professional!"</p>
                     <p class="text-right text-gray-500 text-sm">- Client Name</p>
@@ -58,42 +93,56 @@
                     <p class="text-right text-gray-500 text-sm">- Client Name</p>
                 </div>
             </div> -->
-        <!-- </div> -->
+      <!-- </div> -->
     </div>
-    
+
     <section class="client-profile mt-12 w-full h-auto bg-slate-200">
-        <h3 class="text-xl text-center font-semibold text-gray-800">Reviews from Freelancers</h3>
-            <!-- Add dynamically populated reviews here -->
-            
+      <h3 class="text-xl text-center font-semibold text-gray-800">
+        Reviews from Freelancers
+      </h3>
+      <!-- Add dynamically populated reviews here -->
     </section>
     <!-- Gigs Section -->
-     <div class="bg-slate-100 rounded-sm">
-    <div class="flex items-center justify-center mt-16">
+    <div class="bg-slate-100 rounded-sm">
+      <div class="flex items-center justify-center mt-16">
         <h1 class="text-3xl font-bold text-gray-800">Projects</h1>
-    </div>
-    
-   
-    
-    <div id="gigs-container" class=" mt-4 mx-8 py-12">
+      </div>
+
+      <div id="gigs-container" class="mt-4 mx-8 py-12">
         <!-- Completed gigs will appear here -->
+<<<<<<< HEAD
+      </div>
+
+      <!-- Add New Gig Button -->
+      <div class="flex items-center justify-center mt-12">
+        <button
+          id="create-gig-button"
+          onclick="window.location.href='gig-create.html'"
+          class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300 ease-in-out transform hover:scale-105"
+        >
+          Post a Job
+=======
     </div>
     
     <!-- Add New Gig Button -->
     <div class="flex items-center justify-center mt-12">
         <button id="create-gig-button" onclick="window.location.href='gig-create.html'" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300 ease-in-out transform hover:scale-105">
             Post a Project
+>>>>>>> 0d836142403d9c5733582dfa773a77c0802b4241
         </button>
+      </div>
     </div>
-</div>
 
     <!-- Footer -->
     <footer class="mt-8 bg-blue-950 text-gray-100 py-6">
-        <div class="container mx-auto px-4 text-center">
-          <hr class="my-4 border-blueGray-300">
-          <p class="text-sm font-semibold">© 2024 SwiftWork. All rights reserved.</p>
-        </div>
-      </footer>
+      <div class="container mx-auto px-4 text-center">
+        <hr class="my-4 border-blueGray-300" />
+        <p class="text-sm font-semibold">
+          © 2024 SwiftWork. All rights reserved.
+        </p>
+      </div>
+    </footer>
 
     <script src="client-portfolio.js"></script>
-</body>
+  </body>
 </html>
