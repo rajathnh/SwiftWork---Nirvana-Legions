@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Add budget
             const budget = document.createElement('p');
             budget.classList.add('gig-budget');
-            budget.textContent = `Budget: $${gig.budget}`;
+            budget.textContent = `Budget: ₹${gig.budget}`;
             gigCard.appendChild(budget);
 
             // Add deadline
