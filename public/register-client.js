@@ -8,10 +8,17 @@ form.addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
   const profilePic = document.getElementById("profilePic").files[0]; // Get the file from the input field
 
+  // Explicitly set the userRole as "Client" in localStorage
+  
+
+  // Retrieve the userRole from localStorage
+ 
+  //console.log(userRole);
   const formData = new FormData();
   formData.append("name", name);
   formData.append("email", email);
   formData.append("password", password);
+  //formData.append("userRole", userRole); // Append userRole from localStorage to FormData
   if (profilePic) {
     formData.append("profilePic", profilePic); // Append profilePic to FormData
   }
@@ -32,8 +39,10 @@ form.addEventListener("submit", async (e) => {
     if (response.ok) {
       // Store the client ID in localStorage for future access
       const userId = data.newClient.id;
+      //const userType = data.newClient.userType;
       localStorage.setItem("swiftWork_ID", userId);
-
+      localStorage.setItem('swiftWork_role', 'client');
+    
       alert(data.msg); // Show the success message
 
       // Redirect to client-portfolio.html or any other page after successful signup
