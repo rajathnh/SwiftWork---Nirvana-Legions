@@ -48,7 +48,7 @@ function displayFreelancerData(freelancer) {
     profileSection.innerHTML = `
     <div class="mx-auto p-6">
         <div class="flex flex-col lg:flex-row lg:space-x-8">
-            <div class="profile-header border border-slate-300 hover:border-slate-400 flex flex-col items-center lg:w-1/3 p-6 rounded-lg shadow-sm mb-6 lg:mb-0">
+            <div class="profile-header bg-white border border-slate-300 hover:border-slate-400 flex flex-col items-center lg:w-1/3 p-6 rounded-lg shadow-sm mb-6 lg:mb-0">
                 <img src="${freelancer.profilePic || 'default-profile.png'}" 
                      alt="Profile Picture" 
                      class="w-32 h-32 rounded-full mx-auto shadow-lg border-2 border-blue-500">
