@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch gigs');
+            throw new Error('Failed to fetch Projects');
         }
 
         const result = await response.json();
@@ -48,6 +48,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     } catch (error) {
         console.error(error);
-        alert('Error fetching gigs');
+        alert('Error fetching Projects');
     }
 });

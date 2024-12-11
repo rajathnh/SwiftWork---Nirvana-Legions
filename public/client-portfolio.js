@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Helper function to display a gig category
         const displayGigCategory = (categoryTitle, gigs) => {
           const categoryDiv = document.createElement("div");
-          categoryDiv.className = "category-section";
+          categoryDiv.className = "category-section ";
 
           const heading = document.createElement("h3");
           heading.className = "text-xl font-semibold mb-2 mt-4";
@@ -87,25 +87,27 @@ document.addEventListener("DOMContentLoaded", async function () {
           if (gigs.length > 0) {
             gigs.forEach((gig) => {
               const gigCard = document.createElement("div");
-              gigCard.className =
-                "bg-white p-4 rounded-lg shadow-md w-3/5";
+              
 
               gigCard.innerHTML = `
-                <div>
-                  <h3 class="text-lg font-bold">${gig.title}</h3>
-                  <p class="text-gray-700">Budget: $${gig.budget}</p>
-                  <a href="gig-details.html?gigId=${gig._id}" class="view-details inline-block bg-blue-500 mt-4 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    View Details
-                  </a>
-                  ${gig.status === "approval pending" ? `
-                    <button 
-                      onclick="location.href='review-form.html?gigId=${gig._id}'" 
-                      class="view-details inline-block bg-blue-500 mt-4 text-white px-4 py-2 rounded hover:bg-blue-700"
-                    >
-                      Leave a Review
-                    </button>
-                  ` : ""}
-                </div>
+               <div class="mt-5 p-6 bg-white rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
+    <h3 class="text-lg font-bold text-gray-800">${gig.title}</h3>
+    <p class="text-gray-700 mt-2">Budget: $${gig.budget}</p>
+    
+    <a href="gig-details.html?gigId=${gig._id}" class="inline-block bg-blue-500 mt-4 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105">
+        View Details
+    </a>
+    
+    ${gig.status === "approval pending" ? `
+        <button 
+            onclick="location.href='review-form.html?gigId=${gig._id}'" 
+            class="inline-block bg-blue-500 mt-4 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105"
+        >
+            Leave a Review
+        </button>
+    ` : ""}
+</div>
+
               `;
               categoryDiv.appendChild(gigCard);
             });
@@ -120,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         };
 
         // Display categorized gigs
-        displayGigCategory("Open Gigs", openGigs);
+        displayGigCategory("Unassigned Gigs", openGigs);
         displayGigCategory("Assigned Gigs", assignedGigs);
         displayGigCategory("Approval Pending Gigs", approvalPendingGigs);
         displayGigCategory("Completed Gigs", completedGigs);

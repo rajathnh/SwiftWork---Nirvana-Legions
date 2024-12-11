@@ -30,11 +30,11 @@ document.getElementById("create-gig-form").addEventListener("submit", async func
 
         if (!response.ok) {
             const errorResponse = await response.json(); // Parse error response for details
-            throw new Error(errorResponse.message || 'Failed to create gig');
+            throw new Error(errorResponse.message || 'Failed to create Project');
         }
 
         const result = await response.json();
-        alert('Gig created successfully');
+        alert('Project created successfully');
         console.log(result.gig);
 
         // Optional: Redirect or reset form after successful creation

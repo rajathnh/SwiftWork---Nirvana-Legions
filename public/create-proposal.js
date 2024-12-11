@@ -17,7 +17,7 @@ async function fetchGigDetails() {
         });
 
         if (!response.ok) {
-            throw new Error('Gig not found');
+            throw new Error('Project not found');
         }
 
         const gigData = await response.json();
@@ -33,12 +33,12 @@ async function fetchGigDetails() {
         const existingProposal = gig.proposals.find(proposal => proposal.freelancer._id === userId);
         if (existingProposal) {
             submitProposalButton.disabled = true;
-            alert("You have already made a proposal for this gig.");
+            alert("You have already made a proposal for this Project.");
         }
 
     } catch (error) {
-        console.error('Error fetching gig details:', error);
-        alert('Error fetching gig details.');
+        console.error('Error fetching Project details:', error);
+        alert('Error fetching Project details.');
     }
 }
 

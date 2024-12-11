@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log('GigID from URL:', gigId); // Debug log for gigId
 
     const viewClientBtn = document.getElementById('view-client-btn');
+
     // Debug function to log all element selections
     function debugElementSelection() {
         const elementsToCheck = [
@@ -15,7 +16,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             'proposals-list',
             'make-proposal-btn'
         ];
-        
 
         elementsToCheck.forEach(id => {
             const element = document.getElementById(id);
@@ -37,25 +37,25 @@ document.addEventListener('DOMContentLoaded', async function () {
                     'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                 },
             });
-    
+
             if (!gigResponse.ok) {
                 throw new Error('Failed to fetch gig details');
             }
-    
+
             const data = await gigResponse.json();
             const gig = data.gig;
             const proposals = data.proposals;
-    
+
             // Get current user's ID and role
             const currentUserId = localStorage.getItem('swiftWork_ID');
             const userRole = getUserRole();
-    
+
             // Check if gig is assigned
             if (gig.status === 'assigned') {
                 const isAuthorizedUser =
                     (userRole === 'client' && gig.client._id === currentUserId) ||
                     (userRole === 'freelancer' && gig.assignedFreelancer._id === currentUserId);
-    
+
                 if (isAuthorizedUser) {
                     // Redirect to chat page for authorized users
                     window.location.href = `chat.html?gigId=${gigId}`;
@@ -71,29 +71,27 @@ document.addEventListener('DOMContentLoaded', async function () {
                             </div>
                         `;
                     }
-    
+
                     // Hide proposal-related elements
                     const makeProposalBtn = document.getElementById('make-proposal-btn');
                     const proposalsListElement = document.getElementById('proposals-list');
-    
+
                     if (makeProposalBtn) makeProposalBtn.style.display = 'none';
                     if (proposalsListElement) proposalsListElement.innerHTML = '';
-    
+
                     return;
                 }
             }
-    
+
             // If not redirected, continue with normal gig details rendering
             // Populate gig details
             document.getElementById('gig-title').textContent = gig.title;
             document.getElementById('gig-description').textContent = gig.description;
             document.getElementById('gig-budget').textContent = `Budget: $${gig.budget}`;
             document.getElementById('gig-deadline').textContent = `Deadline: ${new Date(gig.deadline).toLocaleDateString()}`;
-    
+
             // Client Name
             const clientNameElement = document.getElementById('client-name');
-            const viewClientBtn = document.getElementById('view-client-btn');
-    
             if (gig.client) {
                 clientNameElement.textContent = `Client: ${gig.client.name}`;
                 viewClientBtn.style.display = 'inline-block'; // Show button
@@ -103,39 +101,37 @@ document.addEventListener('DOMContentLoaded', async function () {
             } else {
                 console.warn('Client data is missing');
                 clientNameElement.textContent = 'Client information not available';
-                viewClientBtn.style.display = 'none';
+                viewClientBtn.style.display = 'none'; // Hide button if client data is missing
             }
-    
+
             // Display skills required
             const skillsElement = document.getElementById('gig-skills');
             if (gig.skillsRequired && gig.skillsRequired.length > 0) {
-                skillsElement.innerHTML = `
-                    <strong>Skills Required:</strong> ${gig.skillsRequired.join(', ')}
-                `;
+                skillsElement.innerHTML = `<strong>Skills Required:</strong> ${gig.skillsRequired.join(', ')}`;
             } else {
                 skillsElement.innerHTML = '<strong>Skills Required:</strong> None specified';
             }
-    
+
             // Handle Proposals Display
             renderProposals(proposals, gig);
-    
+
         } catch (error) {
             console.error('Error:', error);
             alert('Error fetching gig details. Redirecting...');
             window.location.href = 'display-all-gigs.html';
         }
     }
-    
+
     function renderProposals(proposals, gig) {
         const userRole = getUserRole();
         console.log('Rendering Proposals:', { proposals, userRole, gigStatus: gig.status });
-    
+
         // Clear previous proposals
         const proposalsListElement = document.getElementById('proposals-list');
         if (proposalsListElement) {
             proposalsListElement.innerHTML = '';
         }
-    
+
         if (!proposals || proposals.length === 0) {
             if (proposalsListElement) {
                 proposalsListElement.innerHTML = "<p>No proposals yet.</p>";
@@ -144,12 +140,12 @@ document.addEventListener('DOMContentLoaded', async function () {
             proposals.forEach(proposal => {
                 const proposalElement = document.createElement('li');
                 proposalElement.classList.add('proposal');
-        
+
                 let proposalContent = `
                     <strong>Bid Amount:</strong> $${proposal.bidAmount} <br>
                     <strong>Proposal Details:</strong> ${proposal.proposalMessage}
                 `;
-        
+
                 // Add the "Accept Proposal" button if the user is a client and the gig is not assigned
                 if (userRole === 'client' && gig.status !== 'assigned') {
                     proposalContent += `
@@ -159,12 +155,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                         </button>
                     `;
                 }
-        
+
                 proposalElement.innerHTML = proposalContent;
                 proposalsListElement.appendChild(proposalElement);
             });
         }
-    
+
         // Show Make Proposal button for freelancers
         const makeProposalBtn = document.getElementById('make-proposal-btn');
         if (makeProposalBtn) {
@@ -173,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 gigStatus: gig.status,
                 isVisible: userRole === 'freelancer' && gig.status !== 'assigned'
             });
-    
+
             if (userRole === 'freelancer' && gig.status !== 'assigned') {
                 makeProposalBtn.style.display = 'inline-block';
                 makeProposalBtn.onclick = () => {
@@ -184,10 +180,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
     }
-    
-    
 
-    
     // Proposal Acceptance Function
     window.acceptProposal = async function (gigId, proposalId, freeLancerID) {
         try {
