@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async function () {
               gigCard.innerHTML = `
                <div class="mt-5 p-6 bg-white rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
     <h3 class="text-lg font-bold text-gray-800">${gig.title}</h3>
-    <p class="text-gray-700 mt-2">Budget: $${gig.budget}</p>
+    <p class="text-gray-700 mt-2">Budget: ₹${gig.budget}</p>
     
     <a href="gig-details.html?gigId=${gig._id}" class="inline-block bg-blue-500 mt-4 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105">
         View Details
