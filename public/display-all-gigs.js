@@ -15,7 +15,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         const result = await response.json();
         const gigList = document.getElementById('gig-list');
 
-        result.gigs.forEach(gig => {
+        // Filter gigs to include only those with status: "open"
+        const openGigs = result.gigs.filter(gig => gig.status === 'open');
+
+        openGigs.forEach(gig => {
             const gigCard = document.createElement('div');
             gigCard.classList.add('gig-card');
 
