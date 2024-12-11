@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uber for Freelancers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-gray-50 shadow-md">
+      <div
+        class="container mx-auto flex justify-between items-center py-4 px-6"
+      >
+        <div class="text-blue-500 text-3xl font-bold">SwiftWork</div>
+        <nav class="flex space-x-6">
+          <a href="#home" class="text-black text-sm hover:underline">Home</a>
+          <a href="#about" class="text-black text-sm hover:underline">About</a>
+          <a href="#contact" class="text-black text-sm hover:underline"
+            >Contact Us</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex items-center justify-center min-h-screen">
+      <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+          Uber for Freelancers
+        </h1>
+        <form>
+          <!-- Select Job -->
+          <div class="mb-6">
+            <label for="job" class="block text-gray-700 font-medium mb-2"
+              >Select Job</label
+            >
+            <select
+              id="job"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="" disabled selected>Select a job...</option>
+              <option value="ai">Artificial Intelligence</option>
+              <option value="data-science">Data Science</option>
+              <option value="cybersecurity">Cybersecurity</option>
+              <option value="blockchain">Blockchain</option>
+              <option value="mobile-app">Mobile App Development</option>
+              <option value="game-dev">Game Development</option>
+              <option value="web-dev">Web Development</option>
+              <option value="digital-marketing">Digital Marketing</option>
+              <option value="audio-music">Audio and Music Production</option>
+              <option value="ui-ux">UI/UX Design</option>
+              <option value="video-editing">Video Editing</option>
+              <option value="graphic-design">Graphic Design</option>
+              <option value="it-support">IT Support and Maintenance</option>
+              <option value="content-writing">Content Writing</option>
+              <option value="virtual-assistance">Virtual Assistance</option>
+            </select>
+          </div>
+
+          <!-- Select Deadline -->
+          <div class="mb-6">
+            <label for="deadline" class="block text-gray-700 font-medium mb-2"
+              >Select Deadline</label
+            >
+            <input
+              type="date"
+              id="deadline"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <!-- Add Description -->
+          <div class="mb-6">
+            <label
+              for="description"
+              class="block text-gray-700 font-medium mb-2"
+              >Add Description About Your Job</label
+            >
+            <textarea
+              id="description"
+              rows="4"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Find Freelancers
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-3 relative bg-blueGray-200 pt-8 pb-6 bg-blue-950">
+        <div class="container mx-auto px-4">
+          <hr class="my-6 border-blueGray-300">
+                <div class="flex flex-wrap items-center md:justify-between justify-center">
+                  <div class="w-full md:w-4/12 px-4 mx-auto text-center">
+                    <div class="text-sm text-blueGray-500 font-semibold py-1 text-gray-100">
+                      © 2024 <span id="get-current-year">SwiftWork.</span><a href="#home" class="text-blueGray-500 hover:text-gray-800" target="_blank"> All rights reserved.
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+      </footer>
+  </body>
+</html>
