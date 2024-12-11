@@ -37,6 +37,10 @@ const gigSchema = new mongoose.Schema(
       enum: ['open', 'assigned', 'completed', 'approval pending', 'cancelled'], // Updated typo
       default: 'open',
     },
+    skillsRequired: {
+      type: [String], // Array of strings for skills
+      required: [true, 'Please provide the required skills'], // Optional, remove if not required
+    },
     submissions: [
         {
             files: [String], // Array of file URLs

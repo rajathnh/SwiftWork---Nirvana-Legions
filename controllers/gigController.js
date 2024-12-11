@@ -9,7 +9,7 @@ const cloudinary = require('cloudinary')
 
 const createGig = async (req, res) => {
     console.log("♨️♨️♨️♨️♨️♨️", req.body);
-    const { title, description, budget, deadline } = req.body;
+    const { title, description, budget, deadline,skillsRequired } = req.body;
     // req.body.client = req.user.userId;
     const gig = await Gig.create(req.body);
     res.status(StatusCodes.CREATED).json({ gig });
@@ -17,25 +17,30 @@ const createGig = async (req, res) => {
 
 // Get all gigs
 const getAllGigs = async (req, res) => {
-    const gigs = await Gig.find({}).populate({ path: 'client', select: 'name' });
+    const gigs = await Gig.find({})
+        .populate({ path: 'client', select: 'name' })
+        .select('title description budget deadline skillsRequired status'); // Include skillsRequired in the response
+
     res.status(StatusCodes.OK).json({ gigs, count: gigs.length });
 };
+
 
 // Get a single gig by ID
 const getGigById = async (req, res) => {
     const { id: gigId } = req.params;
 
     const gig = await Gig.findById(gigId)
-    .populate({
-        path: 'proposals', 
-        populate: { 
-            path: 'freelancer', 
-            select: 'name email _id' 
-        },
-        select: 'proposalMessage bidAmount freelancer'
-    })
-    .populate('client', 'name email') 
-    .populate('assignedFreelancer', 'name email');
+        .populate({
+            path: 'proposals',
+            populate: {
+                path: 'freelancer',
+                select: 'name email _id',
+            },
+            select: 'proposalMessage bidAmount freelancer',
+        })
+        .populate('client', 'name email')
+        .populate('assignedFreelancer', 'name email')
+        .select('title description budget deadline skillsRequired status submissions'); // Include skillsRequired
 
     if (!gig) {
         throw new CustomError.NotFoundError(`No gig found with id: ${gigId}`);
@@ -44,16 +49,21 @@ const getGigById = async (req, res) => {
     res.status(StatusCodes.OK).json({
         gig,
         proposals: gig.proposals,
-        freelancer: gig.assignedFreelancer, // Include populated freelancer details
+        freelancer: gig.assignedFreelancer,
     });
 };
+
 
 // Update a gig
 const updateGig = async (req, res) => {
     const { id: gigId } = req.params;
 
+    if (req.body.skillsRequired && (!Array.isArray(req.body.skillsRequired) || req.body.skillsRequired.length === 0)) {
+        throw new CustomError.BadRequestError('Please provide valid required skills');
+    }
+
     const gig = await Gig.findOneAndUpdate(
-        { _id: gigId, client: req.user.userId }, // Ensure only the owner can update
+        { _id: gigId, client: req.user.userId },
         req.body,
         { new: true, runValidators: true }
     );
@@ -219,7 +229,29 @@ const setGigToCompleted = async (req, res) => {
     }
   };
   
+const getRelevantGigs = async (req, res) => {
+    try {
+        // Freelancer's skills (passed in the request body or decoded from the token)
+        const { skills } = req.user; // Assuming skills are stored in the user's profile
 
+        if (!skills || skills.length === 0) {
+            return res.status(400).json({ message: 'No skills found in freelancer profile.' });
+        }
+
+        // Find gigs that match any of the freelancer's skills
+        const gigs = await Gig.find({
+            skillsRequired: { $in: skills } // Matches any skill in the array
+        });
+
+        res.status(200).json({
+            status: 'success',
+            count: gigs.length,
+            gigs
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to fetch gigs', error: err.message });
+    }
+};
 
 
 module.exports = {
@@ -232,4 +264,5 @@ module.exports = {
     acceptProposal,
     submitFinalWork,
     setGigToCompleted,
+    getRelevantGigs,
 };

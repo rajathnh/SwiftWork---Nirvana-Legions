@@ -9,7 +9,8 @@ const {
     deleteGig,
     acceptProposal,
     submitFinalWork,
-    setGigToCompleted
+    setGigToCompleted,
+    getRelevantGigs,
 } = require('../controllers/gigController');
 const { getProposalsForGig } = require('../controllers/proposalController');
 const { authenticateUser } = require('../middleware/authentication');
@@ -29,7 +30,7 @@ router.route('/:id/files').post(submitFinalWork);
 router.route('/:id/proposals').get(getProposalsForGig);
 router.patch("/:id/complete", setGigToCompleted);
 
-
+router.get('/relevant-gigs', getRelevantGigs); 
 // New route to fetch all gigs for freelancers (no specific freelancer ID)
 
 
