@@ -26,7 +26,7 @@ async function fetchGigDetails() {
         // Populate gig details
         document.getElementById('gig-title').textContent = `Title: ${gig.title}`;
         document.getElementById('gig-description').textContent = `Description: ${gig.description}`;
-        document.getElementById('gig-budget').textContent = `Budget: $${gig.budget}`;
+        document.getElementById('gig-budget').textContent = `Budget: ₹${gig.budget}`;
         document.getElementById('gig-deadline').textContent = `Deadline: ${new Date(gig.deadline).toLocaleDateString()}`;
 
         // Check if freelancer has already made a proposal
