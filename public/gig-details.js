@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             if (!gigResponse.ok) {
-                throw new Error('Failed to fetch gig details');
+                throw new Error('Failed to fetch Project details');
             }
 
             const data = await gigResponse.json();
@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                         // Clear existing content
                         gigDetailsContainer.innerHTML = `
                 <div class="alert alert-info">
-                    <h2>Gig Assigned</h2>
-                    <p>This gig has already been assigned to a freelancer and is no longer available for proposals.</p>
+                    <h2>Project Assigned</h2>
+                    <p>This Project has already been assigned to a freelancer and is no longer available for proposals.</p>
                 </div>
             `;
                     }
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         } catch (error) {
             console.error('Error:', error);
-            alert('Error fetching gig details. Redirecting...');
+            alert('Error fetching Project details. Redirecting...');
             window.location.href = 'display-all-gigs.html';
         }
     }
@@ -139,13 +139,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         
                 let proposalContent = `
                     <strong>Bid Amount:</strong> $${proposal.bidAmount} <br>
-                    <strong>Proposal Details:</strong> ${proposal.proposalMessage}
+                    <strong>Proposal Details:</strong> ${proposal.proposalMessage}<br><br>
+
                 `;
         
                 // Add the "Accept Proposal" button if the user is a client and the gig is not assigned
                 if (userRole === 'client' && gig.status !== 'assigned') {
                     proposalContent += `
-                        <button class="select-proposal-btn" 
+                        <button class="select-proposal-btn  bg-blue-500 text-white p-3 rounded-full" 
                                 onclick="acceptProposal('${gig._id}', '${proposal._id}', '${proposal.freelancer._id}')">
                             Select Proposal
                         </button>
