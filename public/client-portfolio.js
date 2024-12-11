@@ -52,8 +52,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     const data = await response.json();
 
     if (data.client) {
-      document.getElementById("client-name").innerHTML = `<h3 class="text-3xl font-bold mb-2">${data.client.name}</h3>`;
-      document.getElementById("client-email").innerHTML = `<p class="text-gray-700 text-lg">Email: ${data.client.email}</p>`;
+      document.getElementById(
+        "client-name"
+      ).innerHTML = `<h3 class="text-3xl font-bold mb-2">${data.client.name}</h3>`;
+      document.getElementById(
+        "client-email"
+      ).innerHTML = `<p class="text-gray-700 text-lg">Email: ${data.client.email}</p>`;
 
       const profilePic = document.getElementById("profile-pic");
       if (profilePic) {
@@ -63,7 +67,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       const gigsContainer = document.getElementById("gigs-container");
       if (gigsContainer && data.client.gigs && data.client.gigs.length > 0) {
         // Categorize gigs by status
-        const openGigs = data.client.gigs.filter((gig) => gig.status === "open");
+        const openGigs = data.client.gigs.filter(
+          (gig) => gig.status === "open"
+        );
         const assignedGigs = data.client.gigs.filter(
           (gig) => gig.status === "assigned"
         );
@@ -87,25 +93,30 @@ document.addEventListener("DOMContentLoaded", async function () {
           if (gigs.length > 0) {
             gigs.forEach((gig) => {
               const gigCard = document.createElement("div");
-              
 
               gigCard.innerHTML = `
-               <div class="mt-5 p-6 bg-white rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
+               <div class="mt-5 p-6 bg-blue-300 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
     <h3 class="text-lg font-bold text-gray-800">${gig.title}</h3>
     <p class="text-gray-700 mt-2">Budget: $${gig.budget}</p>
     
-    <a href="gig-details.html?gigId=${gig._id}" class="inline-block bg-blue-500 mt-4 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105">
+    <a href="gig-details.html?gigId=${
+      gig._id
+    }" class="inline-block bg-blue-500 mt-4 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105">
         View Details
     </a>
     
-    ${gig.status === "approval pending" ? `
+    ${
+      gig.status === "approval pending"
+        ? `
         <button 
             onclick="location.href='review-form.html?gigId=${gig._id}'" 
             class="inline-block bg-blue-500 mt-4 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105"
         >
             Leave a Review
         </button>
-    ` : ""}
+    `
+        : ""
+    }
 </div>
 
               `;

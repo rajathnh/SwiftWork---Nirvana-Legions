@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Uber for Freelancers</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="src/output.css">
   </head>
   <body class="bg-gray-100">
     <!-- Header -->
@@ -30,34 +30,7 @@
           Uber for Freelancers
         </h1>
         <form>
-          <!-- Select Job -->
-          <div class="mb-6">
-            <label for="job" class="block text-gray-700 font-medium mb-2"
-              >Select Job</label
-            >
-            <select
-              id="job"
-              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="" disabled selected>Select a job...</option>
-              <option value="ai">Artificial Intelligence</option>
-              <option value="data-science">Data Science</option>
-              <option value="cybersecurity">Cybersecurity</option>
-              <option value="blockchain">Blockchain</option>
-              <option value="mobile-app">Mobile App Development</option>
-              <option value="game-dev">Game Development</option>
-              <option value="web-dev">Web Development</option>
-              <option value="digital-marketing">Digital Marketing</option>
-              <option value="audio-music">Audio and Music Production</option>
-              <option value="ui-ux">UI/UX Design</option>
-              <option value="video-editing">Video Editing</option>
-              <option value="graphic-design">Graphic Design</option>
-              <option value="it-support">IT Support and Maintenance</option>
-              <option value="content-writing">Content Writing</option>
-              <option value="virtual-assistance">Virtual Assistance</option>
-            </select>
-          </div>
-
+          
           <!-- Select Deadline -->
           <div class="mb-6">
             <label for="deadline" class="block text-gray-700 font-medium mb-2"
@@ -85,8 +58,8 @@
           </div>
 
           <!-- Submit Button -->
-          <button
-            type="submit"
+          <button onclick="submitDetails(event)"
+            type="button"
             class="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Find Freelancers
@@ -94,6 +67,9 @@
         </form>
       </div>
     </main>
+
+    <div id="result" class="text-center mt-4 text-lg text-green-600"></div>
+
 
     <!-- Footer -->
     <footer class="mt-3 relative bg-blueGray-200 pt-8 pb-6 bg-blue-950">
@@ -109,5 +85,62 @@
                 </div>
               </div>
       </footer>
+
+    
+  <script>
+async function submitDetails(event) {
+  if(event) event.preventDefault(); // Prevent page refresh
+
+  // Get the values from input elements
+  const description = document.getElementById("description").value;
+  const deadline = document.getElementById("deadline").value;
+
+  // Validate inputs
+  if (!description || !deadline) {
+    alert("Please fill in both description and deadline.");
+    return;
+  }
+
+  // Validate the deadline is in the future
+  const currentDate = new Date();
+  const selectedDate = new Date(deadline);
+
+  if (selectedDate <= currentDate) {
+    alert("Please select a future date for the deadline.");
+    return;
+  }
+
+  try {
+    // Send the data to the backend route
+    const response = await fetch("/api/v1/predict/calculate-price", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        description: description,
+        deadline: deadline
+      })
+    });
+
+    // Parse the JSON response
+    const data = await response.json();
+
+    if (response.ok) {
+      // Display the result dynamically on the page
+      document.getElementById("result").innerText = `Total Price: INR ${data.totalPrice}`;
+    } else {
+      // Handle errors from the backend
+      alert(`Error: ${data.error}`);
+    }
+  } catch (error) {
+    // Handle network or other errors
+    console.error("Error:", error);
+    alert("Something went wrong. Please try again.");
+  }
+}
+
+</script>
+      
   </body>
 </html>
