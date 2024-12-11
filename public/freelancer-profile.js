@@ -43,6 +43,7 @@ async function getFreelancerProposals(freelancerId) {
 }
 
 // Display the freelancer data on the profile page
+// Display the freelancer data on the profile page
 function displayFreelancerData(freelancer) {
     const profileSection = document.getElementById('profile');
     profileSection.innerHTML = `
@@ -54,8 +55,12 @@ function displayFreelancerData(freelancer) {
                      class="w-32 h-32 rounded-full mx-auto shadow-lg border-2 border-blue-500">
                 <h2 class="text-2xl font-bold mt-6 text-center text-gray-800">${freelancer.name || 'No Name Provided'}</h2>
                 <p class="text-center text-gray-600 mt-4"><strong>Email:</strong> ${freelancer.email || 'Not Provided'}</p>
-                <p class="text-center text-gray-600 mt-4"><strong>Skills:</strong> 
+                <p class="text-center text-gray-600 mt-4">
+                    <strong>Skills:</strong> 
                     ${freelancer.skills && freelancer.skills.length ? freelancer.skills.join(', ') : 'No Skills Provided'}
+                    <button id="addSkillsBtn" class="ml-4 bg-green-500 text-white text-sm py-1 px-2 rounded-lg hover:bg-green-600 transition-colors duration-300">
+                        Add Skills
+                    </button>
                 </p>
                 <button id="editProfileBtn" class="btn bg-blue-500 text-white py-2 px-5 rounded-lg lg:mt-10 shadow-md hover:bg-blue-600 transition-colors duration-300 border border-slate-300 hover:border-slate-400">Edit Profile</button>
             </div>
@@ -87,8 +92,14 @@ function displayFreelancerData(freelancer) {
     document.getElementById('editProfileBtn').addEventListener('click', function () {
         window.location.href = 'freelancer-update.html'; // Redirect to edit profile
     });
-}
+    
+    // Add event listener for the new Add Skills button
+    document.getElementById('addSkillsBtn').addEventListener('click', function () {
+        window.location.href = '../tests/allTests.html';
+    //   window.location.href = 'admin.html';
 
+    });
+}
 // Display portfolio images dynamically
 function displayPortfolioImages(freelancer) {
     const images = [freelancer.image1, freelancer.image2, freelancer.image3, freelancer.image4];
