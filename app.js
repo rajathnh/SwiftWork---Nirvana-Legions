@@ -98,7 +98,10 @@ const routes = [
   { path: "/api/v1/gigs", router: require("./routes/gigRoutes") },
   { path: "/api/v1/proposal", router: require("./routes/proposalRoutes") },
   { path: "/api/v1/messages", router: require("./routes/messageRoutes") },
-  { path: "/api/v1/complexity", router: require("./routes/predict") },
+  {
+    path: "/api/v1/complexity",
+    router: require("./routes/predict"),
+  },
 ];
 
 routes.forEach((route) => app.use(route.path, route.router));
