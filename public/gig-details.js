@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 proposalsListElement.appendChild(proposalElement);
             });
         }
-
+        
         // Show Make Proposal button for freelancers
         const makeProposalBtn = document.getElementById('make-proposal-btn');
         if (makeProposalBtn) {
