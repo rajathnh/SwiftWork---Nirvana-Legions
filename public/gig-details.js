@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             // Populate gig details
             document.getElementById('gig-title').textContent = gig.title;
             document.getElementById('gig-description').textContent = gig.description;
-            document.getElementById('gig-budget').textContent = `Budget: $${gig.budget}`;
+            document.getElementById('gig-budget').textContent = `Budget: ₹${gig.budget}`;
             document.getElementById('gig-deadline').textContent = `Deadline: ${new Date(gig.deadline).toLocaleDateString()}`;
 
             // Client Name
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 proposalElement.classList.add('proposal');
     
                 let proposalContent = `
-                    <strong>Bid Amount:</strong> $${proposal.bidAmount} <br>
+                    <strong>Bid Amount:</strong> ₹${proposal.bidAmount} <br>
                     <strong>Proposal Details:</strong> ${proposal.proposalMessage}
                 `;
     

@@ -48,7 +48,7 @@ function displayFreelancerData(freelancer) {
     profileSection.innerHTML = `
     <div class="mx-auto p-6">
         <div class="flex flex-col lg:flex-row lg:space-x-8">
-            <div class="profile-header border border-slate-300 hover:border-slate-400 flex flex-col items-center lg:w-1/3 p-6 rounded-lg shadow-sm mb-6 lg:mb-0">
+            <div class="profile-header bg-white border border-slate-300 hover:border-slate-400 flex flex-col items-center lg:w-1/3 p-6 rounded-lg shadow-sm mb-6 lg:mb-0">
                 <img src="${freelancer.profilePic || 'default-profile.png'}" 
                      alt="Profile Picture" 
                      class="w-32 h-32 rounded-full mx-auto shadow-lg border-2 border-blue-500">
@@ -135,13 +135,14 @@ function displayFreelancerProposals(proposals) {
     const assignedGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.freelancer._id === freelancerId);
     const approvalPendingGigs = proposals.filter(proposal => proposal.gig?.status === 'approval pending' && proposal.freelancer._id === freelancerId);
     const assignedToOthersGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.freelancer._id !== freelancerId);
-
+    const completedProjectss = proposals.filter(proposal => proposal.gig?.status=== 'completed' && proposal.freelancer._id === freelancerId)
     proposalsSection.innerHTML = '';
 
     displayGigCategory(proposalsSection, 'Open Projects', openGigs);
     displayGigCategory(proposalsSection, 'Assigned Projects', assignedGigs);
     displayGigCategory(proposalsSection, 'Approval Pending Projects', approvalPendingGigs);
     displayGigCategory(proposalsSection, 'Assigned to Others Projects', assignedToOthersGigs);
+    displayGigCategory(proposalsSection, 'Completed Projects', completedProjectss)
 }
 
 function displayGigCategory(proposalsSection, categoryTitle, gigs) {
@@ -168,9 +169,9 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
             <a href="${gigLink}" class="proposal-link block">
                 <p class="text-lg font-semibold text-gray-800"><strong>Project:</strong> ${gig.title || 'No Title'}</p>
                 <p class="text-gray-700"><strong>Description:</strong> ${gig.description || 'No Description'}</p>
-                <p class="text-gray-700"><strong>Budget:</strong> ${gig.budget || 'N/A'}</p>
+                <p class="text-gray-700"><strong>Budget:</strong> ₹${gig.budget || 'N/A'}</p>
                 <p class="text-gray-700"><strong>Deadline:</strong> ${new Date(gig.deadline).toDateString() || 'N/A'}</p>
-                <p class="text-gray-700"><strong>Bid Amount:</strong> ${proposal.bidAmount || 'N/A'}</p>
+                <p class="text-gray-700"><strong>Bid Amount:</strong> ₹${proposal.bidAmount || 'N/A'}</p>
                 <p class="text-gray-700"><strong>Proposal Message:</strong> ${proposal.proposalMessage || 'No Message Provided'}</p>
                 <p class="text-gray-700"><strong>Status:</strong> ${gigStatus}</p>
             </a>
