@@ -1,8 +1,9 @@
-const axios = require('axios');
+const axios = require("axios");
+require("dotenv").config(); // Use dotenv for environment variables
 
 // Cashfree credentials
-const CLIENT_ID = 'TEST10375629239f487f439eefd8f79592657301'; // Replace with your Cashfree Client ID
-const CLIENT_SECRET = 'cfsk_ma_test_03b8aba6e47fa6dccc4d0fda8b889302_4ea2ebab'; // Replace with your Cashfree Client Secret
+const CLIENT_ID = process.env.CASHFREE_CLIENT_ID;
+const CLIENT_SECRET = process.env.CASHFREE_CLIENT_SECRET;
 
 // Function to create an order for payment
 const createOrder = async (req, res) => {
@@ -13,23 +14,25 @@ const createOrder = async (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  const returnUrl = `http://localhost:5000/return?order_id=${gig_id}`;
+  const orderId = `order_${gig_id}_${Date.now()}`; // Ensure uniqueness
+  const returnUrl = `${process.env.BASE_URL}/return?order_id=${gig_id}`;
 
   try {
     // Send request to Cashfree to create the order
     const response = await axios.post(
       "https://sandbox.cashfree.com/pg/orders", // Use production URL in live mode
       {
-        order_id: `order_${gig_id}`, // Unique ID for the order based on the gig
-        order_amount, // Amount to be paid
-        order_currency: "INR", // Currency type
+        order_id: orderId,
+        order_amount,
+        order_currency: "INR",
+        version: "2022-09-01",
         customer_details: {
-          customer_id: client_id, // Client's unique ID
+          customer_id: client_id,
           customer_email: client_email,
         },
         order_note: `Payment for ${gig_title}`,
         order_meta: {
-          return_url: returnUrl, // Use local URL for testing
+          return_url: returnUrl,
         },
       },
       {
@@ -41,7 +44,6 @@ const createOrder = async (req, res) => {
       }
     );
 
-    // Send the order token back to frontend
     res.status(200).json({
       success: true,
       order_token: response.data.order_token,
@@ -53,17 +55,25 @@ const createOrder = async (req, res) => {
 };
 
 // Function to handle the return from Cashfree after payment
-const paymentReturn = (req, res) => {
+const paymentReturn = async (req, res) => {
   const { order_id, payment_status } = req.query;
 
-  console.log(`Order ID: ${order_id}, Payment Status: ${payment_status}`);
+  if (!order_id || !payment_status) {
+    return res.status(400).json({ error: "Invalid payment return data" });
+  }
 
-  if (payment_status === "SUCCESS") {
-    // Redirect to gig details page after successful payment
-    res.redirect(`/gig-details.html?gig_id=${order_id}`);
-  } else {
-    // Redirect to a payment failure page or show an error message
-    res.redirect(`/payment-failed.html?gig_id=${order_id}`);
+  try {
+    if (payment_status === "SUCCESS") {
+      // Update gig/proposal in DB as paid
+      console.log(`Payment successful for Order ID: ${order_id}`);
+      res.redirect(`/gig-details.html?gig_id=${order_id}`);
+    } else {
+      console.log(`Payment failed for Order ID: ${order_id}`);
+      res.redirect(`/payment-failed.html?gig_id=${order_id}`);
+    }
+  } catch (error) {
+    console.error("Error handling payment return:", error.message);
+    res.status(500).json({ error: "Failed to handle payment return" });
   }
 };
 

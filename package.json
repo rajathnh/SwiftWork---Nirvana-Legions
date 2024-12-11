@@ -9,6 +9,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@cashfreepayments/cashfree-js": "^1.0.5",
         "axios": "^1.7.9",
         "bcryptjs": "^2.4.3",
         "cloudinary": "^2.5.1",
