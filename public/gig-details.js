@@ -124,14 +124,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     function renderProposals(proposals, gig) {
         const userRole = getUserRole();
+        const currentUserId = localStorage.getItem('swiftWork_ID');  // Get current user ID
         console.log('Rendering Proposals:', { proposals, userRole, gigStatus: gig.status });
-
+    
         // Clear previous proposals
         const proposalsListElement = document.getElementById('proposals-list');
         if (proposalsListElement) {
             proposalsListElement.innerHTML = '';
         }
-
+    
         if (!proposals || proposals.length === 0) {
             if (proposalsListElement) {
                 proposalsListElement.innerHTML = "<p>No proposals yet.</p>";
@@ -140,12 +141,12 @@ document.addEventListener('DOMContentLoaded', async function () {
             proposals.forEach(proposal => {
                 const proposalElement = document.createElement('li');
                 proposalElement.classList.add('proposal');
-
+    
                 let proposalContent = `
                     <strong>Bid Amount:</strong> $${proposal.bidAmount} <br>
                     <strong>Proposal Details:</strong> ${proposal.proposalMessage}
                 `;
-
+    
                 // Add the "Accept Proposal" button if the user is a client and the gig is not assigned
                 if (userRole === 'client' && gig.status !== 'assigned') {
                     proposalContent += `
@@ -155,22 +156,25 @@ document.addEventListener('DOMContentLoaded', async function () {
                         </button>
                     `;
                 }
-
+    
                 proposalElement.innerHTML = proposalContent;
                 proposalsListElement.appendChild(proposalElement);
             });
         }
-        
-        // Show Make Proposal button for freelancers
+    
+        // Check if the current freelancer has already made a proposal
+        const freelancerHasSubmittedProposal = proposals.some(proposal => proposal.freelancer._id === currentUserId);
+    
+        // Show or hide the "Make Proposal" button based on whether the freelancer has already submitted a proposal
         const makeProposalBtn = document.getElementById('make-proposal-btn');
         if (makeProposalBtn) {
             console.log('Button Visibility Check:', {
                 userRole,
                 gigStatus: gig.status,
-                isVisible: userRole === 'freelancer' && gig.status !== 'assigned'
+                isVisible: userRole === 'freelancer' && gig.status !== 'assigned' && !freelancerHasSubmittedProposal
             });
-
-            if (userRole === 'freelancer' && gig.status !== 'assigned') {
+    
+            if (userRole === 'freelancer' && gig.status !== 'assigned' && !freelancerHasSubmittedProposal) {
                 makeProposalBtn.style.display = 'inline-block';
                 makeProposalBtn.onclick = () => {
                     window.location.href = `create-proposal.html?gigId=${gigId}`;
@@ -180,7 +184,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
     }
-
     // Proposal Acceptance Function
     window.acceptProposal = async function (gigId, proposalId, freeLancerID) {
         try {
