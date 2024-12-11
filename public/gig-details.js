@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log('GigID from URL:', gigId); // Debug log for gigId
 
     const viewClientBtn = document.getElementById('view-client-btn');
+
     // Debug function to log all element selections
     function debugElementSelection() {
         const elementsToCheck = [
@@ -15,7 +16,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             'proposals-list',
             'make-proposal-btn'
         ];
-        
 
         elementsToCheck.forEach(id => {
             const element = document.getElementById(id);
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             if (!gigResponse.ok) {
-                throw new Error('Failed to fetch Project details');
+                throw new Error('Failed to fetch gig details');
             }
 
             const data = await gigResponse.json();
@@ -49,10 +49,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             // Get current user's ID and role
             const currentUserId = localStorage.getItem('swiftWork_ID');
             const userRole = getUserRole();
-            
+
             // Check if gig is assigned
             if (gig.status === 'assigned') {
-                // Specific condition for authorized access to chat
                 const isAuthorizedUser =
                     (userRole === 'client' && gig.client._id === currentUserId) ||
                     (userRole === 'freelancer' && gig.assignedFreelancer._id === currentUserId);
@@ -65,13 +64,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                     // Show message that gig is already assigned for unauthorized users
                     const gigDetailsContainer = document.getElementById('gig-details-container');
                     if (gigDetailsContainer) {
-                        // Clear existing content
                         gigDetailsContainer.innerHTML = `
-                <div class="alert alert-info">
-                    <h2>Project Assigned</h2>
-                    <p>This Project has already been assigned to a freelancer and is no longer available for proposals.</p>
-                </div>
-            `;
+                            <div class="alert alert-info">
+                                <h2>Gig Assigned</h2>
+                                <p>This gig has already been assigned to a freelancer and is no longer available for proposals.</p>
+                            </div>
+                        `;
                     }
 
                     // Hide proposal-related elements
@@ -94,8 +92,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             // Client Name
             const clientNameElement = document.getElementById('client-name');
-            const viewClientBtn = document.getElementById('view-client-btn'); // Button from HTML
-
             if (gig.client) {
                 clientNameElement.textContent = `Client: ${gig.client.name}`;
                 viewClientBtn.style.display = 'inline-block'; // Show button
@@ -108,12 +104,20 @@ document.addEventListener('DOMContentLoaded', async function () {
                 viewClientBtn.style.display = 'none'; // Hide button if client data is missing
             }
 
+            // Display skills required
+            const skillsElement = document.getElementById('gig-skills');
+            if (gig.skillsRequired && gig.skillsRequired.length > 0) {
+                skillsElement.innerHTML = `<strong>Skills Required:</strong> ${gig.skillsRequired.join(', ')}`;
+            } else {
+                skillsElement.innerHTML = '<strong>Skills Required:</strong> None specified';
+            }
+
             // Handle Proposals Display
             renderProposals(proposals, gig);
 
         } catch (error) {
             console.error('Error:', error);
-            alert('Error fetching Project details. Redirecting...');
+            alert('Error fetching gig details. Redirecting...');
             window.location.href = 'display-all-gigs.html';
         }
     }
@@ -121,13 +125,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     function renderProposals(proposals, gig) {
         const userRole = getUserRole();
         console.log('Rendering Proposals:', { proposals, userRole, gigStatus: gig.status });
-    
+
         // Clear previous proposals
         const proposalsListElement = document.getElementById('proposals-list');
         if (proposalsListElement) {
             proposalsListElement.innerHTML = '';
         }
-    
+
         if (!proposals || proposals.length === 0) {
             if (proposalsListElement) {
                 proposalsListElement.innerHTML = "<p>No proposals yet.</p>";
@@ -136,28 +140,27 @@ document.addEventListener('DOMContentLoaded', async function () {
             proposals.forEach(proposal => {
                 const proposalElement = document.createElement('li');
                 proposalElement.classList.add('proposal');
-        
+
                 let proposalContent = `
                     <strong>Bid Amount:</strong> $${proposal.bidAmount} <br>
-                    <strong>Proposal Details:</strong> ${proposal.proposalMessage}<br><br>
-
+                    <strong>Proposal Details:</strong> ${proposal.proposalMessage}
                 `;
-        
+
                 // Add the "Accept Proposal" button if the user is a client and the gig is not assigned
                 if (userRole === 'client' && gig.status !== 'assigned') {
                     proposalContent += `
-                        <button class="select-proposal-btn  bg-blue-500 text-white p-3 rounded-full" 
+                        <button class="select-proposal-btn" 
                                 onclick="acceptProposal('${gig._id}', '${proposal._id}', '${proposal.freelancer._id}')">
                             Select Proposal
                         </button>
                     `;
                 }
-        
+
                 proposalElement.innerHTML = proposalContent;
                 proposalsListElement.appendChild(proposalElement);
             });
         }
-    
+
         // Show Make Proposal button for freelancers
         const makeProposalBtn = document.getElementById('make-proposal-btn');
         if (makeProposalBtn) {
@@ -166,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 gigStatus: gig.status,
                 isVisible: userRole === 'freelancer' && gig.status !== 'assigned'
             });
-    
+
             if (userRole === 'freelancer' && gig.status !== 'assigned') {
                 makeProposalBtn.style.display = 'inline-block';
                 makeProposalBtn.onclick = () => {
@@ -177,10 +180,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
     }
-    
-    
 
-    
     // Proposal Acceptance Function
     window.acceptProposal = async function (gigId, proposalId, freeLancerID) {
         try {

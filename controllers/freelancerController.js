@@ -141,9 +141,21 @@ const deleteFreelancer = async(req,res) =>{
     }    
 }
 
+const assignBadgeToFreelancer = async (freelancerId, badgeId) => {
+  const freelancer = await Freelancer.findById(freelancerId);
+  if (!freelancer) return;
+  
+  // Ensure the freelancer doesn't already have the badge
+  if (!freelancer.badges.includes(badgeId)) {
+    freelancer.badges.push(badgeId);
+    await freelancer.save();
+  }
+};
+
 module.exports = {
     getAllFreelancers,
     updateFreelancer,
     getFreelancerById,
     deleteFreelancer,
+    assignBadgeToFreelancer,
 }

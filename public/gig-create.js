@@ -4,11 +4,14 @@ document.getElementById("create-gig-form").addEventListener("submit", async func
     console.log(localStorage.getItem('swiftWork_ID')); // Logs user ID for debugging
 
     const formData = new FormData(this);
+    const skillsRaw = formData.get('skillsRequired'); // Get the skills input as raw text
+    const skillsArray = skillsRaw.split(',').map(skill => skill.trim()); // Convert to an array
     const data = {
         title: formData.get('title'),
         description: formData.get('description'),
         budget: formData.get('budget'),
         deadline: formData.get('deadline'),
+        skillsRequired: skillsArray,
         client: localStorage.getItem('swiftWork_ID')
     };
     

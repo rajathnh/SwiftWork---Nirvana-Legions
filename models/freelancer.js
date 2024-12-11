@@ -85,6 +85,7 @@ const freelancerSchema = new mongoose.Schema({
         type:Number,
         default:0,
     },
+    badges: [{ type: mongoose.Schema.Types.ObjectId, ref: "Badge" }],
 })
 
 freelancerSchema.virtual('reviews', {
