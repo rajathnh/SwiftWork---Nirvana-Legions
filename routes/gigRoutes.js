@@ -19,7 +19,7 @@ const { authenticateUser } = require('../middleware/authentication');
 router.route('/').post(authenticateUser, createGig).get(getAllGigs);
 router.route('/all-gigs').get(getAllGigs);
 router.post('/accept-proposal', acceptProposal);
-
+router.get('/:id/relevant-gigs', getRelevantGigs); 
 // Route to get a specific gig, update, or delete it (only by its ID)
 router.route('/:id')
     .get(getGigById)
@@ -30,7 +30,7 @@ router.route('/:id/files').post(submitFinalWork);
 router.route('/:id/proposals').get(getProposalsForGig);
 router.patch("/:id/complete", setGigToCompleted);
 
-router.get('/relevant-gigs', getRelevantGigs); 
+
 // New route to fetch all gigs for freelancers (no specific freelancer ID)
 
 

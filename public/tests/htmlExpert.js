@@ -1,83 +1,89 @@
 document.getElementById('submitQuiz').addEventListener('click', function() {
-  const quizForm = document.getElementById('quizForm');
-  const answers = {
+    const quizForm = document.getElementById('quizForm');
+    const answers = {
       q1: 'html',      // What does HTML stand for?
-      q2: 'tags',      // HTML documents are structured using what?
-      q3: 'head',      // Where do you typically put meta information in an HTML document?
-      q4: 'title',     // What tag defines the title of an HTML document?
-      q5: 'body',      // Which tag contains the visible page content?
-      q6: 'div',       // What tag is used for creating a generic container?
-      q7: 'a',         // Which tag is used to create hyperlinks?
-      q8: 'img',       // What tag is used to embed images?
-      q9: 'ul',        // What tag creates an unordered list?
-      q10: 'ol',       // What tag creates an ordered list?
-      q11: 'table',    // What tag is used to create a table?
-      q12: 'form',     // What tag is used to create an HTML form?
-      q13: 'input',    // What tag creates form input fields?
-      q14: 'semantic', // What type of HTML elements provide meaning to the content?
-      q15: 'false',    // Can HTML be used to create interactive web pages without CSS?
-      q16: 'encoding', // Purpose of meta charset tag
-      q17: 'contenteditable', // Attribute to make element editable
-      q18: 'aria-label', // Accessibility attribute for labeling
-      q19: 'details', // HTML5 element for additional details
-      q20: 'data', // Attribute for adding custom data
-      q21: 'canvas', // HTML5 element for drawing graphics
-      q22: 'download', // Attribute for downloadable links
-      q23: 'picture', // Element for responsive images
-      q24: 'dialog', // HTML5 modal dialog element
-      q25: 'template', // HTML5 element for client-side templating
-      q26: 'draggable', // Attribute to make element draggable
-      q27: 'time', // Semantic HTML5 element for dates and times
-      q28: 'mark', // Highlight text in HTML5
-      q29: 'figure', // Semantic element for self-contained content
-      q30: 'aside'     // Tangentially related content in HTML5
-  };
-
-  let score = 0;
-
-  // Loop through the answers and check if they are correct
-  for (const question in answers) {
-      const selectedAnswer = quizForm.querySelector(`input[name="${question}"]:checked`);
-      if (selectedAnswer && selectedAnswer.value === answers[question]) {
-          score++;
-      }
-  }
-
-  // Show the score on the page
-  const resultMessage = document.getElementById('resultMessage');
-  resultMessage.innerText = `Your score is: ${score}/${Object.keys(answers).length}`;
+      q2: 'a',                             // Which tag is used to create a hyperlink in HTML?
+      q3: 'img',                           // What is the correct way to specify an image in HTML?
+      q4: 'h1',                            // Which tag is used to define the largest heading?
+      q5: 'ol',                            // Which tag is used to create an ordered list?
+      q6: 'break',                         // What does the <br> tag do?
+      q7: 'tr',                             // Which tag is used to create a table row?
+      q8: 'style',                         // Which attribute specifies an inline CSS style?
+      q9: 'comment',                       // What is the correct way to create a comment in HTML?
+      q10: 'video',  
+      q11: 'checkbox',                      // What is the correct HTML for making a checkbox?
+      q12: 'id',                             // Which attribute is used to specify a unique identifier for an HTML element?
+      q13: 'audio',                          // What is the correct HTML element for playing audio files?
+      q14: 'description',                    // What is the purpose of the <alt> attribute in the <img> tag?
+      q15: 'footer',                         // Which HTML element is used to specify a footer for a document or section?
+      q16: 'encoding',                       // What is the purpose of the <meta charset="UTF-8"> tag?
+      q17: 'contenteditable',                // Which attribute is used to make an element editable?
+      q18: 'br',                             // What is the correct HTML element for inserting a line break?
+      q19: 'ul',                             // Which tag is used to define an unordered list?
+      q20: 'target',                      // Attribute for adding custom data
+      q21: 'em',                           // What is the correct HTML element to define emphasized text?
+      q22: 'form',                         // What is the purpose of the <label> element in HTML?
+      q23: 'form',                         // Which tag is used to create a form in HTML?
+      q24: 'embed',                        // What does the <iframe> tag do in HTML?
+      q25: 'select',                       // Which tag is used to create a dropdown list in HTML?
+      q26: 'pageTitle',                    // What is the purpose of the <title> tag in HTML?
+      q27: 'comment',                      // Which tag is used to create a comment in HTML?
+      q28: 'navigation',                   // What does the <nav> tag represent in HTML?
+      q29: 'main',                         // Which tag is used to define the main content of the document?
+      q30: 'aside'   
+    };    
   
-  // Determine passing criteria
-  const passingScore = score >= 15; // Advanced level requires 24 or more
-
-  if (passingScore) {
-      // Get freelancer ID from localStorage
-      const freelancerId = localStorage.getItem('swiftWork_ID');
-      
-      // Send the score to the backend
-      fetch('http://localhost:5000/api/v1/test/submit-html-test', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-              freelancerId: freelancerId, 
-              testName: 'HTML Comprehensive', 
-              score: score 
-          }),
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log('Test result submitted successfully:', data);
-          if (data.status === 'success') {
-              alert(`Congratulations! You have passed the HTML test with a score of ${score}. Badge level: ${data.badge.level}`);
-          }
-      })
-      .catch(error => {
-          console.error('Error submitting test result:', error);
-          alert('There was an error submitting your test result.');
-      });
-  } else {
-      alert(`Sorry, you did not pass the test. You need to score at least 24 out of 30 to pass. Your score: ${score}`);
-  }
-});
+    let score = 0;
+  
+    // Loop through the answers and check if they are correct
+    for (const question in answers) {
+        const selectedAnswer = quizForm.querySelector(`input[name="${question}"]:checked`);
+        if (selectedAnswer && selectedAnswer.value === answers[question]) {
+            score++;
+        }
+    }
+  
+    // Show the score on the page
+    const resultMessage = document.getElementById('resultMessage');
+    resultMessage.innerText = `Your score is: ${score}/${Object.keys(answers).length}`;
+    
+    // Determine passing criteria
+    const passingScore = score >= 15; // Advanced level requires 24 or more
+  
+    if (passingScore) {
+        // Get freelancer ID from localStorage
+        const freelancerId = localStorage.getItem('swiftWork_ID');
+        
+        // Send the score to the backend
+        fetch('http://localhost:5000/api/v1/test/submit-html-test', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                freelancerId: freelancerId, 
+                testName: 'HTML Comprehensive', 
+                score: score 
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Test result submitted successfully:', data);
+            if (data.status === 'success') {
+                alert(`Congratulations! You have passed the HTML test with a score of ${score}. Badge level: ${data.badge.level}`);
+                
+                // Redirect to the freelancer profile page
+                window.location.href = 'http://localhost:5000/freelancer-profile.html'; // Adjust this path based on your profile URL
+            }
+        })
+        .catch(error => {
+            console.error('Error submitting test result:', error);
+            alert('There was an error submitting your test result.');
+        });
+    } else {
+        alert(`Sorry, you did not pass the test. You need to score at least 24 out of 30 to pass. Your score: ${score}`);
+        window.location.href = 'http://localhost:5000/freelancer-profile.html';
+        // Adjust this path based on your profile URL
+    }
+  });
+  

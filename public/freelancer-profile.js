@@ -224,6 +224,47 @@ document.addEventListener("DOMContentLoaded", () => {
       // fetchAndDisplayAllGigs();
     });
   });
+  // freelancer-profile.js or notifications.js
+
+// Fetch notifications from the backend
+const fetchNotifications = async () => {
+    try {
+      const response = await fetch('/api/notifications/get');
+      const notifications = await response.json();
+      displayNotifications(notifications);
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  };
+  
+  // Display notifications in the UI
+  const displayNotifications = (notifications) => {
+    const notificationList = document.getElementById('notificationList');
+    notificationList.innerHTML = ''; // Clear the existing list
+    notifications.forEach(notification => {
+      const notificationItem = document.createElement('div');
+      notificationItem.className = notification.seen ? 'notification seen' : 'notification';
+      notificationItem.innerHTML = `
+        <p>${notification.message}</p>
+        <button onclick="markAsRead(${notification._id})">Mark as read</button>
+      `;
+      notificationList.appendChild(notificationItem);
+    });
+  };
+  
+  // Mark notification as read
+  const markAsRead = async (notificationId) => {
+    try {
+      const response = await fetch(`/api/notifications/mark-as-read/${notificationId}`, {
+        method: 'PUT',
+      });
+      const updatedNotification = await response.json();
+      displayNotifications([updatedNotification]);  // Update the UI
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
+  };
+  
 
 // Initialize profile loading on page load
 document.addEventListener('DOMContentLoaded', () => {
