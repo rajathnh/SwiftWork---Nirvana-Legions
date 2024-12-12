@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Comprehensive Quiz</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        .quiz-question { 
+            margin-bottom: 15px; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+        }
+        #submitQuiz {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        #resultMessage {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSS Comprehensive Quiz</h1>
+    <form id="quizForm">
+        <div class="quiz-question">
+            <p>1. What does CSS stand for?</p>
+            <input type="radio" name="q1" value="cascadingstylesheet" id="q1-cascadingstylesheet"> 
+            <label for="q1-cascadingstylesheet">Cascading Style Sheets</label>
+            <input type="radio" name="q1" value="computerstylesheet" id="q1-computerstylesheet"> 
+            <label for="q1-computerstylesheet">Computer Style Sheets</label>
+            <input type="radio" name="q1" value="creativestylesheet" id="q1-creativestylesheet"> 
+            <label for="q1-creativestylesheet">Creative Style Sheets</label>
+        </div>
+
+        <div class="quiz-question">
+            <p>16. What property is used to create a flexible container in CSS?</p>
+            <input type="radio" name="q16" value="flex" id="q16-flex"> 
+            <label for="q16-flex">display: flex</label>
+            <input type="radio" name="q16" value="grid" id="q16-grid"> 
+            <label for="q16-grid">display: grid</label>
+            <input type="radio" name="q16" value="block" id="q16-block"> 
+            <label for="q16-block">display: block</label>
+        </div>
+
+        <div class="quiz-question">
+            <p>17. Which CSS property is used to add rounded corners to an element?</p>
+            <input type="radio" name="q17" value="corner-radius" id="q17-corner-radius"> 
+            <label for="q17-corner-radius">corner-radius</label>
+            <input type="radio" name="q17" value="border-round" id="q17-border-round"> 
+            <label for="q17-border-round">border-round</label>
+            <input type="radio" name="q17" value="border-radius" id="q17-border-radius"> 
+            <label for="q17-border-radius">border-radius</label>
+        </div>
+
+        <div class="quiz-question">
+            <p>30. What CSS unit represents a percentage of the parent element's width?</p>
+            <input type="radio" name="q30" value="vw" id="q30-vw"> 
+            <label for="q30-vw">vw</label>
+            <input type="radio" name="q30" value="percent" id="q30-percent"> 
+            <label for="q30-percent">%</label>
+            <input type="radio" name="q30" value="em" id="q30-em"> 
+            <label for="q30-em">em</label>
+        </div>
+        
+        <button type="button" id="submitQuiz">Submit Quiz</button>
+    </form>
+    
+    <div id="resultMessage"></div>
+
+    <script src="cssTests.js"></script>
+</body>
+</html>

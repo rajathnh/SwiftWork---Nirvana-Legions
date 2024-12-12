@@ -112,7 +112,7 @@ router.post("/submit-html-test", async (req, res) => {
 });
 
 router.post("/submit-css-test", async (req, res) => {
-    console.log("♨️SUBMIT TEST♨️", req.body);
+    console.log("♨️SUBMIT CSS TEST♨️", req.body);
     try {
         const { freelancerId, testName, score } = req.body;
 
@@ -143,30 +143,30 @@ router.post("/submit-css-test", async (req, res) => {
         }
 
         // Find or create badge based on performance level
-        let htmlBadge = await Badge.findOne({ 
-            name: `HTML ${badgeLevel} Certified`, 
+        let cssBadge = await Badge.findOne({ 
+            name: `CSS ${badgeLevel} Certified`, 
             category: 'Skills Test',
             level: badgeLevel
         });
 
-        if (!htmlBadge) {
-            htmlBadge = await Badge.create({
-                name: `HTML ${badgeLevel} Certified`,
+        if (!cssBadge) {
+            cssBadge = await Badge.create({
+                name: `CSS ${badgeLevel} Certified`,
                 category: 'Skills Test',
-                description: `Demonstrated ${badgeLevel.toLowerCase()} proficiency in HTML fundamentals`,
+                description: `Demonstrated ${badgeLevel.toLowerCase()} proficiency in CSS fundamentals`,
                 level: badgeLevel,
-                iconUrl: `/badges/html-${badgeLevel.toLowerCase()}.png`
+                iconUrl: `/badges/css-${badgeLevel.toLowerCase()}.png`
             });
         }
 
         // Check for existing badges of this category and remove them
-        const existingHtmlBadges = await Badge.find({ 
+        const existingCssBadges = await Badge.find({ 
             category: 'Skills Test',
-            name: { $regex: /HTML.*Certified/ }
+            name: { $regex: /CSS.*Certified/ }
         });
 
-        // Remove lower-level HTML badges
-        const badgesToRemove = existingHtmlBadges.filter(badge => 
+        // Remove lower-level CSS badges
+        const badgesToRemove = existingCssBadges.filter(badge => 
             ['Beginner', 'Intermediate', 'Advanced', 'Expert']
             .indexOf(badge.level) < ['Beginner', 'Intermediate', 'Advanced', 'Expert'].indexOf(badgeLevel)
         );
@@ -178,28 +178,28 @@ router.post("/submit-css-test", async (req, res) => {
 
         // Add new badge if not already present
         const badgeAlreadyExists = freelancer.badges.some(
-            badge => badge.toString() === htmlBadge._id.toString()
+            badge => badge.toString() === cssBadge._id.toString()
         );
 
         if (!badgeAlreadyExists) {
-            freelancer.badges.push(htmlBadge._id);
+            freelancer.badges.push(cssBadge._id);
         }
 
         await freelancer.save();
 
         res.status(200).json({ 
             status: 'success', 
-            message: `HTML ${badgeLevel} test completed successfully`,
+            message: `CSS ${badgeLevel} test completed successfully`,
             badge: {
-                id: htmlBadge._id,
-                name: htmlBadge.name,
+                id: cssBadge._id,
+                name: cssBadge.name,
                 level: badgeLevel,
-                description: htmlBadge.description
+                description: cssBadge.description
             }
         });
 
     } catch (error) {
-        console.error('Error in HTML quiz submission:', error);
+        console.error('Error in CSS quiz submission:', error);
         res.status(500).json({ 
             status: 'error', 
             message: 'Internal server error',
@@ -207,6 +207,105 @@ router.post("/submit-css-test", async (req, res) => {
         });
     }
 });
+
+router.post("/submit-js-test", async (req, res) => {
+    console.log("♨️SUBMIT JAVASCRIPT TEST♨️", req.body);
+    try {
+        const { freelancerId, testName, score } = req.body;
+
+        // Validate input
+        if (!freelancerId || !testName || score === undefined) {
+            return res.status(400).json({ 
+                status: 'error', 
+                message: 'Missing required fields' 
+            });
+        }
+
+        // Find the freelancer
+        const freelancer = await Freelancer.findById(freelancerId);
+        if (!freelancer) {
+            return res.status(404).json({ 
+                status: 'error', 
+                message: 'Freelancer not found' 
+            });
+        }
+
+        // Determine badge level
+        const badgeLevel = determineBadgeLevel(score);
+        if (!badgeLevel) {
+            return res.status(200).json({ 
+                status: 'fail', 
+                message: 'Did not meet minimum passing criteria' 
+            });
+        }
+
+        // Find or create badge based on performance level
+        let jsBadge = await Badge.findOne({ 
+            name: `JavaScript ${badgeLevel} Certified`, 
+            category: 'Skills Test',
+            level: badgeLevel
+        });
+
+        if (!jsBadge) {
+            jsBadge = await Badge.create({
+                name: `JavaScript ${badgeLevel} Certified`,
+                category: 'Skills Test',
+                description: `Demonstrated ${badgeLevel.toLowerCase()} proficiency in JavaScript fundamentals`,
+                level: badgeLevel,
+                iconUrl: `/badges/js-${badgeLevel.toLowerCase()}.png`
+            });
+        }
+
+        // Check for existing badges of this category and remove them
+        const existingJsBadges = await Badge.find({ 
+            category: 'Skills Test',
+            name: { $regex: /JavaScript.*Certified/ }
+        });
+
+        // Remove lower-level JavaScript badges
+        const badgesToRemove = existingJsBadges.filter(badge => 
+            ['Beginner', 'Intermediate', 'Advanced', 'Expert']
+            .indexOf(badge.level) < ['Beginner', 'Intermediate', 'Advanced', 'Expert'].indexOf(badgeLevel)
+        );
+
+        // Remove lower-level badges from freelancer
+        freelancer.badges = freelancer.badges.filter(
+            badgeId => !badgesToRemove.some(b => b._id.toString() === badgeId.toString())
+        );
+
+        // Add new badge if not already present
+        const badgeAlreadyExists = freelancer.badges.some(
+            badge => badge.toString() === jsBadge._id.toString()
+        );
+
+        if (!badgeAlreadyExists) {
+            freelancer.badges.push(jsBadge._id);
+        }
+
+        await freelancer.save();
+
+        res.status(200).json({ 
+            status: 'success', 
+            message: `JavaScript ${badgeLevel} test completed successfully`,
+            badge: {
+                id: jsBadge._id,
+                name: jsBadge.name,
+                level: badgeLevel,
+                description: jsBadge.description
+            }
+        });
+
+    } catch (error) {
+        console.error('Error in JavaScript quiz submission:', error);
+        res.status(500).json({ 
+            status: 'error', 
+            message: 'Internal server error',
+            error: error.message 
+        });
+    }
+});
+
+
 // Route to get freelancer's badges
 router.get("/freelancer-badges/:freelancerId", async (req, res) => {
     try {
