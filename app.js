@@ -114,17 +114,17 @@ app.get("/", (req, res) => {
 
 // Routes
 const routes = [
-  { path: "/api/v1/auth", router: require("./routes/authRoutes") },
-  { path: "/api/v1/freelancer", router: require("./routes/freelancerRoutes") },
-  { path: "/api/v1/client", router: require("./routes/clientRoutes") },
-  { path: "/api/v1/review", router: require("./routes/reviewRoutes") },
-  { path: "/api/v1/gigs", router: require("./routes/gigRoutes") },
-  { path: "/api/v1/proposal", router: require("./routes/proposalRoutes") },
-  { path: "/api/v1/chat", router: require("./routes/messageRoutes") },
-  { path: "/api/v1/payment", router: require("./routes/paymentRoutes") },
-  { path: "/api/v1/admin", router: require("./routes/adminRoutes") },
-  { path: "/api/v1/test", router: require("./routes/quizRoutes") },
-  { path: "/api/v1/predict", router: require("./routes/predict") },
+  { path: '/api/v1/auth', router: require('./routes/authRoutes') },
+  { path: '/api/v1/freelancer', router: require('./routes/freelancerRoutes') },
+  { path: '/api/v1/client', router: require('./routes/clientRoutes') },
+  { path: '/api/v1/review', router: require('./routes/reviewRoutes') },
+  { path: '/api/v1/gigs', router: require('./routes/gigRoutes') },
+  { path: '/api/v1/proposal', router: require('./routes/proposalRoutes') },
+  { path: '/api/v1/chat', router: require('./routes/messageRoutes') },
+  { path: '/api/v1/payment',router:require('./routes/paymentRoutes')},
+  { path: '/api/v1/admin', router:require('./routes/adminRoutes')},
+  { path: '/api/v1/test', router:require('./routes/quizRoutes')},
+  { path: '/api/v1/notification', router:require('./routes/notificationRoutes')}
 ];
 
 routes.forEach((route) => app.use(route.path, route.router));

@@ -56,15 +56,19 @@ const createFreelancer = async (req, res) => {
             );
         };
         const profilePic = await uploadImageSafely(req.files?.profilePic, defaultImage);
+
         // Process image uploads
         const [image1, image2, image3, image4] = await uploadImages(req.files || {}, defaultImage);
+
+        // Split skills string into an array of individual skills
+        const separatedSkills = skills.split(',').map(skill => skill.trim());
 
         // Create the freelancer document
         const newFreelancer = await Freelancer.create({
             name,
             email,
             password: hashedPassword,
-            skills,
+            skills: separatedSkills,
             bio,
             portfolio,
             profilePic,
