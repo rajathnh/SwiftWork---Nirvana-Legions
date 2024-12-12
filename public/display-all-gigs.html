@@ -1,30 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Freelancer Dashboard</title>
 
     <!-- Link to external CSS file -->
     <link rel="stylesheet" href="display-all-gigs.css" />
     <link rel="stylesheet" href="src/output.css" />
-</head>
-<body class="flex flex-col min-h-screen bg-[#2B2A4C] text-[#EEE2DE]">
-  <header class="bg-[#EEE2DE] placeholder: shadow-md">
-    <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
-      <!-- Logo -->
-      <div class="text-center">
-        <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
-      </div>
+  </head>
+  <body class="flex flex-col min-h-screen bg-[#2B2A4C] text-[#EEE2DE]">
+    <header class="bg-[#EEE2DE] placeholder: shadow-md">
+      <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
+        <!-- Logo -->
+        <div class="text-center">
+          <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
+        </div>
 
-      <!-- Navigation Links -->
-      <ul class="hidden md:flex space-x-8 text-lg">
-        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#home">Home</a></li>
-        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#about-us">About</a></li>
-        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#contact-us">Contact us</a></li>
-      </ul>
+        <!-- Navigation Links -->
+        <ul class="hidden md:flex space-x-8 text-lg">
+          <li>
+            <a
+              class="hover:text-[#000000] text-[#e56f08] transition-colors"
+              href="index.html#home"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              class="hover:text-[#000000] text-[#e56f08] transition-colors"
+              href="index.html#about-us"
+              >About</a
+            >
+          </li>
+          <li>
+            <a
+              class="hover:text-[#000000] text-[#e56f08] transition-colors"
+              href="index.html#contact-us"
+              >Contact us</a
+            >
+          </li>
+        </ul>
 
-      <!-- Mobile Menu Toggle -->
+        <!-- Mobile Menu Toggle -->
         <button
           id="menu-toggle"
           class="block md:hidden text-[#e56f08] focus:outline-none"
@@ -42,11 +60,11 @@
               stroke-width="2"
               d="M4 6h16M4 12h16m-7 6h7"
             />
-        </svg>
-      </button>
-    </nav>
+          </svg>
+        </button>
+      </nav>
 
-    <!-- Mobile Navigation -->
+      <!-- Mobile Navigation -->
       <div
         id="mobile-menu"
         class="hidden md:hidden bg-[#EEE2DE] text-center text-lg py-4"
@@ -66,93 +84,117 @@
           class="block py-2 text-[#e56f08] hover:text-[#000000]"
           >Contact us</a
         >
-    </div>
-  </header>
+      </div>
+    </header>
     <!-- Freelancer Dashboard -->
     <div class="dashboard-container flex-grow p-4 bg-[#EEE2DE] shadow-md">
-      <h2 class="text-2xl font-bold text-[#e56f08] mb-4">Available Projects</h2>
-      
+      <h2 class="text-2xl font-bold text-[#e56f08] mb-4">Matched Projects</h2>
+
       <!-- Filtering and Sorting Controls -->
       <div class="dashboard-container flex-grow p-4 bg-[#EEE2DE]">
         <!-- <h2 class="text-2xl font-bold text-[#e56f08] mb-4">Available Projects</h2> -->
-        
+
         <!-- Filtering and Sorting Controls -->
-        <div class="filter-sort-container mb-6 flex flex-wrap items-center justify-between space-x-2 space-y-2">
-            <!-- Budget Filter -->
-            <div class="flex-grow min-w-[200px]">
-                <label for="budget-filter" class="block text-[#e56f08] text-sm mb-1">Max Budget</label>
-                <input 
-                    type="number" 
-                    id="budget-filter" 
-                    placeholder="Budget (₹)" 
-                    class="w-full p-2 rounded-md border border-[#e56f08] bg-white text-black text-sm"
-                >
-            </div>
+        <div
+          class="filter-sort-container mb-6 flex flex-wrap items-center justify-between space-x-2 space-y-2"
+        >
+          <!-- Budget Filter -->
+          <div class="flex-grow min-w-[200px]">
+            <label for="budget-filter" class="block text-[#e56f08] text-sm mb-1"
+              >Max Budget</label
+            >
+            <input
+              type="number"
+              id="budget-filter"
+              placeholder="Budget (₹)"
+              class="w-full p-2 rounded-md border border-[#e56f08] bg-white text-black text-sm"
+            />
+          </div>
 
-            <!-- Deadline Sort -->
-            <div class="flex-grow min-w-[200px]">
-                <label for="deadline-sort" class="block text-[#e56f08] text-sm mb-1">Deadline</label>
-                <select 
-                    id="deadline-sort" 
-                    class="w-full p-2 rounded-md border border-[#e56f08] bg-white text-black text-sm"
-                >
-                    <option value="">All Deadlines</option>
-                    <option value="nearest">Nearest First</option>
-                    <option value="farthest">Farthest First</option>
-                </select>
-            </div>
+          <!-- Deadline Sort -->
+          <div class="flex-grow min-w-[200px]">
+            <label for="deadline-sort" class="block text-[#e56f08] text-sm mb-1"
+              >Deadline</label
+            >
+            <select
+              id="deadline-sort"
+              class="w-full p-2 rounded-md border border-[#e56f08] bg-white text-black text-sm"
+            >
+              <option value="">All Deadlines</option>
+              <option value="nearest">Nearest First</option>
+              <option value="farthest">Farthest First</option>
+            </select>
+          </div>
 
-            <!-- Budget Sort -->
-            <div class="flex-grow min-w-[200px]">
-                <label for="budget-sort" class="block text-[#e56f08] text-sm mb-1">Budget</label>
-                <select 
-                    id="budget-sort" 
-                    class="w-full p-2 rounded-md border border-[#e56f08] bg-white text-black text-sm"
-                >
-                    <option value="">All Budgets</option>
-                    <option value="low-to-high">Low to High</option>
-                    <option value="high-to-low">High to Low</option>
-                </select>
-            </div>
+          <!-- Budget Sort -->
+          <div class="flex-grow min-w-[200px]">
+            <label for="budget-sort" class="block text-[#e56f08] text-sm mb-1"
+              >Budget</label
+            >
+            <select
+              id="budget-sort"
+              class="w-full p-2 rounded-md border border-[#e56f08] bg-white text-black text-sm"
+            >
+              <option value="">All Budgets</option>
+              <option value="low-to-high">Low to High</option>
+              <option value="high-to-low">High to Low</option>
+            </select>
+          </div>
 
-            <!-- Reset Filters Button -->
-            <div class="self-end">
-                <button 
-                    id="reset-filters" 
-                    class="bg-[#e56f08] text-white px-4 py-2 rounded-md hover:bg-[#ff8533] transition-colors text-sm"
-                >
-                    Reset
-                </button>
-            </div>
+          <!-- Reset Filters Button -->
+          <div class="self-end">
+            <button
+              id="reset-filters"
+              class="bg-[#e56f08] text-white px-4 py-2 rounded-md hover:bg-[#ff8533] transition-colors text-sm"
+            >
+              Reset
+            </button>
+          </div>
         </div>
 
         <!-- Gig List -->
-        <div id="gig-list" class="gig-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- Gigs will be displayed here -->
+        <div
+          id="gig-list"
+          class="gig-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
+          <!-- Gigs will be displayed here -->
         </div>
+      </div>
     </div>
+
+    <div class="view-all-gigs-button flex justify-center mt-6">
+      <a href="all_gigs.html">
+        <button
+          id="view-all-gigs-btn"
+          class="px-6 py-2 bg-[#B31312] text-white rounded-md hover:bg-[#EA906C] transition focus:ring focus:ring-[#EA906C] focus:outline-none"
+        >
+          Available Projects
+        </button></a
+      >
     </div>
 
     <footer class="bg-[#2B2A4C] py-6">
       <div class="container mx-auto px-4 text-center">
-        <hr class="my-4 border-[#EEE2DE]">
+        <hr class="my-4 border-[#EEE2DE]" />
         <p class="text-sm">
-          © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+          © 2024 SwiftWork.
+          <a href="#home" class="text-[#EA906C] hover:underline"
+            >All rights reserved.</a
+          >
         </p>
       </div>
-      
     </footer>
-  
+
     <script>
       // Mobile menu toggle
       const menuToggle = document.getElementById("menu-toggle");
       const mobileMenu = document.getElementById("mobile-menu");
-  
+
       menuToggle.addEventListener("click", () => {
         mobileMenu.classList.toggle("hidden");
       });
     </script>
     <!-- Link to external JavaScript file -->
     <script src="display-all-gigs.js"></script>
-</body>
+  </body>
 </html>
