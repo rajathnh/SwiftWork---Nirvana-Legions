@@ -36,47 +36,52 @@
       <a href="index.html#contact-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">Contact us</a>
     </div>
   </header>
-    <div class="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-screen">
-        <!-- Gig Details Section -->
-        <div class="Project-details bg-white p-6 rounded-lg shadow-lg mb-5 max-w-5xl w-full">
-            <h1 class="text-3xl text-center font-bold text-black mb-5">Create Proposal</h1>
-            <h2 id="Project-title" class="text-xl font-semibold text-red-700 mb-2">Title:</h2>
-            <p id="Project-description" class="text-gray-700 mb-2">Description:</p>
-            <p id="Project-budget" class="text-gray-700 mb-2">Budget:</p>
-            <p id="Project-deadline" class="text-gray-700 mb-4">Deadline:</p>
-        </div>
-    
-        <!-- Proposal Form Section -->
-        <div class="proposal-form bg-white p-6 rounded-lg shadow-lg max-w-5xl w-full">
-            <textarea id="proposalMessage" placeholder="Write your proposal message here..." maxlength="1000" class="w-full text-black p-4 rounded-lg border border-gray-300 shadow-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-            <input type="number" id="bidAmount" placeholder="Enter your bid amount" min="1" class="w-full p-4 rounded-lg border text-black border-gray-300 shadow-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <div class="flex justify-center">
-                <button id="submit-proposal-button" 
-                        class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:from-blue-600 hover:to-indigo-600 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-transform duration-300">
-                    Submit Proposal
-                </button>
-            </div>
-        </div>
+
+  <div class="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-screen">
+    <!-- Gig Details Section -->
+    <div class="Project-details bg-white p-6 rounded-lg shadow-lg mb-5 max-w-5xl w-full">
+      <h1 class="text-3xl text-center font-bold text-black mb-5">Create Proposal</h1>
+      <h2 id="Project-title" class="text-xl font-semibold text-red-700 mb-2">Title:</h2>
+      <p id="Project-description" class="text-gray-700 mb-2">Description:</p>
+      <p id="Project-budget" class="text-gray-700 mb-2">Budget:</p>
+      <p id="Project-deadline" class="text-gray-700 mb-4">Deadline:</p>
     </div>
-    
-    <footer class="bg-[#2B2A4C] py-6">
-      <div class="container mx-auto px-4 text-center">
-        <hr class="my-4 border-[#EEE2DE]">
-        <p class="text-sm">
-          © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
-        </p>
+
+    <!-- Proposal Form Section -->
+    <div class="proposal-form bg-white p-6 rounded-lg shadow-lg max-w-5xl w-full">
+      <textarea id="proposalMessage" placeholder="Write your proposal message here..." maxlength="1000" class="w-full text-black p-4 rounded-lg border border-gray-300 shadow-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+      <input type="number" id="bidAmount" placeholder="Enter your bid amount" min="1" class="w-full p-4 rounded-lg border text-black border-gray-300 shadow-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      
+      <!-- Add Deadline Input -->
+      <label for="proposalDeadline" class="block text-gray-700 font-semibold mb-2">Deadline:</label>
+      <input type="date" id="proposalDeadline" name="proposalDeadline" class="w-full p-4 rounded-lg border text-black border-gray-300 shadow-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+      
+      <div class="flex justify-center">
+        <button id="submit-proposal-button" class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:from-blue-600 hover:to-indigo-600 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-transform duration-300">
+          Submit Proposal
+        </button>
       </div>
-    </footer>
-  
-    <script>
-      // Mobile menu toggle
-      const menuToggle = document.getElementById("menu-toggle");
-      const mobileMenu = document.getElementById("mobile-menu");
-  
-      menuToggle.addEventListener("click", () => {
-        mobileMenu.classList.toggle("hidden");
-      });
-    </script>
-    <script src="create-proposal.js"></script>
+    </div>
+  </div>
+
+  <footer class="bg-[#2B2A4C] py-6">
+    <div class="container mx-auto px-4 text-center">
+      <hr class="my-4 border-[#EEE2DE]">
+      <p class="text-sm">
+        © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  </script>
+  <script src="create-proposal.js"></script>
 </body>
 </html>

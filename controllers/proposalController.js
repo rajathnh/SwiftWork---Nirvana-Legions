@@ -26,12 +26,13 @@ const SubmitProposal = async (req, res) => {
     return res.status(StatusCodes.BAD_REQUEST).json({ msg: 'You have already made a proposal for this gig' });
   }
 
-  // Create a new proposal
+  // Create a new proposal with the deadline taken from the gig
   const proposal = await Proposal.create({
     gig: gigId,  // Use 'gig' (singular) in the Proposal schema
     freelancer: freelancerId,
     proposalMessage,
     bidAmount,
+    deadline: gig.deadline,  // Add deadline from the gig
   });
 
   res.status(StatusCodes.CREATED).json({ proposal });
@@ -48,7 +49,7 @@ const getProposalsForFreelancer = async (req, res) => {
     const freelancerId = req.params.id;
 
     const proposals = await Proposal.find({ freelancer: freelancerId })
-      .populate('gig', 'title description budget deadline status') // Populate gig fields
+      .populate('gig', 'title description budget deadline status') // Populate gig fields, including deadline
       .populate('freelancer', 'name email'); // Populate freelancer fields
 
     if (!proposals || proposals.length === 0) {
@@ -64,6 +65,7 @@ const getProposalsForFreelancer = async (req, res) => {
     res.status(500).json({ message: 'Error fetching proposals.', error: error.message });
   }
 };
+
 
 
 

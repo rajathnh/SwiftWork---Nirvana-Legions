@@ -74,13 +74,15 @@ async function fetchGigDetails(gigId, token, userId) {
 async function submitProposal(gigId, token, userId) {
     const bidAmountInput = document.getElementById('bidAmount');
     const proposalMessageInput = document.getElementById('proposalMessage');
+    const proposalDeadlineInput = document.getElementById('proposalDeadline'); // Get the deadline input
     const submitProposalButton = document.getElementById('submit-proposal-button');
 
     const bidAmount = bidAmountInput.value;
     const proposalMessage = proposalMessageInput.value;
+    const proposalDeadline = proposalDeadlineInput.value; // Get the deadline value
 
-    if (!bidAmount || !proposalMessage) {
-        alert('Please provide both bid amount and proposal message.');
+    if (!bidAmount || !proposalMessage || !proposalDeadline) {
+        alert('Please provide bid amount, proposal message, and deadline.');
         return;
     }
 
@@ -91,10 +93,10 @@ async function submitProposal(gigId, token, userId) {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ gigId, bidAmount, proposalMessage, freelancerId: userId })
+            body: JSON.stringify({ gigId, bidAmount, proposalMessage, freelancerId: userId, deadline: proposalDeadline }) // Include the deadline
         });
 
-        console.log("♨️PROPOSAL CREATE ✨✨💀♨️", JSON.stringify({ gigId, bidAmount, proposalMessage, freelancerId: userId }));
+        console.log("♨️PROPOSAL CREATE ✨✨💀♨️", JSON.stringify({ gigId, bidAmount, proposalMessage, freelancerId: userId, deadline: proposalDeadline }));
 
         if (!response.ok) {
             const errorData = await response.json();

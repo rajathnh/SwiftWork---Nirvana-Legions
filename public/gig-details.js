@@ -144,7 +144,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     
                 let proposalContent = `
                     <strong>Bid Amount:</strong> ₹${proposal.bidAmount} <br>
-                    <strong>Proposal Details:</strong> ${proposal.proposalMessage}
+                    <strong>Proposal Details:</strong> ${proposal.proposalMessage} <br>
+                    <strong>Proposal Deadline:</strong> ${new Date(gig.deadline).toLocaleDateString()} <br>  <!-- Added deadline -->
                 `;
     
                 // Add the "Accept Proposal" button if the user is a client and the gig is not assigned
@@ -185,6 +186,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
     }
+    
     // Proposal Acceptance Function
     window.acceptProposal = async function (gigId, proposalId, freeLancerID) {
         try {
