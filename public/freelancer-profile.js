@@ -368,9 +368,6 @@ async function getFreelancerBadges(freelancerId) {
     freelancerId = localStorage.getItem('swiftWork_ID')
     try {
         const response = await fetch(`http://localhost:5000/api/v1/test/freelancer-badges/${freelancerId}`);
-        console.log("♨️1231223♨️", response);
-        console.log("♨️1231223♨️", response.json);
-        console.log("♨️ID IS: ", freelancerId);
         if (!response.ok) {
             throw new Error("Failed to fetch freelancer badges");
         }
