@@ -53,7 +53,7 @@ form.addEventListener('submit', async (e) => {
       // Store the freelancer ID in localStorage for future access
       const userId = data.newFreelancer.id;
       localStorage.setItem('swiftWork_ID', userId);
-
+      localStorage.setItem('swiftWork_role','freelancer')
       alert(data.msg); // Show the success message
 
       // Redirect to freelancer-dashboard.html or any other page after successful signup
