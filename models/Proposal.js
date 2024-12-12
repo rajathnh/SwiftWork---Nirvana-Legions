@@ -9,7 +9,7 @@ const proposalSchema = new mongoose.Schema(
         },
         freelancer: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Freelancer',  // Note: "Freelancer" should match the model name exactly
+            ref: 'Freelancer',
             required: true,
         },
         bidAmount: {
@@ -24,8 +24,12 @@ const proposalSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['pending', 'accepted', 'rejected'],  // Corrected 'enume' to 'enum'
+            enum: ['pending', 'accepted', 'rejected'],
             default: 'pending',
+        },
+        deadline: {
+            type: Date,
+            required: [true, 'Please provide a deadline for the proposal'],  // Optionally make it required
         },
         createdAt: {
             type: Date,

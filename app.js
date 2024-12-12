@@ -125,7 +125,8 @@ const routes = [
   { path: '/api/v1/admin', router:require('./routes/adminRoutes')},
   { path: '/api/v1/test', router:require('./routes/quizRoutes')},
   { path: '/api/v1/notification', router:require('./routes/notificationRoutes')},
-  { path: '/api/v1/predict', router:require('./routes/predict')}
+  { path: '/api/v1/predict', router:require('./routes/predict')},
+  { path: '/api/v1/escrow', router:require('./routes/escrowRoutes')}
 ];
 
 routes.forEach((route) => app.use(route.path, route.router));
