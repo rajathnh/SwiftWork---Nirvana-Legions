@@ -46,25 +46,27 @@
       class="flex flex-row space-x-10 mx-auto mt-14 justify-center items-center"
     >
       <!-- Client Profile Section -->
-      <div
-        class="client-profile p-6 rounded-xl shadow-xl flex flex-col items-center justify-center space-y-4 w-80 bg-white hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105 border border-slate-300 hover:border-slate-400"
-      >
+      <div class="client-profile p-6 rounded-lg shadow-lg flex flex-col items-center justify-center space-y-4 w-80 bg-[#EEE2DE] text-[#2B2A4C] hover:shadow-xl transition-transform duration-300 ease-in-out transform hover:scale-105 border border-slate-300 hover:border-slate-400">
         <img
           id="profile-pic"
           src="uploads/default.jpg"
           alt="Profile Picture"
-          class="w-32 h-32 rounded-full border-4 border-blue-200"
+          class="w-32 h-32 rounded-full border-4 border-[#A99985] shadow-sm"
         />
-        <p id="client-name" class="text-xl font-semibold text-gray-800">
+        <p id="client-name" class="text-xl font-extrabold text-[#2B2A4C]">
           John Doe
         </p>
-        <p id="client-email" class="text-gray-600">john.doe@example.com</p>
+        <p id="client-email" class="text-sm text-gray-700">
+          john.doe@example.com
+        </p>
         <button
           id="edit-profile-button"
-          class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors transform hover:scale-105"
+          class="bg-[#2B2A4C] text-white px-6 py-2 rounded-lg shadow-md hover:bg-[#A99985] transition-transform transform hover:scale-105 focus:ring focus:ring-[#A99985] focus:outline-none"
         >
           Edit Profile
         </button>
+      </div>
+      
       </div>
 
       <!-- Client Reviews Section -->
