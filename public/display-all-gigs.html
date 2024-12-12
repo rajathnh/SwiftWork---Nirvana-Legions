@@ -43,10 +43,67 @@
     <!-- Freelancer Dashboard -->
     <div class="dashboard-container flex-grow p-4 bg-[#EEE2DE] shadow-md">
       <h2 class="text-2xl font-bold text-[#e56f08] mb-4">Available Projects</h2>
-      <div id="gig-list" class="gig-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Gigs will be displayed here -->
-      </div>
-  </div>
+      
+      <!-- Filtering and Sorting Controls -->
+      <div class="dashboard-container flex-grow p-4 bg-[#EEE2DE] shadow-md">
+        <h2 class="text-2xl font-bold text-[#e56f08] mb-4">Available Projects</h2>
+        
+        <!-- Filtering and Sorting Controls -->
+        <div class="filter-sort-container mb-6 flex flex-wrap items-center justify-between space-x-2 space-y-2">
+            <!-- Budget Filter -->
+            <div class="flex-grow min-w-[200px]">
+                <label for="budget-filter" class="block text-[#e56f08] text-sm mb-1">Max Budget</label>
+                <input 
+                    type="number" 
+                    id="budget-filter" 
+                    placeholder="Budget (₹)" 
+                    class="w-full p-2 rounded-md border border-[#e56f08] bg-white text-black text-sm"
+                >
+            </div>
+
+            <!-- Deadline Sort -->
+            <div class="flex-grow min-w-[200px]">
+                <label for="deadline-sort" class="block text-[#e56f08] text-sm mb-1">Deadline</label>
+                <select 
+                    id="deadline-sort" 
+                    class="w-full p-2 rounded-md border border-[#e56f08] bg-white text-black text-sm"
+                >
+                    <option value="">All Deadlines</option>
+                    <option value="nearest">Nearest First</option>
+                    <option value="farthest">Farthest First</option>
+                </select>
+            </div>
+
+            <!-- Budget Sort -->
+            <div class="flex-grow min-w-[200px]">
+                <label for="budget-sort" class="block text-[#e56f08] text-sm mb-1">Budget</label>
+                <select 
+                    id="budget-sort" 
+                    class="w-full p-2 rounded-md border border-[#e56f08] bg-white text-black text-sm"
+                >
+                    <option value="">All Budgets</option>
+                    <option value="low-to-high">Low to High</option>
+                    <option value="high-to-low">High to Low</option>
+                </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="self-end">
+                <button 
+                    id="reset-filters" 
+                    class="bg-[#e56f08] text-white px-4 py-2 rounded-md hover:bg-[#ff8533] transition-colors text-sm"
+                >
+                    Reset
+                </button>
+            </div>
+        </div>
+
+        <!-- Gig List -->
+        <div id="gig-list" class="gig-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Gigs will be displayed here -->
+        </div>
+    </div>
+
     <footer class="bg-[#2B2A4C] py-6">
       <div class="container mx-auto px-4 text-center">
         <hr class="my-4 border-[#EEE2DE]">
