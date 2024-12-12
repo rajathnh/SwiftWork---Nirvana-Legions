@@ -44,7 +44,7 @@
           </div>
 
           <!-- Add Description -->
-          <div class="mb-6">
+          <div class="mb-6 ">
             <label
               for="description"
               class="block text-gray-700 font-medium mb-2"
@@ -58,8 +58,8 @@
           </div>
 
           <!-- Submit Button -->
-          <button onclick="submitDetails(event)"
-            type="button"
+          <button id="predictButton"
+           
             class="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Estimate Price
@@ -88,60 +88,127 @@
       </footer>
 
     
-  <script>
-async function submitDetails(event) {
-  if(event) event.preventDefault(); // Prevent page refresh
+<!--   
+// async function submitDetails(event) {
+//   if(event) event.preventDefault(); // Prevent page refresh
 
-  // Get the values from input elements
-  const description = document.getElementById("description").value;
-  const deadline = document.getElementById("deadline").value;
+//   // Get the values from input elements
+//   const description = document.getElementById("description").value;
+//   const deadline = document.getElementById("deadline").value;
 
-  // Validate inputs
-  if (!description || !deadline) {
-    alert("Please fill in both description and deadline.");
-    return;
-  }
+//   // Validate inputs
+//   if (!description || !deadline) {
+//     alert("Please fill in both description and deadline.");
+//     return;
+//   }
 
-  // Validate the deadline is in the future
-  const currentDate = new Date();
-  const selectedDate = new Date(deadline);
+//   // Validate the deadline is in the future
+//   const currentDate = new Date();
+//   const selectedDate = new Date(deadline);
 
-  if (selectedDate <= currentDate) {
-    alert("Please select a future date for the deadline.");
-    return;
-  }
+//   if (selectedDate <= currentDate) {
+//     alert("Please select a future date for the deadline.");
+//     return;
+//   }
 
-  try {
-    // Send the data to the backend route
-    const response = await fetch("/api/v1/predict/calculate-price", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        description: description,
-        deadline: deadline
-      })
-    });
+//   try {
+//     // Send the data to the backend route
+//     const response = await fetch("/api/v1/predict/calculate-price", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify({
+//         description: description,
+//         deadline: deadline
+//       })
+//     });
 
-    // Parse the JSON response
-    const data = await response.json();
+//     // Parse the JSON response
+//     const data = await response.json();
 
-    if (response.ok) {
-      // Display the result dynamically on the page
-      document.getElementById("result").innerText = `Total Price: INR ${data.totalPrice}`;
-    } else {
-      // Handle errors from the backend
-      alert(`Error: ${data.error}`);
+//     if (response.ok) {
+//       // Display the result dynamically on the page
+//       document.getElementById("result").innerText = `Total Price: INR ${data.totalPrice}`;
+//     } else {
+//       // Handle errors from the backend
+//       alert(`Error: ${data.error}`);
+//     }
+//   } catch (error) {
+//     // Handle network or other errors
+//     console.error("Error:", error);
+//     alert("Something went wrong. Please try again.");
+//   }
+// }
+
+
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+const genAI = new GoogleGenerativeAI("AIzaSyD-s1ZabdEVNOE9aL-786g8GSWylWLcsDY");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+const deadline =  document.getElementById("deadline").value;
+const description = document.getElementById("description").value;
+const prompt = `Based on the following information, predict the typical price a freelancer would charge:
+
+* **Deadline:** ${deadline.toISOString()} 
+* **Description:** ${description}
+
+Provide the price as a single number (e.g., 50, 100, 200).`;
+
+const result = await model.generateContent(prompt);
+
+// Extract the price from the model's response
+const priceRegex = /\b\d+\b/; // Match one or more digits
+const priceMatch = result.response.text().match(priceRegex);
+
+if (priceMatch) {
+  const predictedPrice = parseInt(priceMatch[0]);
+  console.log("Estimated Price:", predictedPrice); 
+} else {
+  console.log("Could not predict the price.");
+} -->
+
+
+<script>
+  const predictButton = document.getElementById("predictButton");
+  const resultDiv = document.getElementById("result");
+
+  predictButton.addEventListener("click", async () => {
+    const genAI = new GoogleGenerativeAI("AIzaSyD-s1ZabdEVNOE9aL-786g8GSWylWLcsDY"); 
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const deadline = document.getElementById("deadline").value;
+    const description = document.getElementById("description").value;
+
+    const prompt = `Based on the following information, predict the typical price a freelancer would charge:
+
+    * **Deadline:** ${deadline.toISOString()} 
+    * **Description:** ${description}
+
+    Provide the price as a single number (e.g., 50, 100, 200).`;
+
+    try {
+      const result = await model.generateContent(prompt); 
+
+      // Extract the price from the model's response
+      const priceRegex = /\b\d+\b/; 
+      const priceMatch = result.response.text().match(priceRegex);
+
+      if (priceMatch) {
+        const predictedPrice = parseInt(priceMatch[0]);
+        resultDiv.textContent = `Estimated Price: ${predictedPrice}`;
+      } else {
+        resultDiv.textContent = "Could not predict the price.";
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+      resultDiv.textContent = "An error occurred. Please try again.";
     }
-  } catch (error) {
-    // Handle network or other errors
-    console.error("Error:", error);
-    alert("Something went wrong. Please try again.");
-  }
-}
-
+  });
 </script>
-      
+
+
   </body>
 </html>
