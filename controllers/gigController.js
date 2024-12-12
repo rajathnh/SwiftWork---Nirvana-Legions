@@ -230,53 +230,67 @@ const setGigToCompleted = async (req, res) => {
   };
   
   const getRelevantGigs = async (req, res) => {
+    console.log("♨️♨️ Relevant Gigs Called ♨️♨️");
     try {
-        // Fetch the freelancer ID from the URL parameters
         const freelancerId = req.params.id;
-
-        // Log the freelancer ID for debugging
         console.log(`Fetching gigs for freelancer ID: ${freelancerId}`);
 
-        // Fetch freelancer's profile to get the skills
-        const freelancer = await Freelancer.findById(freelancerId);
+        // Fetch freelancer's profile with populated badges
+        const freelancer = await Freelancer.findById(freelancerId).populate('badges');
 
         if (!freelancer) {
             console.log(`Freelancer not found for ID: ${freelancerId}`);
             return res.status(404).json({ message: 'Freelancer not found.' });
         }
 
-        if (!freelancer.skills || freelancer.skills.length === 0) {
-            return res.status(400).json({ message: 'No skills found in freelancer profile.' });
+        // Extract verified skill names from badges
+        const verifiedSkillMappings = {
+            'cssbeginner': ['CSS', 'css', 'Web Design', 'Frontend'],
+            'javascriptbeginner': ['JavaScript', 'javascript', 'JS', 'Web Development', 'Frontend']
+            // Add more mappings as needed
+        };
+
+        // Combine verified skills from badges and freelancer's skills
+        const badgeSkills = freelancer.badges.map(badge => 
+            badge.name.toLowerCase().replace(/\s+/g, '').replace('certified', '')
+        );
+
+        // Normalize freelancer's skills
+        const profileSkills = (freelancer.skills || []).map(skill => 
+            skill.toLowerCase().trim()
+        );
+
+        console.log(`Verified Skills from Badges: ${badgeSkills}`);
+        console.log(`Skills from Freelancer Profile: ${profileSkills}`);
+
+        // Collect all possible skill matches
+        const skillMatches = new Set([
+            ...badgeSkills.flatMap(skill => verifiedSkillMappings[skill] || []),
+            ...profileSkills,
+            ...badgeSkills
+        ]);
+
+        const skillMatchArray = Array.from(skillMatches);
+        console.log(`Combined Skill Matches: ${skillMatchArray}`);
+
+        if (skillMatchArray.length === 0) {
+            return res.status(400).json({ message: 'No matching skills found.' });
         }
 
-        // Log the freelancer's skills for debugging
-        console.log(`Freelancer skills: ${freelancer.skills}`);
-
-        // Ensure skills are in the correct format (lowercase)
-        const skills = freelancer.skills.map(skill => skill.toLowerCase());
-        console.log(`Formatted Freelancer skills: ${skills}`);
-
-        // Find gigs that match any of the freelancer's skills (case insensitive)
-        console.log('Running query to find relevant gigs...');
+        // Find gigs that match the expanded skill list
         const gigs = await Gig.find({
-            skillsRequired: { $in: skills.map(skill => new RegExp(`^${skill}$`, 'i')) }
-        }).populate('client', 'name'); // Populate client details if referenced
+            $or: skillMatchArray.map(skill => ({
+                skillsRequired: { 
+                    $regex: new RegExp(skill, 'i') 
+                }
+            }))
+        }).populate('client', 'name');
 
-        // Log the raw results of the query
-        console.log('Raw query results:', JSON.stringify(gigs, null, 2));
+        console.log('Matching Gigs:', JSON.stringify(gigs, null, 2));
+        console.log(`Number of matching gigs: ${gigs.length}`);
 
-        // Log the number of gigs found
-        console.log(`Number of gigs found: ${gigs.length}`);
-
-        // Log the skillsRequired of each gig for debugging
         gigs.forEach(gig => {
             console.log(`Gig ID: ${gig._id}, Skills Required: ${gig.skillsRequired}`);
-        });
-
-        // Fetch all gigs and log their skillsRequired
-        const allgigs = await Gig.find({});
-        allgigs.forEach(gig => {
-            console.log(`All Gig ID: ${gig._id}, Skills Required: ${gig.skillsRequired}`);
         });
 
         res.status(200).json({
@@ -285,8 +299,11 @@ const setGigToCompleted = async (req, res) => {
             gigs
         });
     } catch (err) {
-        console.error('Failed to fetch gigs:', err); // Log the complete error
-        res.status(500).json({ message: 'Failed to fetch gigs', error: err.message });
+        console.error('Failed to fetch gigs:', err);
+        res.status(500).json({ 
+            message: 'Failed to fetch gigs', 
+            error: err.message 
+        });
     }
 };
 
