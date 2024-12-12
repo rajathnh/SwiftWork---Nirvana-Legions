@@ -22,74 +22,79 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 flex flex-col min-h-screen" style="background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);">
-    <header class="bg-gray-100 font-[Montserrat-bold] mb-4 shadow-md">
-        <nav class="flex  items-center w-[92%] text-xl mx-auto py-4 md:justify-between justify-center">
-          <!-- Logo -->
-          <div class="md:text-left text-center">
-            <h1 class="text-3xl text-blue-500 font-bold">Swiftwork</h1>
-          </div>
-      
-          <!-- Navigation Links -->
-          <div
-            class="nav-links md:static absolute bg-gray-100 md:min-h-fit min-h-[60vh] left-0 top-[-100%] w-auto items-center px-5 hidden md:block"
-          >
-            <ul
-              class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8"
-            >
-              <li>
-                <a class="hover:text-blue-500 transition-colors" href="index.html#home">Home</a>
-              </li>
-              <li>
-                <a class="hover:text-blue-500 transition-colors" href="index.html#about-us">About</a>
-              </li>
-              <li>
-                <a class="hover:text-blue-500 transition-colors" href="index.html#contact-us">Contact us</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+<body class="bg-[#2B2A4C] text-[#EEE2DE]">
+  <header class="bg-[#EEE2DE] placeholder: shadow-md">
+    <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
+      <!-- Logo -->
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
+      </div>
 
-      <div class="form-container max-w-lg w-full mx-auto p-6 bg-white rounded-lg shadow-lg flex-grow">
-        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Submit Final Work</h2>
-    
-        <form id="submitWorkForm" enctype="multipart/form-data" class="space-y-6">
+      <!-- Navigation Links -->
+      <ul class="hidden md:flex space-x-8 text-lg">
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#home">Home</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#about-us">About</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#contact-us">Contact us</a></li>
+      </ul>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="block md:hidden text-[#e56f08] focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#EEE2DE] text-center text-lg py-4">
+      <a href="index.html#home" class="block py-2 text-[#e56f08] hover:text-[#000000]">Home</a>
+      <a href="index.html#about-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">About</a>
+      <a href="index.html#contact-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">Contact us</a>
+    </div>
+  </header>
+
+  <div class="flex flex-col md:flex-row  items-center justify-center min-h-screen py-12 px-4">
+    <!-- Submit Work Form Container -->
+    <div class="w-full max-w-md bg-[#EEE2DE] text-[#2B2A4C] rounded-lg shadow-lg p-8 flex flex-col">
+        <h2 class="text-3xl font-extrabold text-center mb-4">Submit Final Work</h2>
+        <p class="text-center mb-6 text-[#EA906C]">Upload your work and provide a description.</p>
+
+        <form id="submitWorkForm" enctype="multipart/form-data" class="flex-grow">
             <!-- Message Field -->
-            <div>
-                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+            <div class="mb-4">
+                <label for="message" class="block text-sm font-medium">Message</label>
                 <textarea 
                     id="message" 
                     name="message" 
                     required 
                     rows="4" 
-                    class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm resize-none" 
+                    class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" 
                     placeholder="Describe your work"
                 ></textarea>
             </div>
-    
+
             <!-- File Upload -->
-            <div>
-                <label for="files" class="block text-sm font-medium text-gray-700">Upload Files</label>
+            <div class="mb-4">
+                <label for="files" class="block text-sm font-medium">Upload Files</label>
                 <input 
                     type="file" 
                     id="files" 
                     name="files" 
                     multiple 
                     required 
-                    class="mt-2 block w-full text-sm text-gray-700 border border-gray-300 rounded-lg shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    class="mt-2 block w-full text-sm text-[#2B2A4C] border border-[#EA906C] rounded-lg shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-[#EA906C] file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 />
             </div>
-    
+
             <!-- Submit Button -->
             <button 
                 type="submit" 
-                class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                class="w-full px-6 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-200 focus:outline-none"
             >
                 Submit Work
             </button>
         </form>
-    
+
         <!-- Status Message -->
         <div 
             id="statusMessage" 
@@ -98,21 +103,31 @@
             <!-- Success or Error Message will be displayed here -->
         </div>
     </div>
+
+    
+    
+</div>
+
     
 
-    <footer class=" mt-4 relative bg-blueGray-200 pt-8 pb-6 bg-blue-950">
-        <div class="container mx-auto px-4">
-          <hr class="my-6 border-blueGray-300">
-                <div class="flex flex-wrap items-center md:justify-between justify-center">
-                  <div class="w-full md:w-4/12 px-4 mx-auto text-center">
-                    <div class="text-sm text-blueGray-500 font-semibold py-1 text-gray-100">
-                      © 2024 <span id="get-current-year">SwiftWork.</span><a href="#home" class="text-blueGray-500 hover:text-gray-800" target="_blank"> All rights reserved.
-                      
-                    </a>
-                  </div>
-                </div>
-              </div>
-      </footer>
+    <footer class="bg-[#2B2A4C] py-6">
+      <div class="container mx-auto px-4 text-center">
+        <hr class="my-4 border-[#EEE2DE]">
+        <p class="text-sm">
+          © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+        </p>
+      </div>
+    </footer>
+  
+    <script>
+      // Mobile menu toggle
+      const menuToggle = document.getElementById("menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu");
+  
+      menuToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+    </script>
 
     <script src="submit-project.js"></script>
 </body>
