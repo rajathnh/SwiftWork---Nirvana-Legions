@@ -67,19 +67,20 @@ async function displayFreelancerData(freelancer) {
   <div class="mx-auto p-6">
       <div class="flex flex-col lg:flex-row lg:space-x-8">
           <div class="profile-header border border-slate-300 hover:border-slate-400 flex flex-col items-center lg:w-1/3 p-6 rounded-lg shadow-sm mb-6 lg:mb-0">
-              <img src="${freelancer.profilePic || 'default-profile.png'}" 
+
+          <img src="${freelancer.profilePic || 'default-profile.png'}" 
                    alt="Profile Picture" 
                    class="w-32 h-32 rounded-full mx-auto shadow-lg border-2 border-blue-500">
               <h2 class="text-2xl font-bold mt-6 text-center text-white">${freelancer.name || 'No Name Provided'}</h2>
               <p class="text-center text-white mt-4"><strong>Email:</strong> ${freelancer.email || 'Not Provided'}</p>
             
+              
              <div class="w-full">
                   <p class="text-center text-white mt-4">
                       <strong>Skills:</strong> 
                       ${freelancer.skills && freelancer.skills.length ? freelancer.skills.join(', ') : 'No Skills Provided'}
                   </p>
                   
-                  ${badges.length > 0 ? `
                   <div class="verified-skills mt-4 w-full bg-blue-50 p-4 rounded-lg">
                       <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-6">
                           <strong class="block text-blue-600 text-lg">Verified Skills</strong>
@@ -87,13 +88,14 @@ async function displayFreelancerData(freelancer) {
                               Add Skills
                           </button>
                       </div>
+                      ${badges.length > 0 ? `
                       <div class="flex flex-wrap justify-center items-center gap-4">
                           ${badges.map(badge => `
                               <div class="badge flex items-center bg-white border border-blue-200 text-black text-xs font-semibold px-3 py-2 rounded-full shadow-sm"> ${badge.name} </div>
                           `).join('')}
                       </div>
+                      ` : '<p class="text-center text-gray-500">No verified skills yet</p>'}
                   </div>
-                  ` : ''}
               </div>
 
               <button id="editProfileBtn" class="btn bg-blue-500 text-white py-2 px-5 rounded-lg lg:mt-10 shadow-md hover:bg-blue-600 transition-colors duration-300 border border-slate-300 hover:border-slate-400">Edit Profile</button>
@@ -131,6 +133,7 @@ async function displayFreelancerData(freelancer) {
           window.location.href = 'freelancer-update.html'; // Redirect to edit profile
       });
   }
+  
   
   // Add Skills Button Event Listener (only if badges exist)
   const addSkillsBtn = document.getElementById('addSkillsBtn');
