@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   const userRole = localStorage.getItem("swiftWork_role");
+  
   const createGigButton = document.getElementById("create-gig-button");
   const editProfileButton = document.getElementById("edit-profile-button");
 
@@ -80,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           categoryDiv.className = "category-section ";
 
           const heading = document.createElement("h3");
-          heading.className = "text-xl font-semibold mb-2 mt-4";
+          heading.className = "text-xl text-grey-200 font-semibold mb-2 mt-4";
           heading.textContent = categoryTitle;
           categoryDiv.appendChild(heading);
 
@@ -113,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
           } else {
             const noGigsMessage = document.createElement("p");
-            noGigsMessage.className = "text-gray-500 mt-4";
+            noGigsMessage.className = "text-white mt-4";
             noGigsMessage.textContent = `No projects available in the ${categoryTitle}.`;
             categoryDiv.appendChild(noGigsMessage);
           }

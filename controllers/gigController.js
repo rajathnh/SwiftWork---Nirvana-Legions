@@ -229,18 +229,54 @@ const setGigToCompleted = async (req, res) => {
     }
   };
   
-const getRelevantGigs = async (req, res) => {
+  const getRelevantGigs = async (req, res) => {
     try {
-        // Freelancer's skills (passed in the request body or decoded from the token)
-        const { skills } = req.user; // Assuming skills are stored in the user's profile
+        // Fetch the freelancer ID from the URL parameters
+        const freelancerId = req.params.id;
 
-        if (!skills || skills.length === 0) {
+        // Log the freelancer ID for debugging
+        console.log(`Fetching gigs for freelancer ID: ${freelancerId}`);
+
+        // Fetch freelancer's profile to get the skills
+        const freelancer = await Freelancer.findById(freelancerId);
+
+        if (!freelancer) {
+            console.log(`Freelancer not found for ID: ${freelancerId}`);
+            return res.status(404).json({ message: 'Freelancer not found.' });
+        }
+
+        if (!freelancer.skills || freelancer.skills.length === 0) {
             return res.status(400).json({ message: 'No skills found in freelancer profile.' });
         }
 
-        // Find gigs that match any of the freelancer's skills
+        // Log the freelancer's skills for debugging
+        console.log(`Freelancer skills: ${freelancer.skills}`);
+
+        // Ensure skills are in the correct format (lowercase)
+        const skills = freelancer.skills.map(skill => skill.toLowerCase());
+        console.log(`Formatted Freelancer skills: ${skills}`);
+
+        // Find gigs that match any of the freelancer's skills (case insensitive)
+        console.log('Running query to find relevant gigs...');
         const gigs = await Gig.find({
-            skillsRequired: { $in: skills } // Matches any skill in the array
+            skillsRequired: { $in: skills.map(skill => new RegExp(`^${skill}$`, 'i')) }
+        }).populate('client', 'name'); // Populate client details if referenced
+
+        // Log the raw results of the query
+        console.log('Raw query results:', JSON.stringify(gigs, null, 2));
+
+        // Log the number of gigs found
+        console.log(`Number of gigs found: ${gigs.length}`);
+
+        // Log the skillsRequired of each gig for debugging
+        gigs.forEach(gig => {
+            console.log(`Gig ID: ${gig._id}, Skills Required: ${gig.skillsRequired}`);
+        });
+
+        // Fetch all gigs and log their skillsRequired
+        const allgigs = await Gig.find({});
+        allgigs.forEach(gig => {
+            console.log(`All Gig ID: ${gig._id}, Skills Required: ${gig.skillsRequired}`);
         });
 
         res.status(200).json({
@@ -249,10 +285,10 @@ const getRelevantGigs = async (req, res) => {
             gigs
         });
     } catch (err) {
+        console.error('Failed to fetch gigs:', err); // Log the complete error
         res.status(500).json({ message: 'Failed to fetch gigs', error: err.message });
     }
 };
-
 
 module.exports = {
     createGig,
