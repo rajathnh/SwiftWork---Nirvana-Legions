@@ -52,7 +52,7 @@ async function fetchGigDetails(gigId, token, userId) {
 
     } catch (error) {
         console.error('Error fetching Project details:', error);
-        alert('Error fetching Project details.');
+        // alert('Error fetching Project details.');
     }
 }
 
