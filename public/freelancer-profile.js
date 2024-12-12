@@ -67,6 +67,7 @@ async function getFreelancerBadges(freelancerId) {
 }
 
 // Updated displayFreelancerData function
+// Updated displayFreelancerData function
 async function displayFreelancerData(freelancer) {
   const badges = await getFreelancerBadges(freelancer._id);
 
@@ -78,12 +79,8 @@ async function displayFreelancerData(freelancer) {
                 <img src="${freelancer.profilePic || "default-profile.png"}" 
                      alt="Profile Picture" 
                      class="w-32 h-32 rounded-full mx-auto shadow-lg border-2 border-blue-500">
-                <h2 class="text-2xl font-bold mt-6 text-center text-white">${
-                  freelancer.name || "No Name Provided"
-                }</h2>
-                <p class="text-center text-white mt-4"><strong>Email:</strong> ${
-                  freelancer.email || "Not Provided"
-                }</p>
+                <h2 class="text-2xl font-bold mt-6 text-center text-white">${freelancer.name || 'No Name Provided'}</h2>
+                <p class="text-center text-white mt-4"><strong>Email:</strong> ${freelancer.email || 'Not Provided'}</p>
               
                <div class="w-full">
                     <p class="text-center text-white mt-4">
@@ -101,7 +98,7 @@ async function displayFreelancerData(freelancer) {
                     <div class="verified-skills mt-4 w-full bg-blue-50 p-4 rounded-lg">
                         <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-6">
                             <strong class="block text-blue-600 text-lg">Verified Skills</strong>
-                            <button id="addSkillsBtn" class="bg-green-500 text-white text-sm py-1 px-3 rounded-lg hover:bg-green-600 transition-colors duration-300">
+                            <button id="addSkillsBtn" class="bg-green-500 h-10 w-42 text-white text-sm py-1 px-3 rounded-lg hover:bg-green-600 transition-colors duration-300 h-">
                                 Add Skills
                             </button>
                         </div>
@@ -113,6 +110,9 @@ async function displayFreelancerData(freelancer) {
                             `
                               )
                               .join("")}
+                            ${badges.map(badge => `
+                                <div class="badge flex items-center bg-white border border-blue-200 text-black text-xs font-semibold px-3 py-2 rounded-full shadow-sm"> ${badge.name} </div>
+                            `).join('')}
                         </div>
                     </div>
                     `
@@ -139,7 +139,7 @@ async function displayFreelancerData(freelancer) {
             </div>
         </div>
         <div class="reviews bg-white p-6 border border-slate-300 hover:border-slate-400 rounded-lg shadow-sm mt-6 lg:mt-8">
-            <h3 class="text-lg font-semibold mb-2 text-blue-500">Reviews</h3>
+            <h3 class="text-lg font-semibold mb-2 text-black">Reviews</h3>
             <div class="space-y-4">
                 ${displayReviews(freelancer.reviews)}
             </div>
@@ -168,6 +168,23 @@ async function displayFreelancerData(freelancer) {
     });
 }
 
+    
+    // Edit Profile Button Event Listener
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    if (editProfileBtn) {
+        editProfileBtn.addEventListener('click', function () {
+            window.location.href = 'freelancer-update.html'; // Redirect to edit profile
+        });
+    }
+    
+    // Add Skills Button Event Listener (only if badges exist)
+    const addSkillsBtn = document.getElementById('addSkillsBtn');
+    if (addSkillsBtn) {
+        addSkillsBtn.addEventListener('click', function () {
+            window.location.href = '../tests/allTests.html';
+        });
+    }
+}
 // Display portfolio images dynamically
 function displayPortfolioImages(freelancer) {
   const images = [
@@ -207,6 +224,9 @@ function displayReviews(reviews) {
         }</strong></p>
                     <p><strong>Title:</strong> ${review.title || "No Title"}</p>
                     <p>${review.comment || "No Comment Provided"}</p>
+                    <p class="text-black"><strong>${review.user?.name || 'Anonymous'}</strong> rated <strong>${review.rating || 'N/A'}</strong></p>
+                    <p class="text-black"><strong>Title:</strong> ${review.title || 'No Title'}</p>
+                    <p class="text-black">${review.comment || 'No Comment Provided'}</p>
                 </div>
             `;
       })
@@ -252,6 +272,8 @@ function displayFreelancerProposals(proposals) {
   );
 
   proposalsSection.innerHTML = "";
+    // Clear previous content
+    proposalsSection.innerHTML = '';
 
   displayGigCategory(proposalsSection, "Open Projects", openGigs);
   displayGigCategory(proposalsSection, "Assigned Projects", assignedGigs);
@@ -311,6 +333,96 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
                 </div>
             </div>
             `;
+    // Create proposal categories
+    const categories = [
+        { 
+            title: 'Open Projects', 
+            filter: proposal => proposal.gig?.status === 'open',
+            emptyMessage: 'No open projects available.'
+        },
+        { 
+            title: 'Assigned Projects', 
+            filter: proposal => proposal.gig?.status === 'assigned' && proposal.freelancer._id === freelancerId,
+            emptyMessage: 'No assigned projects at the moment.'
+        },
+        { 
+            title: 'Approval Pending Projects', 
+            filter: proposal => proposal.gig?.status === 'approval pending' && proposal.freelancer._id === freelancerId,
+            emptyMessage: 'No projects pending approval.'
+        },
+        { 
+            title: 'Projects Assigned to Others', 
+            filter: proposal => proposal.gig?.status === 'assigned' && proposal.freelancer._id !== freelancerId,
+            emptyMessage: 'No projects currently assigned to others.'
+        },
+        { 
+            title: 'Completed Projects', 
+            filter: proposal => proposal.gig?.status === 'completed' && proposal.freelancer._id === freelancerId,
+            emptyMessage: 'No completed projects yet.'
+        }
+    ];
+
+    // Render each category
+    categories.forEach(category => {
+        const categoryProposals = proposals.filter(category.filter);
+        
+        if (categoryProposals.length > 0) {
+            // Create category section
+            const categorySection = document.createElement('div');
+            categorySection.className = 'gig-category mb-6';
+
+            // Category title
+            const categoryTitle = document.createElement('h3');
+            categoryTitle.className = 'text-xl font-semibold mb-4 text-[#EA906C]';
+            categoryTitle.textContent = category.title;
+            categorySection.appendChild(categoryTitle);
+
+            // Create proposal grid
+            const proposalGrid = document.createElement('div');
+            proposalGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+
+            // Render proposals in the category
+            categoryProposals.forEach(proposal => {
+                const gig = proposal.gig;
+                if (!gig) return; // Skip if no gig data
+
+                const proposalCard = document.createElement('div');
+                proposalCard.className = 'bg-white rounded-lg shadow-md p-6 transform transition-all duration-300 hover:scale-105 border border-gray-200';
+                
+                proposalCard.innerHTML = `
+                    <div class="flex flex-col h-full">
+                        <h4 class="text-lg font-bold mb-2 text-[#2B2A4C]">${gig.title || 'Untitled Project'}</h4>
+                        <p class="text-gray-600 mb-4 flex-grow">${gig.description ? gig.description.slice(0, 100) + '...' : 'No description available'}</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-800">Budget:</span>
+                                <span class="font-semibold text-black">₹${gig.budget || 'N/A'}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-800">Deadline:</span>
+                                <span class="font-semibold text-black">${gig.deadline ? new Date(gig.deadline).toLocaleDateString() : 'N/A'}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-800">Bid Amount:</span>
+                                <span class="font-semibold text-black">₹${proposal.bidAmount || 'N/A'}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-800">Status:</span>
+                                <span class="font-semibold text-[#e56f08]">${gig.status || 'Pending'}</span>
+                            </div>
+                        </div>
+                        <div class="mt-auto flex space-x-4">
+                            <a href="gig-details.html?gigId=${gig._id}" class="w-full text-center bg-[#2B2A4C] text-white py-2 rounded-md hover:bg-[#EA906C] transition">
+                                View Details
+                            </a>
+                            ${category.title === 'Assigned Projects' ? `
+                                <button onclick="navigateToSubmitProject('${gig._id}')" class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition">
+                                    Submit Project
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
 
       if (categoryTitle === "Assigned Projects") {
         const submitProjectBtn = document.createElement("button");
@@ -345,6 +457,47 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
   }
 }
 
+                proposalGrid.appendChild(proposalCard);
+            });
+
+            categorySection.appendChild(proposalGrid);
+            proposalsSection.appendChild(categorySection);
+        } else {
+            // Create empty state for category with no proposals
+            const emptyStateDiv = document.createElement('div');
+            emptyStateDiv.className = 'text-center py-6 bg-gray-100 rounded-lg';
+            
+            const emptyTitle = document.createElement('h3');
+            emptyTitle.className = 'text-xl font-semibold mb-2 text-[#EA906C]';
+            emptyTitle.textContent = category.title;
+            
+            const emptyMessage = document.createElement('p');
+            emptyMessage.className = 'text-gray-600';
+            emptyMessage.textContent = category.emptyMessage;
+            
+            emptyStateDiv.appendChild(emptyTitle);
+            emptyStateDiv.appendChild(emptyMessage);
+            
+            proposalsSection.appendChild(emptyStateDiv);
+        }
+    });
+}
+document.addEventListener("DOMContentLoaded", () => {
+    const viewAllGigsBtn = document.getElementById("view-all-gigs-btn");
+  
+    // Add event listener to the "View All Gigs" button
+    viewAllGigsBtn.addEventListener("click", () => {
+      // Redirect to the page that shows all gigs
+      window.location.href = "display-all-gigs.html";
+  
+      // Alternatively, fetch and display gigs dynamically
+      // fetchAndDisplayAllGigs();
+    });
+  });
+// Helper function for submitting project
+function navigateToSubmitProject(gigId) {
+    window.location.href = `submit-project.html?gigId=${gigId}`;
+}
 // Fetch notifications from the backend
 const fetchNotifications = async () => {
   try {
