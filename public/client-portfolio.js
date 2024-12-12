@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   const userRole = localStorage.getItem("swiftWork_role");
+  
   const createGigButton = document.getElementById("create-gig-button");
   const editProfileButton = document.getElementById("edit-profile-button");
 

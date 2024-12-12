@@ -1,19 +1,26 @@
-// Fetch all available gigs from the backend and display them
 document.addEventListener('DOMContentLoaded', async function() {
+    const gigList = document.getElementById('gig-list');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    loadingIndicator.style.display = 'block';
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const swiftWorkID = urlParams.get("freelancerId") || localStorage.getItem("swiftWork_ID");
+    
     try {
-        const response = await fetch('http://localhost:5000/api/v1/gigs', {
+        const response = await fetch(`http://localhost:5000/api/v1/gigs/${swiftWorkID}/relevant-gigs`, { // Use backticks for the URL
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`
             }
         });
 
+        loadingIndicator.style.display = 'none';
+
         if (!response.ok) {
-            throw new Error('Failed to fetch Projects');
+            throw new Error('Failed to fetch relevant gigs');
         }
 
         const result = await response.json();
-        const gigList = document.getElementById('gig-list');
 
         // Filter gigs to include only those with status: "open"
         const openGigs = result.gigs.filter(gig => gig.status === 'open');
@@ -48,6 +55,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     } catch (error) {
         console.error(error);
-        alert('Error fetching Projects');
+        loadingIndicator.style.display = 'none';
+        const errorMessage = document.createElement('p');
+        errorMessage.classList.add('error-message');
+        errorMessage.textContent = 'Error fetching relevant gigs. Please try again later.';
+        gigList.appendChild(errorMessage);
     }
 });
