@@ -121,7 +121,7 @@ async function displayFreelancerData(freelancer) {
           </div>
       </div>
       <div class="reviews bg-white p-6 border border-slate-300 hover:border-slate-400 rounded-lg shadow-sm mt-6 lg:mt-8">
-          <h3 class="text-lg font-semibold mb-2 text-black">Reviews</h3>
+          <h3 class="text-lg  mb-2 text-blue-500 text-bold"><strong>Reviews</strong></h3>
           <div class="space-y-4">
               ${displayReviews(freelancer.reviews)}
           </div>
@@ -169,10 +169,13 @@ function displayReviews(reviews) {
       return reviews.map(review => {
           return `
               <div class="review">
+               
                   <p class="text-black"><strong>${review.user?.name || 'Anonymous'}</strong> rated <strong>${review.rating || 'N/A'}</strong></p>
                   <p class="text-black"><strong>Title:</strong> ${review.title || 'No Title'}</p>
                   <p class="text-black">${review.comment || 'No Comment Provided'}</p>
-              </div>
+                
+                  </div>
+                  <hr>
           `;
       }).join('');
   } else {
