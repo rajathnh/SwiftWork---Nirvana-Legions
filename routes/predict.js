@@ -13,7 +13,7 @@ router.post("/calculate-price", async (req, res) => {
   }
 
   try {
-    const flaskResponse = await axios.post("http://127.0.0.1:5001/predict", {
+    const flaskResponse = await axios.post("http://localhost:5001/predict", {
       description,
       deadline,
     });

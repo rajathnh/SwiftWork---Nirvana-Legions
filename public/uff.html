@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Uber for Freelancers</title>
-    <link rel="stylesheet" href="src/output.css">
+    <link rel="stylesheet" href="src/output.css" />
   </head>
   <body class="bg-gray-100">
     <!-- Header -->
@@ -30,7 +30,6 @@
           QuickLance
         </h1>
         <form>
-          
           <!-- Select Deadline -->
           <div class="mb-6">
             <label for="deadline" class="block text-gray-700 font-medium mb-2"
@@ -44,7 +43,7 @@
           </div>
 
           <!-- Add Description -->
-          <div class="mb-6 ">
+          <div class="mb-6">
             <label
               for="description"
               class="block text-gray-700 font-medium mb-2"
@@ -55,160 +54,132 @@
               rows="4"
               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></textarea>
+            <div id="description-feedback" class="text-sm mt-1"></div>
           </div>
 
           <!-- Submit Button -->
-          <button id="predictButton"
-           
+          <button
+            onclick="submitDetails(event)"
+            type="button"
             class="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Estimate Price
           </button>
         </form>
       </div>
-      
-    <div id="result" class="text-center mt-4 text-lg text-green-600"></div>
+
+      <!-- Result Section -->
+      <div id="result" class="text-center mt-4 text-lg"></div>
     </main>
-
-
 
     <!-- Footer -->
     <footer class="mt-3 relative bg-blueGray-200 pt-8 pb-6 bg-blue-950">
-        <div class="container mx-auto px-4">
-          <hr class="my-6 border-blueGray-300">
-                <div class="flex flex-wrap items-center md:justify-between justify-center">
-                  <div class="w-full md:w-4/12 px-4 mx-auto text-center">
-                    <div class="text-sm text-blueGray-500 font-semibold py-1 text-gray-100">
-                      © 2024 <span id="get-current-year">SwiftWork.</span><a href="#home" class="text-blueGray-500 hover:text-gray-800" target="_blank"> All rights reserved.
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-      </footer>
+      <div class="container mx-auto px-4">
+        <hr class="my-6 border-blueGray-300" />
+        <div
+          class="flex flex-wrap items-center md:justify-between justify-center"
+        >
+          <div class="w-full md:w-4/12 px-4 mx-auto text-center">
+            <div
+              class="text-sm text-blueGray-500 font-semibold py-1 text-gray-100"
+            >
+              © 2024 SwiftWork.
+              <a
+                href="#home"
+                class="text-blueGray-500 hover:text-gray-800"
+                target="_blank"
+                >All rights reserved.</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
 
-    
-<!--   
-// async function submitDetails(event) {
-//   if(event) event.preventDefault(); // Prevent page refresh
+    <script>
+      async function submitDetails(event) {
+        // Prevent default behavior if part of a form
+        if (event) event.preventDefault();
 
-//   // Get the values from input elements
-//   const description = document.getElementById("description").value;
-//   const deadline = document.getElementById("deadline").value;
+        // Debugging log
+        console.log("submitDetails function triggered");
 
-//   // Validate inputs
-//   if (!description || !deadline) {
-//     alert("Please fill in both description and deadline.");
-//     return;
-//   }
+        // Get values from input elements
+        const description = document.getElementById("description").value;
+        const deadline = document.getElementById("deadline").value;
 
-//   // Validate the deadline is in the future
-//   const currentDate = new Date();
-//   const selectedDate = new Date(deadline);
+        // Debugging logs to confirm values
+        console.log("Description:", description);
+        console.log("Deadline:", deadline);
 
-//   if (selectedDate <= currentDate) {
-//     alert("Please select a future date for the deadline.");
-//     return;
-//   }
+        // Validate inputs
+        if (!description || !deadline) {
+          alert("Please fill in both description and deadline.");
+          return;
+        }
 
-//   try {
-//     // Send the data to the backend route
-//     const response = await fetch("/api/v1/predict/calculate-price", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({
-//         description: description,
-//         deadline: deadline
-//       })
-//     });
+        // Validate description length (minimum 35 characters)
+        if (description.length < 35) {
+          alert("Description must be at least 35 characters long.");
+          return;
+        }
 
-//     // Parse the JSON response
-//     const data = await response.json();
+        // Validate deadline to ensure it's a future date
+        const currentDate = new Date();
+        const selectedDate = new Date(deadline);
+        if (selectedDate <= currentDate) {
+          alert("Please select a future date for the deadline.");
+          return;
+        }
 
-//     if (response.ok) {
-//       // Display the result dynamically on the page
-//       document.getElementById("result").innerText = `Total Price: INR ${data.totalPrice}`;
-//     } else {
-//       // Handle errors from the backend
-//       alert(`Error: ${data.error}`);
-//     }
-//   } catch (error) {
-//     // Handle network or other errors
-//     console.error("Error:", error);
-//     alert("Something went wrong. Please try again.");
-//   }
-// }
+        try {
+          // Show a loading indicator (optional)
+          const resultDiv = document.getElementById("result");
+          resultDiv.innerHTML = "Calculating price...";
 
+          // Send data to the backend route
+          const response = await fetch("/api/v1/predict/calculate-price", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ description, deadline }),
+          });
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+          // Parse the JSON response
+          const data = await response.json();
 
-const genAI = new GoogleGenerativeAI("AIzaSyD-s1ZabdEVNOE9aL-786g8GSWylWLcsDY");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-const deadline =  document.getElementById("deadline").value;
-const description = document.getElementById("description").value;
-const prompt = `Based on the following information, predict the typical price a freelancer would charge:
-
-* **Deadline:** ${deadline.toISOString()} 
-* **Description:** ${description}
-
-Provide the price as a single number (e.g., 50, 100, 200).`;
-
-const result = await model.generateContent(prompt);
-
-// Extract the price from the model's response
-const priceRegex = /\b\d+\b/; // Match one or more digits
-const priceMatch = result.response.text().match(priceRegex);
-
-if (priceMatch) {
-  const predictedPrice = parseInt(priceMatch[0]);
-  console.log("Estimated Price:", predictedPrice); 
-} else {
-  console.log("Could not predict the price.");
-} -->
-
-
-<script>
-  const predictButton = document.getElementById("predictButton");
-  const resultDiv = document.getElementById("result");
-
-  predictButton.addEventListener("click", async () => {
-    const genAI = new GoogleGenerativeAI("AIzaSyD-s1ZabdEVNOE9aL-786g8GSWylWLcsDY"); 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-    const deadline = document.getElementById("deadline").value;
-    const description = document.getElementById("description").value;
-
-    const prompt = `Based on the following information, predict the typical price a freelancer would charge:
-
-    * **Deadline:** ${deadline.toISOString()} 
-    * **Description:** ${description}
-
-    Provide the price as a single number (e.g., 50, 100, 200).`;
-
-    try {
-      const result = await model.generateContent(prompt); 
-
-      // Extract the price from the model's response
-      const priceRegex = /\b\d+\b/; 
-      const priceMatch = result.response.text().match(priceRegex);
-
-      if (priceMatch) {
-        const predictedPrice = parseInt(priceMatch[0]);
-        resultDiv.textContent = `Estimated Price: ${predictedPrice}`;
-      } else {
-        resultDiv.textContent = "Could not predict the price.";
+          // Display the result
+          if (response.ok) {
+            resultDiv.innerHTML = `
+        <p class="text-green-950 font-bold">Total Price: INR ${data.totalPrice}</p>
+      `;
+          } else {
+            resultDiv.innerHTML = `<p class="text-red-500">Error: ${data.error}</p>`;
+          }
+        } catch (error) {
+          // Handle any unexpected errors
+          console.error("Error:", error);
+          document.getElementById("result").innerHTML =
+            '<p class="text-red-500 font-bold">Something went wrong. Please try again.</p>';
+        }
       }
 
-    } catch (error) {
-      console.error("Error:", error);
-      resultDiv.textContent = "An error occurred. Please try again.";
-    }
-  });
-</script>
+      // Add real-time feedback for description input
+      document
+        .getElementById("description")
+        .addEventListener("input", function () {
+          const description = this.value;
+          const feedback = document.getElementById("description-feedback");
 
-
+          if (description.length < 35) {
+            feedback.textContent = `Description must be at least 35 characters long. (${description.length}/35)`;
+            feedback.style.color = "red";
+          } else {
+            feedback.textContent = "Description looks good!";
+            feedback.style.color = "green";
+          }
+        });
+    </script>
   </body>
 </html>
