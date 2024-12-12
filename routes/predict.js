@@ -20,9 +20,9 @@ router.post("/calculate-price", async (req, res) => {
 
     const { complexity, urgency } = flaskResponse.data;
 
-    const basePrice = 1200;
-    const complexityWeight = 1200;
-    const urgencyWeight = 1500;
+    const basePrice = 0;
+    const complexityWeight = 700;
+    const urgencyWeight = 800;
     const totalPrice =
       basePrice + complexity * complexityWeight + urgency * urgencyWeight;
 
