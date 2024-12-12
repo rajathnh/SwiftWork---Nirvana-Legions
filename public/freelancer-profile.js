@@ -16,7 +16,7 @@ async function getFreelancerData(freelancerId) {
             throw new Error("Failed to fetch freelancer data");
         }
         const data = await response.json();
-        displayFreelancerData(data.freelancer);
+        await displayFreelancerData(data.freelancer);
         getFreelancerProposals(freelancerId); // Fetch proposals after displaying profile
     } catch (error) {
         console.error("Error:", error);
@@ -39,6 +39,21 @@ async function getFreelancerProposals(freelancerId) {
         if (proposalsSection) {
             proposalsSection.innerHTML = "<p>Error loading proposals. Please try again later.</p>";
         }
+    }
+}
+
+// Fetch freelancer badges
+async function getFreelancerBadges(freelancerId) {
+    try {
+        const response = await fetch(`http://localhost:5000/api/v1/test/freelancer-badges/${freelancerId}`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch freelancer badges");
+        }
+        const data = await response.json();
+        return data.badges || [];
+    } catch (error) {
+        console.error("Error fetching badges:", error);
+        return [];
     }
 }
 
@@ -73,7 +88,7 @@ async function displayFreelancerData(freelancer) {
                         </div>
                         <div class="flex flex-wrap justify-center items-center gap-4">
                             ${badges.map(badge => `
-                                <div class="badge flex items-center bg-white border border-blue-200 text-blue-800 text-xs font-semibold px-3 py-2 rounded-full shadow-sm" style="margin: 10px; padding: 10px 15px;"> ${badge.name} </div>
+                                <div class="badge flex items-center bg-white border border-blue-200 text-blue-800 text-xs font-semibold px-3 py-2 rounded-full shadow-sm"> ${badge.name} </div>
                             `).join('')}
                         </div>
                     </div>
@@ -118,16 +133,11 @@ async function displayFreelancerData(freelancer) {
     });
 }
 
-// Modify the initialization to use async function
-document.addEventListener('DOMContentLoaded', async () => {
-    const freelancerId = getFreelancerIdFromLocalStorage();
-    await getFreelancerData(freelancerId);
-});
 // Display portfolio images dynamically
 function displayPortfolioImages(freelancer) {
     const images = [freelancer.image1, freelancer.image2, freelancer.image3, freelancer.image4];
     return images
-        .filter(image => image && typeof image === 'string' && image.trim() !== '') // Filter valid and non-empty strings
+        .filter(image => image && typeof image === 'string' && image.trim() !== '')
         .map(image => `
             <div class="w-full h-40 md:h-48 lg:h-56">
                 <img src="${image}" alt="Portfolio Image" 
@@ -169,14 +179,15 @@ function displayFreelancerProposals(proposals) {
     const assignedGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.freelancer._id === freelancerId);
     const approvalPendingGigs = proposals.filter(proposal => proposal.gig?.status === 'approval pending' && proposal.freelancer._id === freelancerId);
     const assignedToOthersGigs = proposals.filter(proposal => proposal.gig?.status === 'assigned' && proposal.freelancer._id !== freelancerId);
-    const completedProjectss = proposals.filter(proposal => proposal.gig?.status=== 'completed' && proposal.freelancer._id === freelancerId)
+    const completedProjects = proposals.filter(proposal => proposal.gig?.status === 'completed' && proposal.freelancer._id === freelancerId);
+    
     proposalsSection.innerHTML = '';
 
     displayGigCategory(proposalsSection, 'Open Projects', openGigs);
     displayGigCategory(proposalsSection, 'Assigned Projects', assignedGigs);
     displayGigCategory(proposalsSection, 'Approval Pending Projects', approvalPendingGigs);
     displayGigCategory(proposalsSection, 'Assigned to Others Projects', assignedToOthersGigs);
-    displayGigCategory(proposalsSection, 'Completed Projects', completedProjectss)
+    displayGigCategory(proposalsSection, 'Completed Projects', completedProjects);
 }
 
 function displayGigCategory(proposalsSection, categoryTitle, gigs) {
@@ -184,7 +195,6 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
         const categoryDiv = document.createElement('div');
         categoryDiv.classList.add('gig-category');
         
-
         const heading = document.createElement('h3');
         heading.innerText = categoryTitle;
         categoryDiv.appendChild(heading);
@@ -198,37 +208,32 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
             proposalDiv.classList.add('proposal');
             proposalDiv.innerHTML = `
             <div class="p-4">
-        <!-- Proposal Div -->
-        <div class="proposal-card bg-white p-6 rounded-lg shadow-lg border border-slate-300 hover:border-slate-400 text-left">
-            <a href="${gigLink}" class="proposal-link block">
-                <p class="text-lg font-semibold text-gray-800"><strong>Project:</strong> ${gig.title || 'No Title'}</p>
-                <p class="text-gray-700"><strong>Description:</strong> ${gig.description || 'No Description'}</p>
-                <p class="text-gray-700"><strong>Budget:</strong> ₹${gig.budget || 'N/A'}</p>
-                <p class="text-gray-700"><strong>Deadline:</strong> ${new Date(gig.deadline).toDateString() || 'N/A'}</p>
-                <p class="text-gray-700"><strong>Bid Amount:</strong> ₹${proposal.bidAmount || 'N/A'}</p>
-                <p class="text-gray-700"><strong>Proposal Message:</strong> ${proposal.proposalMessage || 'No Message Provided'}</p>
-                <p class="text-gray-700"><strong>Status:</strong> ${gigStatus}</p>
-            </a>
-        </div>
-        </div>
+                <div class="proposal-card bg-white p-6 rounded-lg shadow-lg border border-slate-300 hover:border-slate-400 text-left">
+                    <a href="${gigLink}" class="proposal-link block">
+                        <p class="text-lg font-semibold text-gray-800"><strong>Project:</strong> ${gig.title || 'No Title'}</p>
+                        <p class="text-gray-700"><strong>Description:</strong> ${gig.description || 'No Description'}</p>
+                        <p class="text-gray-700"><strong>Budget:</strong> ₹${gig.budget || 'N/A'}</p>
+                        <p class="text-gray-700"><strong>Deadline:</strong> ${new Date(gig.deadline).toDateString() || 'N/A'}</p>
+                        <p class="text-gray-700"><strong>Bid Amount:</strong> ₹${proposal.bidAmount || 'N/A'}</p>
+                        <p class="text-gray-700"><strong>Proposal Message:</strong> ${proposal.proposalMessage || 'No Message Provided'}</p>
+                        <p class="text-gray-700"><strong>Status:</strong> ${gigStatus}</p>
+                    </a>
+                </div>
+            </div>
             `;
 
             if (categoryTitle === 'Assigned Projects') {
-              // Create the Submit Project Button
-              const submitProjectBtn = document.createElement('button');
-              submitProjectBtn.classList.add('submit-project-btn', 'bg-green-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'shadow-md', 'hover:bg-green-600', 'transition', 'duration-300','mt-2','place-at-center');
-              submitProjectBtn.innerText = 'Submit Project';
-              
-              // Add click event to navigate to the project submission page
-              submitProjectBtn.addEventListener('click', () => {
-                  window.location.href = `submit-project.html?gigId=${gig._id}`;
-              });
-          
-              // Add the button as a child inside the relevant proposalDiv
-              const proposalLink = proposalDiv.querySelector('.proposal-card');
-              proposalLink.appendChild(submitProjectBtn); // Ensures the button is appended inside the div
-          }
-          
+                const submitProjectBtn = document.createElement('button');
+                submitProjectBtn.classList.add('submit-project-btn', 'bg-green-500', 'text-white', 'py-2', 'px-4', 'rounded-lg', 'shadow-md', 'hover:bg-green-600', 'transition', 'duration-300','mt-2','place-at-center');
+                submitProjectBtn.innerText = 'Submit Project';
+                
+                submitProjectBtn.addEventListener('click', () => {
+                    window.location.href = `submit-project.html?gigId=${gig._id}`;
+                });
+            
+                const proposalLink = proposalDiv.querySelector('.proposal-card');
+                proposalLink.appendChild(submitProjectBtn);
+            }
 
             categoryDiv.appendChild(proposalDiv);
         });
@@ -236,17 +241,6 @@ function displayGigCategory(proposalsSection, categoryTitle, gigs) {
         proposalsSection.appendChild(categoryDiv);
     }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    const viewAllGigsBtn = document.getElementById("view-all-gigs-btn");
-  
-    // Add event listener to the "View All Gigs" button
-    viewAllGigsBtn.addEventListener("click", () => {
-      // Redirect to the page that shows all gigs
-      window.location.href = "display-all-gigs.html";
-    });
-  });
-  // freelancer-profile.js or notifications.js
 
 // Fetch notifications from the backend
 const fetchNotifications = async () => {
@@ -257,10 +251,10 @@ const fetchNotifications = async () => {
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
-  };
+};
   
-  // Display notifications in the UI
-  const displayNotifications = (notifications) => {
+// Display notifications in the UI
+const displayNotifications = (notifications) => {
     const notificationList = document.getElementById('notificationList');
     notificationList.innerHTML = ''; // Clear the existing list
     notifications.forEach(notification => {
@@ -272,11 +266,12 @@ const fetchNotifications = async () => {
       `;
       notificationList.appendChild(notificationItem);
     });
-  };
+};
   
-  // Mark notification as read
-  const markAsRead = async (notificationId) => {
+// Mark notification as read
+const markAsRead = async (notificationId) => {
     try {
+      
       const response = await fetch(`/api/notifications/mark-as-read/${notificationId}`, {
         method: 'PUT',
       });
