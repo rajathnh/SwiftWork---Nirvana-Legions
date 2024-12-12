@@ -150,7 +150,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 // Add the "Accept Proposal" button if the user is a client and the gig is not assigned
                 if (userRole === 'client' && gig.status !== 'assigned') {
                     proposalContent += `
-                        <button class="select-proposal-btn" 
+                    <br>
+                        <button class="select-proposal-btn bg-green-500 text-white py-2 px-6 rounded-full shadow-md hover:bg-green-600 transition duration-300"
                                 onclick="acceptProposal('${gig._id}', '${proposal._id}', '${proposal.freelancer._id}')">
                             Select Proposal
                         </button>
