@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', async function() {
     const gigList = document.getElementById('gig-list');
     const loadingIndicator = document.getElementById('loading-indicator');
+    const budgetFilter = document.getElementById('budget-filter');
+    const deadlineSort = document.getElementById('deadline-sort');
+    const budgetSort = document.getElementById('budget-sort');
+    const resetFiltersBtn = document.getElementById('reset-filters');
     
     // If loading indicator doesn't exist, create it
     if (!loadingIndicator) {
@@ -18,9 +22,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const swiftWorkID = urlParams.get("freelancerId") || localStorage.getItem("swiftWork_ID");
     const authToken = localStorage.getItem('authToken');
 
-    console.log("♨️ Debugging Info:");
-    console.log("SwiftWork ID:", swiftWorkID);
-    console.log("Auth Token:", authToken ? "Token present" : "No token found");
+    let allGigs = []; // Store all gigs to enable filtering
 
     if (!swiftWorkID) {
         console.error("No SwiftWork ID found");
@@ -34,11 +36,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json'  // Add this
+                'Content-Type': 'application/json'
             }
         });
-
-        console.log("Response Status:", response.status);
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -47,21 +47,40 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         const result = await response.json();
-        console.log("Received Gigs:", result);
+        // Filter gigs to include only those with status: "open"
+        allGigs = result.gigs.filter(gig => gig.status === 'open');
 
         // Hide loading indicator
         if (loadingEl) loadingEl.style.display = 'none';
 
-        // Filter gigs to include only those with status: "open"
-        const openGigs = result.gigs.filter(gig => gig.status === 'open');
-        console.log("Open Gigs:", openGigs);
+        // Initial render of gigs
+        renderGigs(allGigs);
 
-        if (openGigs.length === 0) {
-            gigList.innerHTML = '<p class="text-center">No open gigs available.</p>';
+        // Setup filter and sort event listeners
+        setupFilterAndSort();
+
+    } catch (error) {
+        console.error("Fetch Error:", error);
+        
+        // Hide loading indicator
+        if (loadingEl) loadingEl.style.display = 'none';
+        
+        const errorMessage = document.createElement('p');
+        errorMessage.classList.add('error-message', 'text-red-500', 'text-center');
+        errorMessage.textContent = `Error fetching relevant gigs: ${error.message}. Please try again later.`;
+        gigList.appendChild(errorMessage);
+    }
+
+    function renderGigs(gigsToRender) {
+        // Clear existing gigs
+        gigList.innerHTML = '';
+
+        if (gigsToRender.length === 0) {
+            gigList.innerHTML = '<p class="text-center">No gigs available.</p>';
             return;
         }
 
-        openGigs.forEach(gig => {
+        gigsToRender.forEach(gig => {
             const gigCard = document.createElement('div');
             gigCard.classList.add('gig-card', 'bg-white', 'p-4', 'rounded-lg', 'shadow-md');
 
@@ -89,16 +108,53 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Append the gig card to the list
             gigList.appendChild(gigCard);
         });
+    }
 
-    } catch (error) {
-        console.error("Fetch Error:", error);
-        
-        // Hide loading indicator
-        if (loadingEl) loadingEl.style.display = 'none';
-        
-        const errorMessage = document.createElement('p');
-        errorMessage.classList.add('error-message', 'text-red-500', 'text-center');
-        errorMessage.textContent = `Error fetching relevant gigs: ${error.message}. Please try again later.`;
-        gigList.appendChild(errorMessage);
+    function setupFilterAndSort() {
+        // Add event listeners for filtering and sorting
+        budgetFilter.addEventListener('input', filterAndSortGigs);
+        deadlineSort.addEventListener('change', filterAndSortGigs);
+        budgetSort.addEventListener('change', filterAndSortGigs);
+
+        // Add reset functionality
+        resetFiltersBtn.addEventListener('click', resetFilters);
+    }
+
+    function resetFilters() {
+        // Reset form elements to default
+        budgetFilter.value = '';
+        deadlineSort.value = '';
+        budgetSort.value = '';
+
+        // Render all gigs
+        renderGigs(allGigs);
+    }
+
+    function filterAndSortGigs() {
+        const maxBudgetValue = budgetFilter.value;
+        const deadlineSortValue = deadlineSort.value;
+        const budgetSortValue = budgetSort.value;
+
+        // Filter by budget
+        let filteredGigs = allGigs.filter(gig => 
+            maxBudgetValue === '' || gig.budget <= parseFloat(maxBudgetValue)
+        );
+
+        // Sort by deadline
+        if (deadlineSortValue === 'nearest') {
+            filteredGigs.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+        } else if (deadlineSortValue === 'farthest') {
+            filteredGigs.sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
+        }
+
+        // Sort by budget
+        if (budgetSortValue === 'low-to-high') {
+            filteredGigs.sort((a, b) => a.budget - b.budget);
+        } else if (budgetSortValue === 'high-to-low') {
+            filteredGigs.sort((a, b) => b.budget - a.budget);
+        }
+
+        // Render filtered and sorted gigs
+        renderGigs(filteredGigs);
     }
 });
