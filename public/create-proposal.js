@@ -70,6 +70,7 @@ async function fetchGigDetails(gigId, token, userId) {
 }
 
 // Function to handle proposal submission
+// Function to handle proposal submission
 async function submitProposal(gigId, token, userId) {
     const bidAmountInput = document.getElementById('bidAmount');
     const proposalMessageInput = document.getElementById('proposalMessage');
@@ -103,9 +104,15 @@ async function submitProposal(gigId, token, userId) {
 
         const proposalData = await response.json();
         alert('Proposal submitted successfully!');
+
+        // Disable the button after submission
         if (submitProposalButton) {
             submitProposalButton.disabled = true;
         }
+
+        // Redirect to the gig details page
+        window.location.href = `gig-details.html?gigId=${gigId}`;
+
     } catch (error) {
         console.error('Error submitting proposal:', error);
         alert('Error submitting proposal.');
