@@ -41,9 +41,6 @@ document.getElementById('submitWorkForm').addEventListener('submit', async funct
         formData.append('files', files[i]);
     }
 
-    // Get the gig ID dynamically (Example: extracting it from URL)
-   
-
     try {
         const response = await fetch(`/api/v1/gigs/${gigId}/files`, {
             method: 'POST',
@@ -67,9 +64,15 @@ document.getElementById('submitWorkForm').addEventListener('submit', async funct
                     <p><strong>Submitted At:</strong> ${new Date(data.submission.submittedAt).toLocaleString()}</p>
                 </div>
             `;
-            // Optionally clear the form
+
+            // Clear the form
             document.getElementById('message').value = '';
             document.getElementById('files').value = '';
+
+            // Redirect to freelancer profile page after 2 seconds
+            setTimeout(() => {
+                window.location.href = '/freelancer-profile.html';
+            }, 2000); // Redirect after 2 seconds
         } else {
             statusMessageDiv.innerHTML = `
                 <div class="bg-red-100 text-red-800 border border-red-300 rounded-md p-4">
