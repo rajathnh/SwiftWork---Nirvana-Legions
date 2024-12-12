@@ -81,7 +81,7 @@ async function displayFreelancerData(freelancer) {
                       ${freelancer.skills && freelancer.skills.length ? freelancer.skills.join(', ') : 'No Skills Provided'}
                   </p>
                   
-                  <div class="verified-skills place-items-center mt-4 w-full bg-[#464477] p-4 rounded-lg">
+                  <div class="verified-skills mt-4 w-full bg-[#464477] p-4 rounded-lg">
                       <div class="place-items-center gap-4 mb-6">
                           <strong class="block text-white mb-3 text-lg">Verified Skills</strong>
                           
@@ -92,13 +92,12 @@ async function displayFreelancerData(freelancer) {
                               <div class="badge flex items-center bg-white border border-blue-200 text-black text-xs font-semibold px-3 py-2 rounded-full shadow-sm"> ${badge.name} </div>
                           `).join('')}
                           <br>
-                          
-                      </div>
-                      ` : '<p class="text-center text-gray-300">No verified skills yet</p>'}
-                      <button id="addSkillsBtn" class="bg-green-500 mt-3 h-10 w-42 text-white text-sm py-1 px-3 rounded-lg hover:bg-green-600 transition-colors duration-300 ">
+                          <button id="addSkillsBtn" class="bg-green-500 h-10 w-42 text-white text-sm py-1 px-3 rounded-lg hover:bg-green-600 transition-colors duration-300 h-">
                               Add Skills
                           </button>
-                  
+                      </div>
+                      ` : '<p class="text-center text-gray-300">No verified skills yet</p>'}
+                  </div>
               </div>
 
               <button id="editProfileBtn" class="btn bg-[#B31312] mt-3 text-white py-2 px-5 rounded-lg lg:mt-10 shadow-md hover:bg-[#EA906C] transition-colors duration-300 border border-[#EA906C]">Edit Profile</button>
