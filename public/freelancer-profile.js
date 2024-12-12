@@ -96,7 +96,7 @@ async function displayFreelancerData(freelancer) {
                   ` : ''}
               </div>
 
-              <button id="editProfileBtn" class="btn bg-blue-500 text-white py-2 px-5 rounded-lg lg:mt-10 shadow-md hover:bg-blue-600 transition-colors duration-300 border border-slate-300 hover:border-slate-400">Edit Profile</button>
+              <button id="editProfileBtn" class="btn bg-[#B31312] text-white py-2 px-5 rounded-lg lg:mt-10 shadow-md hover:bg-[#EA906C] transition-colors duration-300 border border-[#EA906C]">Edit Profile</button>
           </div>
 
           <div class="bio-portfolio flex-1 space-y-6">
