@@ -1,10 +1,11 @@
 // Fetch the gig ID from the URL (you should pass this ID when linking to this page)
 document.addEventListener('DOMContentLoaded', () => {
-const gigId = new URLSearchParams(window.location.search).get('gigId');
-const userId = localStorage.getItem('swiftWork_ID');  // Assuming user ID is stored in localStorage
-const token = localStorage.getItem('authToken'); // Assuming auth token is stored in localStorage
-fetchGigDetails(gigId, token, userId);
+    const gigId = new URLSearchParams(window.location.search).get('gigId');
+    const userId = localStorage.getItem('swiftWork_ID');  // Assuming user ID is stored in localStorage
+    const token = 'dummy_auth_token_12345'; // Added dummy token
+    fetchGigDetails(gigId, token, userId);
 });
+
 // Elements
 const submitProposalButton = document.getElementById('submit-proposal-button');
 const proposalMessageInput = document.getElementById('proposalMessage');
@@ -56,12 +57,13 @@ async function fetchGigDetails(gigId, token, userId) {
     }
 }
 
-// Ensure the DOM content is loaded before running the script
-
-
-
 // Function to handle proposal submission
 async function submitProposal() {
+    // Get gigId from URL
+    const gigId = new URLSearchParams(window.location.search).get('gigId');
+    const userId = localStorage.getItem('swiftWork_ID');
+    const token = 'dummy_auth_token_12345'; // Added dummy token here as well
+
     const bidAmount = bidAmountInput.value;
     const proposalMessage = proposalMessageInput.value;
 
@@ -92,6 +94,7 @@ async function submitProposal() {
         alert('Proposal submitted successfully!');
         submitProposalButton.disabled = true;
     } catch (error) {
+        console.log("♨️♨️", error);
         console.error('Error submitting proposal:', error);
         alert('Error submitting proposal.');
     }
@@ -99,6 +102,3 @@ async function submitProposal() {
 
 // Event listener for proposal submission
 submitProposalButton.addEventListener('click', submitProposal);
-
-// Initialize the page
-fetchGigDetails();
