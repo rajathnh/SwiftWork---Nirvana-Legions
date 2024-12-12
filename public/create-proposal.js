@@ -1,15 +1,17 @@
 // Fetch the gig ID from the URL (you should pass this ID when linking to this page)
+document.addEventListener('DOMContentLoaded', () => {
 const gigId = new URLSearchParams(window.location.search).get('gigId');
 const userId = localStorage.getItem('swiftWork_ID');  // Assuming user ID is stored in localStorage
 const token = localStorage.getItem('authToken'); // Assuming auth token is stored in localStorage
-
+fetchGigDetails(gigId, token, userId);
+});
 // Elements
 const submitProposalButton = document.getElementById('submit-proposal-button');
 const proposalMessageInput = document.getElementById('proposalMessage');
 const bidAmountInput = document.getElementById('bidAmount');
 
 // Function to fetch gig details
-async function fetchGigDetails() {
+async function fetchGigDetails(gigId, token, userId) {
     try {
         const response = await fetch(`http://localhost:5000/api/v1/gigs/${gigId}`, {
             method: 'GET',
@@ -23,17 +25,29 @@ async function fetchGigDetails() {
         const gigData = await response.json();
         const gig = gigData.gig;
 
-        // Populate gig details
-        document.getElementById('gig-title').textContent = `Title: ${gig.title}`;
-        document.getElementById('gig-description').textContent = `Description: ${gig.description}`;
-        document.getElementById('gig-budget').textContent = `Budget: ₹${gig.budget}`;
-        document.getElementById('gig-deadline').textContent = `Deadline: ${new Date(gig.deadline).toLocaleDateString()}`;
+        // Populate gig details with null checks
+        const gigTitleElement = document.getElementById('Project-title');
+        const gigDescriptionElement = document.getElementById('Project-description');
+        const gigBudgetElement = document.getElementById('Project-budget');
+        const gigDeadlineElement = document.getElementById('Project-deadline');
+
+        if (gigTitleElement) gigTitleElement.textContent = `Title: ${gig.title}`;
+        if (gigDescriptionElement) gigDescriptionElement.textContent = `Description: ${gig.description}`;
+        if (gigBudgetElement) gigBudgetElement.textContent = `Budget: ₹${gig.budget}`;
+        if (gigDeadlineElement) gigDeadlineElement.textContent = `Deadline: ${new Date(gig.deadline).toLocaleDateString()}`;
 
         // Check if freelancer has already made a proposal
-        const existingProposal = gig.proposals.find(proposal => proposal.freelancer._id === userId);
-        if (existingProposal) {
-            submitProposalButton.disabled = true;
-            alert("You have already made a proposal for this Project.");
+        if (gig.proposals && Array.isArray(gig.proposals)) {
+            const existingProposal = gig.proposals.find(proposal => proposal.freelancer._id === userId);
+            if (existingProposal) {
+                const submitProposalButton = document.getElementById('submit-proposal-button');
+                if (submitProposalButton) {
+                    submitProposalButton.disabled = true;
+                }
+                alert("You have already made a proposal for this Project.");
+            }
+        } else {
+            console.warn('No proposals found for this gig.');
         }
 
     } catch (error) {
@@ -41,6 +55,10 @@ async function fetchGigDetails() {
         alert('Error fetching Project details.');
     }
 }
+
+// Ensure the DOM content is loaded before running the script
+
+
 
 // Function to handle proposal submission
 async function submitProposal() {
