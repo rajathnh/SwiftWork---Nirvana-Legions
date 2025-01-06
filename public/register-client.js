@@ -1,4 +1,8 @@
 const form = document.querySelector("form");
+const API_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://your-render-app.onrender.com"
+    : "http://localhost:5000";
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -26,7 +30,7 @@ form.addEventListener("submit", async (e) => {
   try {
     // Send the FormData to the server, which will automatically handle the file upload
     const response = await fetch(
-      "http://localhost:5000/api/v1/auth/register/client",
+      `${API_BASE_URL}/api/v1/auth/register/client`,
       {
         method: "POST",
         body: formData, // Send FormData instead of JSON
