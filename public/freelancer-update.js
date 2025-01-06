@@ -1,3 +1,7 @@
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 document.addEventListener('DOMContentLoaded', function () {
     const updateFreelancerForm = document.getElementById('updateFreelancerForm');
     const urlParams = new URLSearchParams(window.location.search);
@@ -33,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (image1) formData.append('image1', image1);
 
             try {
-                const response = await fetch(`http://localhost:5000/api/v1/freelancer/${swiftWorkID}`, {
+                const response = await fetch(`${API_BASE_URL}/api/v1/freelancer/${swiftWorkID}`, {
                     method: 'PATCH',
                     body: formData,
                 });

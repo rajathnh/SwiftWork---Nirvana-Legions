@@ -1,3 +1,7 @@
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 document.addEventListener('DOMContentLoaded', function () {
     const reviewForm = document.getElementById('review-form');
   
@@ -22,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
           console.log("♨️FORM DATAAAAA♨️", formData);
           // Send the data to the server via fetch (POST request)
-          const response = await fetch('http://localhost:5000/api/v1/review', {
+          const response = await fetch(`${API_BASE_URL}/api/v1/review`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

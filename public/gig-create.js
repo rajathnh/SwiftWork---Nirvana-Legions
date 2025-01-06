@@ -1,3 +1,7 @@
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 document.getElementById("create-gig-form").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -17,7 +21,7 @@ document.getElementById("create-gig-form").addEventListener("submit", async func
     
 
     try {
-        const response = await fetch('http://localhost:5000/api/v1/gigs', {
+        const response = await fetch(`${API_BASE_URL}/api/v1/gigs`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

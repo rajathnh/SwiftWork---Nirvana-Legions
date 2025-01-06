@@ -1,3 +1,7 @@
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 document.getElementById('updateClientForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -38,7 +42,7 @@ document.getElementById('updateClientForm').addEventListener('submit', async (ev
     }
 
     try {
-        const response = await fetch(`http://localhost:5000/api/v1/client/${swiftWorkID}`, {
+        const response = await fetch(`${API_BASE_URL}/api/v1/client/${swiftWorkID}`, {
             method: 'PATCH',
             body: formData,
         });

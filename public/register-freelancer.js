@@ -1,5 +1,8 @@
 const form = document.querySelector('form');
-
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 form.addEventListener('submit', async (e) => {
   e.preventDefault(); // Prevent default form submission
 
@@ -41,7 +44,7 @@ form.addEventListener('submit', async (e) => {
 
   try {
     // Send the FormData to the server for Freelancer registration
-    const response = await fetch('http://localhost:5000/api/v1/auth/register/freelancer', {
+    const response = await fetch(`${API_BASE_URL}/api/v1/auth/register/freelancer`, {
       method: 'POST',
       body: formData, // Send FormData instead of JSON
     });

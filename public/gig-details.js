@@ -1,3 +1,7 @@
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 document.addEventListener('DOMContentLoaded', async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const gigId = urlParams.get('gigId');
@@ -31,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function fetchGigDetails() {
         try {
-            const gigResponse = await fetch(`http://localhost:5000/api/v1/gigs/${gigId}`, {
+            const gigResponse = await fetch(`${API_BASE_URL}/api/v1/gigs/${gigId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
@@ -190,7 +194,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Proposal Acceptance Function
     window.acceptProposal = async function (gigId, proposalId, freeLancerID) {
         try {
-            const response = await fetch('http://localhost:5000/api/v1/gigs/accept-proposal', {
+            const response = await fetch(`${API_BASE_URL}/api/v1/gigs/accept-proposal`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
