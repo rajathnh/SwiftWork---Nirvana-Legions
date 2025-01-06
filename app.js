@@ -49,6 +49,7 @@ app.use(
         scriptSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "https://res.cloudinary.com", "data:"],
+        connectSrc: ["'self'", "http://localhost:5000"], // Allow API calls to your backend
       },
     },
   })
