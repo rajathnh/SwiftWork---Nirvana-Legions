@@ -1,3 +1,7 @@
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 document.addEventListener("DOMContentLoaded", async function () {
   const urlParams = new URLSearchParams(window.location.search);
   const swiftWorkID =
@@ -32,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/client/${swiftWorkID}`,
+      `${API_BASE_URL}/api/v1/client/${swiftWorkID}`,
       {
         method: "GET",
         headers: {
