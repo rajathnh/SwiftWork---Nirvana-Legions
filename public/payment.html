@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment for Your Gig</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="payment-page">
+        <h2 class="text-3xl font-bold mb-6">Payment for Your Gig</h2>
+
+        <div class="gig-details">
+            <h3 class="text-xl font-semibold mb-3">Gig Details</h3>
+            <p><strong>Title:</strong> Freelance Web Development</p>
+            <p><strong>Client:</strong> Rajat</p>
+            <p><strong>Freelancer:</strong> Waleed</p>
+            <p><strong>Amount:</strong> ₹5000</p>
+        </div>
+
+        <div class="payment-actions">
+            <p>Pay ₹5000 to start the work</p>
+            <button id="payButton">Pay Now</button>
+            <div id="loadingMessage" class="loading hidden">Processing your payment...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

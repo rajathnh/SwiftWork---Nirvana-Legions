@@ -64,10 +64,28 @@ const freelancerSchema = new mongoose.Schema({
         type:Number,
         default:0,
     },
+    averageEfficiency: {
+        type: Number,
+        default: 0,
+      },
+      averageCommunication: {
+        type: Number,
+        default: 0,
+      },
+      averageQualityOfWork: {
+        type: Number,
+        default: 0,
+      },
+      averageTimeliness: {
+        type: Number,
+        default: 0,
+      },
+      
     numOfReviews:{
         type:Number,
         default:0,
     },
+    badges: [{ type: mongoose.Schema.Types.ObjectId, ref: "Badge" }],
 })
 
 freelancerSchema.virtual('reviews', {

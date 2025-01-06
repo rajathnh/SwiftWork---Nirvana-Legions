@@ -6,34 +6,116 @@
     <title>Create Gig</title>
 
     <!-- Link to external CSS file -->
-    <link rel="stylesheet" href="gig-create.css">
+    <!-- <link rel="stylesheet" href="gig-create.css"> -->
+    <link rel="stylesheet" href="src/output.css">
 </head>
-<body>
+<body class="bg-[#2B2A4C] text-[#EEE2DE] flex flex-col min-h-screen" >
+
+  <header class="bg-[#EEE2DE] placeholder: shadow-md">
+    <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
+      <!-- Logo -->
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
+      </div>
+
+      <!-- Navigation Links -->
+      <ul class="hidden md:flex space-x-8 text-lg">
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#home">Home</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#about-us">About</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#contact-us">Contact us</a></li>
+      </ul>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="block md:hidden text-[#e56f08] focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#EEE2DE] text-center text-lg py-4">
+      <a href="index.html#home" class="block py-2 text-[#e56f08] hover:text-[#000000]">Home</a>
+      <a href="index.html#about-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">About</a>
+      <a href="index.html#contact-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">Contact us</a>
+    </div>
+  </header>
 
     <!-- Create Gig Form -->
-    <div class="form-container">
-        <h2>Create a New Gig</h2>
-        <form id="create-gig-form">
-            <div class="form-group">
-                <label for="title">Gig Title</label>
-                <input type="text" id="title" name="title" required />
+    <div class="form-container max-w-lg w-full bg-[#EEE2DE] text-[#2B2A4C] rounded-lg shadow-lg p-8 mt-4 mx-auto space-y-6 flex-grow">
+        <h2 class="text-3xl font-extrabold text-center mb-4">Create a New Project</h2>
+        <form id="create-gig-form" class="space-y-4 block text-sm font-medium">
+            <!-- Gig Title -->
+             <div class="form-group">
+                <label for="title" class="block text-sm font-medium text-gray-700">Project Title</label>
+                <input type="text" id="title" name="title" 
+                    class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]"" 
+                    placeholder="Enter your Project title" required />
             </div>
+    
+            <!-- Description -->
             <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" rows="4" required></textarea>
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="description" name="description" rows="4" 
+                    class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" 
+                    placeholder="Write a detailed description" required></textarea>
             </div>
+    
+            <!-- Budget -->
             <div class="form-group">
-                <label for="budget">Budget</label>
-                <input type="number" id="budget" name="budget" required />
+                <label for="budget" class="block text-sm font-medium text-gray-700">Budget</label>
+                <input type="number" id="budget" name="budget" 
+                    class="mt-1 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" 
+                    placeholder="Enter your budget" required />
             </div>
+    
+            <!-- Deadline -->
             <div class="form-group">
-                <label for="deadline">Deadline</label>
-                <input type="date" id="deadline" name="deadline" required />
+                <label for="deadline" class="block text-sm font-medium text-gray-700">Deadline</label>
+                <input type="date" id="deadline" name="deadline" 
+                    class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" 
+                    required />
             </div>
-            <button type="submit" class="submit-btn">Create Gig</button>
+            <!-- Skills Required -->
+<div class="form-group">
+  <label for="skillsRequired" class="block text-sm font-medium text-gray-700">Skills Required</label>
+  <input type="text" id="skillsRequired" name="skillsRequired" 
+      class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" 
+      placeholder="Enter required skills (comma-separated)" required />
+</div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit"
+                 class="w-full px-6 py-2 place-content-center bg-[#B31312] text-white rounded-md hover:bg-[#EA906C] transition focus:ring focus:ring-[#EA906C] focus:outline-none" >
+                    Create Project
+                  </button>
+                <!-- <button type="submit" 
+                    class="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Create Gig
+                </button> -->
+            </div>
         </form>
     </div>
+    
+    <footer class="bg-[#2B2A4C] py-6">
+    <div class="container mx-auto px-4 text-center">
+      <hr class="my-4 border-[#EEE2DE]">
+      <p class="text-sm">
+        © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+      </p>
+    </div>
+  </footer>
 
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  </script>
     <!-- Link to external JavaScript file -->
     <script src="gig-create.js"></script>
 </body>

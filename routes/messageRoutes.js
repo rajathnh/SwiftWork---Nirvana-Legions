@@ -4,12 +4,16 @@ const { authenticateUser } = require('../middleware/authentication');
 
 const router = express.Router();
 
-// Define route for uploading files
+// Route for uploading files
 router.post('/upload', authenticateUser, uploadFile);
 
-// Define other routes for sending messages, getting messages, and marking as read
+// Route for sending messages
 router.post('/', authenticateUser, sendMessage);
-router.get('/', authenticateUser, getMessages);
+
+// Route for fetching messages for a specific gig with pagination
+router.get('/:gigId', authenticateUser, getMessages);
+
+// Route for marking a message as read
 router.patch('/:id/read', authenticateUser, markAsRead);
 
 module.exports = router;

@@ -4,26 +4,119 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Freelancer Profile</title>
-  <link rel="stylesheet" href="freelancer-profile.css">
+  <!-- Tailwind CSS for modern styling -->
+  <link rel="stylesheet" href="src/output.css">
 </head>
-<body>
-  <div class="container">
+<body class="bg-[#2B2A4C] text-[#EEE2DE]">
+  <!-- Header Section -->
+  <header class="bg-[#EEE2DE] placeholder: shadow-md">
+    <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
+      <!-- Logo -->
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
+      </div>
+
+      <!-- Navigation Links -->
+      <ul class="hidden md:flex space-x-8 text-lg">
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#home">Home</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#about-us">About</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#contact-us">Contact us</a></li>
+      </ul>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="block md:hidden text-[#e56f08] focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#EEE2DE] text-center text-lg py-4">
+      <a href="index.html#home" class="block py-2 text-[#e56f08] hover:text-[#000000]">Home</a>
+      <a href="index.html#about-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">About</a>
+      <a href="index.html#contact-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">Contact us</a>
+    </div>
+  </header>
+
+
     <!-- Freelancer Profile Section -->
-    <div id="profile" class="profile-header">
+    <div id="profile" class="profile-header  p-6">
       <p>Loading freelancer profile...</p>
+      <button id="editProfileBtn" class="btn bg-[#B31312] text-white py-2 px-5 rounded-lg lg:mt-10 shadow-md hover:bg-[#EA906C] transition-colors duration-300 border border-[#EA906C]">
+        Edit Profile
+      </button>
     </div>
 
     <!-- Proposals Section -->
-    <div id="proposals-section" class="proposals-section">
-      <h2>My Proposals</h2>
+    <div id="proposals-section" class="mt-6 p-6 ">
+      <h2 class="text-xl font-semibold mb-4">My Proposals</h2>
       <p>Loading proposals...</p>
     </div>
 
-    <!-- Add Button to Redirect to Display All Gigs -->
-    <div class="view-all-gigs-button">
-      <button id="view-all-gigs-btn" class="btn">View All Gigs</button>
+    <!-- Add Buttons to Redirect to Display All Gigs -->
+    <div class="view-all-gigs-button flex justify-center mt-6">
+      <button id="view-all-gigs-btn" class="px-6 py-2 bg-[#B31312] text-white rounded-md hover:bg-[#EA906C] transition focus:ring focus:ring-[#EA906C] focus:outline-none">
+        Matched Projects
+      </button>
+    </div>
+
+    <!-- Categorized Gigs Section -->
+    <div id="gigs-container" class="mt-8">
+      <!-- Open Gigs -->
+      <div id="open-gigs-section" class="gig-category mb-6">
+        <!-- <h3 class="text-xl font-semibold mb-2">Open Gigs</h3>
+        <p class="text-gray-500">No open gigs available.</p> -->
+      </div>
+
+      <!-- Assigned Gigs -->
+      <div id="assigned-gigs-section" class="gig-category mb-6">
+        <!-- <h3 class="text-xl font-semibold mb-2">Assigned Gigs</h3>
+        <p class="text-gray-500">No assigned gigs available.</p> -->
+      </div>
+
+      <!-- Approval Pending Gigs -->
+      <div id="approval-pending-gigs-section" class="gig-category mb-6">
+        <!-- <h3 class="text-xl font-semibold mb-2">Approval Pending Gigs</h3>
+        <p class="text-gray-500">No approval pending gigs available.</p> -->
+      </div>
+
+      <!-- Gigs Assigned to Others -->
+      <div id="assigned-to-others-gigs-section" class="gig-category">
+        <!-- <h3 class="text-xl font-semibold mb-2">Gigs Assigned to Others</h3>
+        <p class="text-gray-500">No gigs assigned to others available.</p> -->
+      </div>
     </div>
   </div>
+  <div id="notification-dropdown" class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg hidden">
+    <div class="p-4">
+      <h3 class="text-lg font-semibold">Notifications</h3>
+      <ul id="notification-list" class="mt-2">
+        <li class="text-gray-500">Loading notifications...</li>
+      </ul>
+    </div>
+  </div>
+  
+
+  <!-- Footer -->
+  <footer class="bg-[#2B2A4C] py-6">
+    <div class="container mx-auto px-4 text-center">
+      <hr class="my-4 border-[#EEE2DE]">
+      <p class="text-sm">
+        © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  </script>
 
   <script src="freelancer-profile.js"></script>
 </body>

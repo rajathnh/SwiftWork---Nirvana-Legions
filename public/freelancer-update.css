@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  button:disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  #errorMessage {
+    color: red;
+  }
+  
+  #successMessage {
+    color: green;
+  }
+  

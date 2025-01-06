@@ -1,54 +1,88 @@
-// Fetch the gig ID from the URL (you should pass this ID when linking to this page)
-const gigId = new URLSearchParams(window.location.search).get('gigId');
-const userId = localStorage.getItem('userId');  // Assuming user ID is stored in localStorage
-const token = localStorage.getItem('authToken'); // Assuming auth token is stored in localStorage
+document.addEventListener('DOMContentLoaded', () => {
+    const gigId = new URLSearchParams(window.location.search).get('gigId');
+    console.log('Current URL:', window.location.href);
+    console.log('Extracted gigId:', gigId);
 
-// Elements
-const submitProposalButton = document.getElementById('submit-proposal-button');
-const proposalMessageInput = document.getElementById('proposalMessage');
-const bidAmountInput = document.getElementById('bidAmount');
+    if (!gigId) {
+        alert('Error: Gig ID is missing from the URL.');
+        return; // Stop execution if gigId is missing
+    }
+
+    const userId = localStorage.getItem('swiftWork_ID');  // Assuming user ID is stored in localStorage
+    const token = localStorage.getItem('authToken'); // Assuming auth token is stored in localStorage
+    fetchGigDetails(gigId, token, userId);
+
+    // Initialize event listener for the "Submit Proposal" button after DOM content is loaded
+    const submitProposalButton = document.getElementById('submit-proposal-button');
+    if (submitProposalButton) {
+        submitProposalButton.addEventListener('click', async () => {
+            await submitProposal(gigId, token, userId);
+        });
+    } else {
+        console.error('Error: Submit Proposal Button not found.');
+    }
+});
 
 // Function to fetch gig details
-async function fetchGigDetails() {
+async function fetchGigDetails(gigId, token, userId) {
     try {
         const response = await fetch(`http://localhost:5000/api/v1/gigs/${gigId}`, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
+        console.log('Fetching gig details for ID:', gigId);
+        console.log('Response status:', response.status);
+
         if (!response.ok) {
-            throw new Error('Gig not found');
+            throw new Error('Project not found');
         }
 
         const gigData = await response.json();
+        console.log('Fetched Gig Data:', gigData);
+        
         const gig = gigData.gig;
 
-        // Populate gig details
-        document.getElementById('gig-title').textContent = `Title: ${gig.title}`;
-        document.getElementById('gig-description').textContent = `Description: ${gig.description}`;
-        document.getElementById('gig-budget').textContent = `Budget: $${gig.budget}`;
-        document.getElementById('gig-deadline').textContent = `Deadline: ${new Date(gig.deadline).toLocaleDateString()}`;
+        // Populate gig details with null checks
+        document.getElementById('Project-title').textContent = `Title: ${gig.title || 'N/A'}`;
+        document.getElementById('Project-description').textContent = `Description: ${gig.description || 'N/A'}`;
+        document.getElementById('Project-budget').textContent = `Budget: ₹${gig.budget || 'N/A'}`;
+        document.getElementById('Project-deadline').textContent = `Deadline: ${gig.deadline ? new Date(gig.deadline).toLocaleDateString() : 'N/A'}`;
 
         // Check if freelancer has already made a proposal
-        const existingProposal = gig.proposals.find(proposal => proposal.freelancer._id === userId);
-        if (existingProposal) {
-            submitProposalButton.disabled = true;
-            alert("You have already made a proposal for this gig.");
+        if (gig.proposals && Array.isArray(gig.proposals)) {
+            const existingProposal = gig.proposals.find(proposal => proposal.freelancer._id === userId);
+            if (existingProposal) {
+                const submitProposalButton = document.getElementById('submit-proposal-button');
+                if (submitProposalButton) {
+                    submitProposalButton.disabled = true;
+                }
+                alert("You have already made a proposal for this Project.");
+            }
+        } else {
+            console.warn('No proposals found for this gig.');
         }
 
     } catch (error) {
-        console.error('Error fetching gig details:', error);
-        alert('Error fetching gig details.');
+        console.error('Error fetching Project details:', error);
+        alert('Error fetching Project details.');
     }
 }
 
 // Function to handle proposal submission
-async function submitProposal() {
+// Function to handle proposal submission
+async function submitProposal(gigId, token, userId) {
+    const bidAmountInput = document.getElementById('bidAmount');
+    const proposalMessageInput = document.getElementById('proposalMessage');
+    const proposalDeadlineInput = document.getElementById('proposalDeadline'); // Get the deadline input
+    const submitProposalButton = document.getElementById('submit-proposal-button');
+
     const bidAmount = bidAmountInput.value;
     const proposalMessage = proposalMessageInput.value;
+    const proposalDeadline = proposalDeadlineInput.value; // Get the deadline value
 
-    if (!bidAmount || !proposalMessage) {
-        alert('Please provide both bid amount and proposal message.');
+    if (!bidAmount || !proposalMessage || !proposalDeadline) {
+        alert('Please provide bid amount, proposal message, and deadline.');
         return;
     }
 
@@ -59,8 +93,10 @@ async function submitProposal() {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ gigId, bidAmount, proposalMessage, userId })
+            body: JSON.stringify({ gigId, bidAmount, proposalMessage, freelancerId: userId, deadline: proposalDeadline }) // Include the deadline
         });
+
+        console.log("♨️PROPOSAL CREATE ✨✨💀♨️", JSON.stringify({ gigId, bidAmount, proposalMessage, freelancerId: userId, deadline: proposalDeadline }));
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -70,15 +106,17 @@ async function submitProposal() {
 
         const proposalData = await response.json();
         alert('Proposal submitted successfully!');
-        submitProposalButton.disabled = true;
+
+        // Disable the button after submission
+        if (submitProposalButton) {
+            submitProposalButton.disabled = true;
+        }
+
+        // Redirect to the gig details page
+        window.location.href = `gig-details.html?gigId=${gigId}`;
+
     } catch (error) {
         console.error('Error submitting proposal:', error);
         alert('Error submitting proposal.');
     }
 }
-
-// Event listener for proposal submission
-submitProposalButton.addEventListener('click', submitProposal);
-
-// Initialize the page
-fetchGigDetails();

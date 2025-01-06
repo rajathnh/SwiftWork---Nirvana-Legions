@@ -9,6 +9,9 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@cashfreepayments/cashfree-js": "^1.0.5",
+        "@google/generative-ai": "^0.21.0",
+        "axios": "^1.7.9",
         "bcryptjs": "^2.4.3",
         "cloudinary": "^2.5.1",
         "cookie-parser": "^1.4.5",
@@ -38,6 +41,6 @@
         "nodemon": "^2.0.9"
     },
     "engines": {
-        "node": "14.x"
+        "node": ">=16.x"
     }
 }

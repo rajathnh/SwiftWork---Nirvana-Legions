@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Comprehensive Quiz</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        .quiz-question { 
+            margin-bottom: 15px; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+        }
+        #submitQuiz {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        #resultMessage {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>JavaScript Comprehensive Quiz</h1>
+    <form id="quizForm">
+        <div class="quiz-question">
+            <p>1. What keyword is used to declare a variable in JavaScript that cannot be reassigned?</p>
+            <input type="radio" name="q1" value="const" id="q1-const"> 
+            <label for="q1-const">const</label>
+            <input type="radio" name="q1" value="var" id="q1-var"> 
+            <label for="q1-var">var</label>
+            <input type="radio" name="q1" value="let" id="q1-let"> 
+            <label for="q1-let">let</label>
+        </div>
+
+        <div class="quiz-question">
+            <p>16. Which method is used to add elements to the end of an array?</p>
+            <input type="radio" name="q16" value="append" id="q16-append"> 
+            <label for="q16-append">append()</label>
+            <input type="radio" name="q16" value="push" id="q16-push"> 
+            <label for="q16-push">push()</label>
+            <input type="radio" name="q16" value="add" id="q16-add"> 
+            <label for="q16-add">add()</label>
+        </div>
+
+        <div class="quiz-question">
+            <p>17. What does the '===' operator do in JavaScript?</p>
+            <input type="radio" name="q17" value="loose" id="q17-loose"> 
+            <label for="q17-loose">Loose equality</label>
+            <input type="radio" name="q17" value="strict" id="q17-strict"> 
+            <label for="q17-strict">Strict equality</label>
+            <input type="radio" name="q17" value="assignment" id="q17-assignment"> 
+            <label for="q17-assignment">Assignment</label>
+        </div>
+
+        <div class="quiz-question">
+            <p>30. Which ES6 feature allows creating functions with a more concise syntax?</p>
+            <input type="radio" name="q30" value="arrowfunction" id="q30-arrowfunction"> 
+            <label for="q30-arrowfunction">Arrow Function</label>
+            <input type="radio" name="q30" value="function" id="q30-function"> 
+            <label for="q30-function">Function Keyword</label>
+            <input type="radio" name="q30" value="method" id="q30-method"> 
+            <label for="q30-method">Method Syntax</label>
+        </div>
+        
+        <button type="button" id="submitQuiz">Submit Quiz</button>
+    </form>
+    
+    <div id="resultMessage"></div>
+
+    <script src="jsTests.js"></script>
+</body>
+</html>

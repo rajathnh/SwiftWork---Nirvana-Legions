@@ -1,35 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SwiftWork - Client Portfolio</title>
+    <link rel="stylesheet" href="src/output.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-[#2B2A4C] text-[#EEE2DE] min-h-screen font-montserrat">
+    <!-- Navbar -->
+    <header class="bg-[#EEE2DE] placeholder: shadow-md">
+      <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
+        <!-- Logo -->
+        <div class="text-center">
+          <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
+        </div>
+  <h2 class="text-black">Client Portfolio</h2>
+        <!-- Navigation Links -->
+        <ul class="hidden md:flex space-x-8 text-lg">
+          <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#home">Home</a></li>
+          <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#about-us">About</a></li>
+          <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#contact-us">Contact us</a></li>
+        </ul>
+  
+        <!-- Mobile Menu Toggle -->
+        <button id="menu-toggle" class="block md:hidden text-[#e56f08] focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+      </nav>
+  
+      <!-- Mobile Navigation -->
+      <div id="mobile-menu" class="hidden md:hidden bg-[#EEE2DE] text-center text-lg py-4">
+        <a href="index.html#home" class="block py-2 text-[#e56f08] hover:text-[#000000]">Home</a>
+        <a href="index.html#about-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">About</a>
+        <a href="index.html#contact-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">Contact us</a>
+      </div>
+    </header>
+    <!-- Profile Section -->
+    <div
+      class="flex flex-row space-x-10 mx-auto mt-14 justify-center items-center"
+    >
+      <!-- Client Profile Section -->
+      <div class="client-profile p-6 rounded-lg shadow-lg flex flex-col items-center justify-center space-y-4 w-80 bg-[#EEE2DE] text-[#2B2A4C] hover:shadow-xl transition-transform duration-300 ease-in-out transform hover:scale-105 border border-slate-300 hover:border-slate-400">
+        <img
+          id="profile-pic"
+          src="uploads/default.jpg"
+          alt="Profile Picture"
+          class="w-32 h-32 rounded-full border-4 border-[#A99985] shadow-sm"
+        />
+        <p id="client-name" class="text-xl font-extrabold text-[#2B2A4C]">
+          John Doe
+        </p>
+        <p id="client-email" class="text-sm text-gray-700">
+          john.doe@example.com
+        </p>
+        <button
+          id="edit-profile-button"
+          class="bg-[#2B2A4C] text-white px-6 py-2 rounded-lg shadow-md hover:bg-[#A99985] transition-transform transform hover:scale-105 focus:ring focus:ring-[#A99985] focus:outline-none"
+        >
+          Edit Profile
+        </button>
+      </div>
+      
+      </div>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Client Portfolio</title>
-  <link rel="stylesheet" href="client-portfolio.css">
-</head>
+      <!-- Client Reviews Section -->
+      <!-- <div class="client-profile p-6 rounded-xl shadow-xl w-80 bg-white hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105 border border-slate-300 hover:border-slate-400 ">
+            <h3 class="text-xl font-semibold text-gray-800">Reviews from Freelancers</h3> -->
+      <!-- Add dynamically populated reviews here -->
+      <!-- <div class="space-y-4 mt-4">
+                <div class="review p-4 bg-gray-50 rounded-lg shadow-sm">
+                    <p class="text-gray-600">"Great service, very professional!"</p>
+                    <p class="text-right text-gray-500 text-sm">- Client Name</p>
+                </div>
+                <div class="review p-4 bg-gray-50 rounded-lg shadow-sm">
+                    <p class="text-gray-600">"Highly recommend, will work again!"</p>
+                    <p class="text-right text-gray-500 text-sm">- Client Name</p>
+                </div>
+            </div> -->
+      <!-- </div> -->
+    </div>
 
-<body class="portfolio-body">
-  <div class="portfolio-container">
-    <h1>Client Portfolio</h1>
+    <!-- <section class="client-profile mt-12 w-full h-auto bg-slate-200"> -->
+      <!-- <h3 class="text-xl text-center font-semibold text-gray-800">
+        Reviews from Freelancers
+      </h3>
+      Add dynamically populated reviews here -->
+    <!-- </section> -->
+    <!-- Gigs Section -->
+    <div class=" rounded-sm">
+      <div class="flex items-center justify-center mt-16">
+        <h1 class="text-3xl font-bold text-[#e56f08] ">Projects</h1>
+      </div>
+
+      <div id="gigs-container" class="mt-4 mx-8 py-12">
+        <!-- Completed gigs will appear here -->
+    </div>
     
-    <!-- Profile Picture Display -->
-    <img id="profile-pic" src="default-profile-pic.jpg" alt="Profile Picture" class="profile-pic">
-    
-    <p id="client-name">Loading client name...</p>
-    <p id="client-email">Loading client email...</p>
+    <!-- Add New Gig Button -->
+    <div class="flex items-center justify-center mt-12">
+        <button id="create-gig-button" onclick="window.location.href='gig-create.html'" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300 ease-in-out transform hover:scale-105">
+            Post a Project
+        </button>
+      </div>
+    </div>
 
-    <h2>Gigs</h2>
-    <ul id="gigs-list" class="gigs-list"></ul>
+    <!-- Footer -->
+    <footer class="bg-[#2B2A4C] py-6">
+      <div class="container mx-auto px-4 text-center">
+        <hr class="my-4 border-[#EEE2DE]">
+        <p class="text-sm">
+          © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+        </p>
+      </div>
+    </footer>
+  
+    <script>
+      // Mobile menu toggle
+      const menuToggle = document.getElementById("menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu");
+  
+      menuToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+    </script>
 
-    <!-- Add Gig Button -->
-   <!-- Add Gig Button -->
-<button id="create-gig-button" 
-onclick="window.location.href='gig-create.html'" 
-style="display: none; margin-top: 1.5rem; padding: 0.75rem 1.5rem; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;">
-Add New Gig
-</button>
-
-  <script src="client-portfolio.js"></script>
-</body>
-
+    <script src="client-portfolio.js"></script>
+  </body>
 </html>

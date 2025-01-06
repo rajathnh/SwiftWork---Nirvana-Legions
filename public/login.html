@@ -4,24 +4,110 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-  <link rel="stylesheet" href="login.css">
+  <!-- <link rel="stylesheet" href="login.css"> -->
+  <link rel="stylesheet" href="src/output.css">
 </head>
-<body>
-  <div class="login-container">
-    <h1>Login</h1>
-    <form id="login-form">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+<body class="bg-[#2B2A4C] text-[#EEE2DE] min-h-screen flex flex-col justify-between font-sans">
+
+  <header class="bg-[#EEE2DE] placeholder: shadow-md">
+    <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
+      <!-- Logo -->
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
       </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
-      </div>
-      <button type="submit" class="login-btn">Login</button>
-    </form>
-    <p class="register-link">Don't have an account? <a href="/register.html">Register</a></p>
-  </div>
+
+      <!-- Navigation Links -->
+      <ul class="hidden md:flex space-x-8 text-lg">
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#home">Home</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#about-us">About</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#contact-us">Contact us</a></li>
+      </ul>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="block md:hidden text-[#e56f08] focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#EEE2DE] text-center text-lg py-4">
+      <a href="index.html#home" class="block py-2 text-[#e56f08] hover:text-[#000000]">Home</a>
+      <a href="index.html#about-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">About</a>
+      <a href="index.html#contact-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">Contact us</a>
+    </div>
+  </header>
+
+  <main class="flex flex-wrap md:flex-nowrap items-center justify-center py-12 px-4">
+    <!-- Login Container -->
+    <div class="w-full max-w-md bg-[#EEE2DE] text-[#2B2A4C] rounded-lg shadow-lg p-8">
+      <h1 class="text-3xl font-extrabold text-center mb-4">Login</h1>
+      <form id="login-form" action="/login" method="POST">
+        <!-- Email -->
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]"
+          />
+        </div>
+    
+        <!-- Password -->
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+            class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]"
+          />
+        </div>
+    
+        <!-- Login Button -->
+        <button
+          type="submit"
+          class="w-full px-6 py-2 bg-[#B31312] text-white rounded-lg hover:bg-[#EA906C] focus:ring focus:ring-[#EA906C] focus:outline-none"
+        >
+          Login
+        </button>
+      </form>
+    
+      <!-- Register Link -->
+      <p class="mt-4 text-center text-[#2B2A4C]">
+        Don't have an account? 
+        <a href="index.html" class="text-[#B31312] hover:text-[#EA906C]">Register</a>
+      </p>
+    </div>
+  </main>
+  
+ 
+  
+
+  <footer class="bg-[#2B2A4C] py-6">
+    <div class="container mx-auto px-4 text-center">
+      <hr class="my-4 border-[#EEE2DE]">
+      <p class="text-sm">
+        © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  </script>
   <script src="login.js"></script>
 </body>
 </html>

@@ -65,3 +65,12 @@ body {
     background-color: #0056b3;
   }
   
+
+  .review-button {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    margin-top: 1rem !important;
+  }
+  

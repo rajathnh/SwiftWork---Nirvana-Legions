@@ -3,36 +3,44 @@ const Client = require('../models/client');
 const Freelancer = require('../models/freelancer'); // Add this import for validation
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
-
+const upload = require('../middleware/multer')
+const cloudinary = require('cloudinary')
 // Create a new gig
+
 const createGig = async (req, res) => {
-    const { title, description, budget, deadline } = req.body;
-    req.body.client = req.user.userId;
+    console.log("♨️♨️♨️♨️♨️♨️", req.body);
+    const { title, description, budget, deadline,skillsRequired } = req.body;
+    // req.body.client = req.user.userId;
     const gig = await Gig.create(req.body);
     res.status(StatusCodes.CREATED).json({ gig });
 };
 
 // Get all gigs
 const getAllGigs = async (req, res) => {
-    const gigs = await Gig.find({}).populate({ path: 'client', select: 'name' });
+    const gigs = await Gig.find({})
+        .populate({ path: 'client', select: 'name' })
+        .select('title description budget deadline skillsRequired status'); // Include skillsRequired in the response
+
     res.status(StatusCodes.OK).json({ gigs, count: gigs.length });
 };
+
 
 // Get a single gig by ID
 const getGigById = async (req, res) => {
     const { id: gigId } = req.params;
 
     const gig = await Gig.findById(gigId)
-    .populate({
-        path: 'proposals', 
-        populate: { 
-            path: 'freelancer', 
-            select: 'name email _id' 
-        },
-        select: 'proposalMessage bidAmount freelancer'
-    })
-    .populate('client', 'name email') 
-    .populate('assignedFreelancer', 'name email');
+        .populate({
+            path: 'proposals',
+            populate: {
+                path: 'freelancer',
+                select: 'name email _id',
+            },
+            select: 'proposalMessage bidAmount freelancer',
+        })
+        .populate('client', 'name email')
+        .populate('assignedFreelancer', 'name email')
+        .select('title description budget deadline skillsRequired status submissions'); // Include skillsRequired
 
     if (!gig) {
         throw new CustomError.NotFoundError(`No gig found with id: ${gigId}`);
@@ -41,16 +49,21 @@ const getGigById = async (req, res) => {
     res.status(StatusCodes.OK).json({
         gig,
         proposals: gig.proposals,
-        freelancer: gig.assignedFreelancer, // Include populated freelancer details
+        freelancer: gig.assignedFreelancer,
     });
 };
+
 
 // Update a gig
 const updateGig = async (req, res) => {
     const { id: gigId } = req.params;
 
+    if (req.body.skillsRequired && (!Array.isArray(req.body.skillsRequired) || req.body.skillsRequired.length === 0)) {
+        throw new CustomError.BadRequestError('Please provide valid required skills');
+    }
+
     const gig = await Gig.findOneAndUpdate(
-        { _id: gigId, client: req.user.userId }, // Ensure only the owner can update
+        { _id: gigId, client: req.user.userId },
         req.body,
         { new: true, runValidators: true }
     );
@@ -120,6 +133,179 @@ const acceptProposal = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message || 'Error assigning the gig' });
     }
 };
+const uploadFileSafely = async (file, folder = 'freelancer-submissions') => {
+    if (!file) return null; // If no file, return null (or you can set a default message)
+    try {
+      // Upload any file to Cloudinary (not just images)
+      const result = await cloudinary.uploader.upload(file.tempFilePath, {
+        resource_type: 'auto', // auto-detects file type (image, video, document, etc.)
+        use_filename: true,
+        folder: folder,
+      });
+      return result.secure_url; // Return the uploaded file's URL
+    } catch (error) {
+      console.error('Error uploading file:', error.message);
+      return null; // Return null if upload fails
+    }
+  };
+  
+  // Endpoint for freelancers to submit final files for a gig
+  const submitFinalWork = async (req, res) => {
+    try {
+        const gigId = req.params.id;
+        const { message } = req.body;
+
+        // Fetch gig by ID
+        const gig = await Gig.findById(gigId);
+        if (!gig) {
+            return res.status(404).json({ msg: 'Gig not found' });
+        }
+
+        // Ensure the submissions array exists
+        if (!gig.submissions) {
+            gig.submissions = [];
+        }
+
+        // Extract files array from req.files
+        let files = req.files?.files || [];
+        if (!Array.isArray(files)) {
+            files = [files]; // Convert single file to array
+        }
+
+        console.log('Received files:', files); // Log the received files
+
+        // Upload files to Cloudinary
+        const uploadedFiles = await Promise.all(
+            files.map(async (file) => {
+                const result = await cloudinary.uploader.upload(file.tempFilePath, {
+                    folder: 'gig-submissions',
+                });
+                console.log('File uploaded:', result); // Log the result of each file upload
+                return result.secure_url; // Return the uploaded file URL
+            })
+        );
+
+        // Create submission object
+        const submission = {
+            files: uploadedFiles,
+            message,
+            submittedAt: new Date(),
+        };
+
+        // Push submission to the gig
+        gig.submissions.push(submission);
+        gig.status = 'approval pending';
+        console.log('Updated gig status:', gig.status); // Log the updated status
+        await gig.save();
+
+        res.status(200).json({ msg: 'Final work submitted successfully', submission });
+    } catch (error) {
+        console.error('Error submitting final work:', error.message);
+        res.status(500).json({ msg: 'File submission failed', error: error.message });
+    }
+};
+
+const setGigToCompleted = async (req, res) => {
+    const { id: gigId } = req.params;
+  
+    try {
+      const gig = await Gig.findById(gigId);
+  
+      if (!gig) {
+        return res.status(404).json({ message: `No gig found with ID: ${gigId}` });
+      }
+  
+      // Update the status to "completed"
+      gig.status = "completed";
+      await gig.save();
+  
+      res.status(200).json({
+        message: "Gig status updated to completed successfully",
+        gig,
+      });
+    } catch (error) {
+      console.error("Error updating gig status:", error);
+      res.status(500).json({ message: "Error updating gig status" });
+    }
+  };
+  
+  const getRelevantGigs = async (req, res) => {
+    console.log("♨️♨️ Relevant Gigs Called ♨️♨️");
+    try {
+        const freelancerId = req.params.id;
+        console.log(`Fetching gigs for freelancer ID: ${freelancerId}`);
+
+        // Fetch freelancer's profile with populated badges
+        const freelancer = await Freelancer.findById(freelancerId).populate('badges');
+
+        if (!freelancer) {
+            console.log(`Freelancer not found for ID: ${freelancerId}`);
+            return res.status(404).json({ message: 'Freelancer not found.' });
+        }
+
+        // Extract verified skill names from badges
+        const verifiedSkillMappings = {
+            'cssbeginner': ['CSS', 'css', 'Web Design', 'Frontend'],
+            'javascriptbeginner': ['JavaScript', 'javascript', 'JS', 'Web Development', 'Frontend']
+            // Add more mappings as needed
+        };
+
+        // Combine verified skills from badges and freelancer's skills
+        const badgeSkills = freelancer.badges.map(badge => 
+            badge.name.toLowerCase().replace(/\s+/g, '').replace('certified', '')
+        );
+
+        // Normalize freelancer's skills
+        const profileSkills = (freelancer.skills || []).map(skill => 
+            skill.toLowerCase().trim()
+        );
+
+        console.log(`Verified Skills from Badges: ${badgeSkills}`);
+        console.log(`Skills from Freelancer Profile: ${profileSkills}`);
+
+        // Collect all possible skill matches
+        const skillMatches = new Set([
+            ...badgeSkills.flatMap(skill => verifiedSkillMappings[skill] || []),
+            ...profileSkills,
+            ...badgeSkills
+        ]);
+
+        const skillMatchArray = Array.from(skillMatches);
+        console.log(`Combined Skill Matches: ${skillMatchArray}`);
+
+        if (skillMatchArray.length === 0) {
+            return res.status(400).json({ message: 'No matching skills found.' });
+        }
+
+        // Find gigs that match the expanded skill list
+        const gigs = await Gig.find({
+            $or: skillMatchArray.map(skill => ({
+                skillsRequired: { 
+                    $regex: new RegExp(skill, 'i') 
+                }
+            }))
+        }).populate('client', 'name');
+
+        console.log('Matching Gigs:', JSON.stringify(gigs, null, 2));
+        console.log(`Number of matching gigs: ${gigs.length}`);
+
+        gigs.forEach(gig => {
+            console.log(`Gig ID: ${gig._id}, Skills Required: ${gig.skillsRequired}`);
+        });
+
+        res.status(200).json({
+            status: 'success',
+            count: gigs.length,
+            gigs
+        });
+    } catch (err) {
+        console.error('Failed to fetch gigs:', err);
+        res.status(500).json({ 
+            message: 'Failed to fetch gigs', 
+            error: err.message 
+        });
+    }
+};
 
 module.exports = {
     createGig,
@@ -129,4 +315,7 @@ module.exports = {
     deleteGig,
     getSingleClientGigs,
     acceptProposal,
+    submitFinalWork,
+    setGigToCompleted,
+    getRelevantGigs,
 };
