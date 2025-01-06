@@ -47,13 +47,15 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "'unsafe-inline'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // Allow Google Fonts stylesheets
+        fontSrc: ["'self'", "https://fonts.gstatic.com"], // Allow Google Fonts files
         imgSrc: ["'self'", "https://res.cloudinary.com", "data:"],
         connectSrc: ["'self'", "http://localhost:5000"], // Allow API calls to your backend
       },
     },
   })
 );
+
 
 app.use(xss());
 app.use(mongoSanitize());
