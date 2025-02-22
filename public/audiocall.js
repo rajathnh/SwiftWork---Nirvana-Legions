@@ -12,13 +12,14 @@ if (!gigId) {
 }
 
 const socket = io(API_BASE_URL); // Connect to the server
-const localAudio = document.getElementById("local-audio");
-const remoteAudio = document.getElementById("remote-audio");
+const localAudio = document.getElementById("localAudio");
+const remoteAudio = document.getElementById("remoteAudio");
 const endCallButton = document.getElementById("end-call");
 
 let localStream;
 let remoteStream;
 let peerConnection;
+let isOfferer = false;
 
 const servers = {
   iceServers: [
@@ -28,93 +29,112 @@ const servers = {
   ],
 };
 
+window.onload = () => {
+  console.log("🚀 Page Loaded! Starting video call...");
+  startCall();
+};
+
 const constraints = {
   video: false, // Disable video for audio-only calls
   audio: true,
 };
 
-// Start the call when the page loads
-startCall();
 
 async function startCall() {
+  console.log("🔹 Starting audio call...");
   try {
-    localStream = await navigator.mediaDevices.getUserMedia(constraints);
-    localAudio.srcObject = localStream;
+      localStream = await navigator.mediaDevices.getUserMedia(constraints);
+      console.log("✅ Microphone Access Granted:", localStream);
 
-    peerConnection = new RTCPeerConnection(servers);
+      localAudio.srcObject = localStream;
+      localAudio.play().catch(e => console.error("❌ Local audio play error:", e));
 
-    localStream.getTracks().forEach((track) => peerConnection.addTrack(track, localStream));
-
-    peerConnection.ontrack = (event) => {
-      remoteStream = event.streams[0];
-      remoteAudio.srcObject = remoteStream;
-    };
-
-    peerConnection.onicecandidate = (event) => {
-      if (event.candidate) {
-        socket.emit("ice-candidate", { gigId, candidate: event.candidate });
-      }
-    };
-
-    const offer = await peerConnection.createOffer();
-    await peerConnection.setLocalDescription(offer);
-    socket.emit("offer", { gigId, offer });
+      setupAudioPeerConnection();
+      socket.emit("join-room", gigId);
   } catch (error) {
-    console.error("Error starting call:", error);
+      console.error("❌ Microphone Access Error:", error);
+      alert("Microphone access failed: " + error.message);
   }
 }
 
-// Handle incoming offer
-socket.on("offer", async ({ gigId, offer }) => {
-  if (!peerConnection) {
-    peerConnection = new RTCPeerConnection(servers);
 
-    localStream.getTracks().forEach((track) => peerConnection.addTrack(track, localStream));
-
-    peerConnection.ontrack = (event) => {
-      remoteStream = event.streams[0];
-      remoteAudio.srcObject = remoteStream;
-    };
-
-    peerConnection.onicecandidate = (event) => {
-      if (event.candidate) {
-        socket.emit("ice-candidate", { gigId, candidate: event.candidate });
-      }
-    };
-  }
-
+socket.on("offer", async ({ offer }) => {
+  if (!peerConnection) setupAudioPeerConnection(); // 🔹 Use audio setup for audio calls
   await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
   const answer = await peerConnection.createAnswer();
   await peerConnection.setLocalDescription(answer);
   socket.emit("answer", { gigId, answer });
 });
 
-// Handle incoming answer
-socket.on("answer", async ({ gigId, answer }) => {
+socket.on("answer", async ({ answer }) => {
   await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
 });
 
-// Handle incoming ICE candidates
-socket.on("ice-candidate", async ({ gigId, candidate }) => {
+socket.on("ice-candidate", async ({ candidate }) => {
+  console.log("🔹 ICE Candidate Received:", candidate);
   try {
-    await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+      if (peerConnection) {
+          await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+          console.log("✅ ICE Candidate Added Successfully!");
+      } else {
+          console.error("❌ No Peer Connection to Add ICE Candidate!");
+      }
   } catch (error) {
-    console.error("Error adding received ICE candidate:", error);
+      console.error("❌ Error adding received ICE candidate:", error);
   }
 });
 
-// End the call
-endCallButton.addEventListener("click", endCall);
+socket.on("start-offer", async () => {
+  console.log("Starting offer...");
 
-function endCall() {
-  if (peerConnection) {
-    peerConnection.close();
-    peerConnection = null;
-  }
-  if (localStream) {
-    localStream.getTracks().forEach((track) => track.stop());
-  }
+  if (!peerConnection) setupPeerConnection();
+
+  const offer = await peerConnection.createOffer();
+  await peerConnection.setLocalDescription(offer);
+  socket.emit("offer", { gigId, offer });
+});
+
+
+function setupAudioPeerConnection() {
+    peerConnection = new RTCPeerConnection(servers);
+    remoteStream = new MediaStream();
+    remoteAudio.srcObject = remoteStream;
+
+    localStream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, localStream);
+    });
+
+    peerConnection.ontrack = (event) => {
+        console.log("🎙️ Remote audio track received:", event.streams[0]);
+
+        event.streams[0].getTracks().forEach((track) => {
+            remoteStream.addTrack(track);
+        });
+
+        remoteAudio.srcObject = remoteStream;
+        remoteAudio.play().catch(e => console.error("❌ Remote audio play error:", e));
+    };
+
+    peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+            socket.emit("ice-candidate", { gigId, candidate: event.candidate });
+        }
+    };
+}
+
+
+document.getElementById("muteBtn").addEventListener("click", () => {
+  localStream.getAudioTracks()[0].enabled = !localStream.getAudioTracks()[0].enabled;
+});
+
+document.getElementById("endCallBtn").addEventListener("click", () => {
+  if (peerConnection) peerConnection.close();
+  if (localStream) localStream.getTracks().forEach(track => track.stop());
+
   localAudio.srcObject = null;
   remoteAudio.srcObject = null;
-  window.location.href = `chat.html?gigId=${gigId}`; // Redirect back to the chat room
-}
+
+  socket.emit("leave-room", gigId);
+  window.location.href = `chat.html?gigId=${gigId}`;
+});
+
