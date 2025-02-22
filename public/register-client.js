@@ -1,8 +1,9 @@
 const form = document.querySelector("form");
 const API_BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://your-render-app.onrender.com"
-    : "http://localhost:5000";
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com"; // Production URL
+
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();

@@ -1,3 +1,7 @@
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 document.addEventListener("DOMContentLoaded", function () {
   // Extract gigId from the URL parameters
   const urlParams = new URLSearchParams(window.location.search);
@@ -9,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  const socket = io("http://localhost:5000"); // Connect to your server
+  const socket = io(`${API_BASE_URL}`); // Connect to your server
 
   // Dynamic sender information from localStorage
   const senderId = localStorage.getItem("swiftWork_ID");
@@ -37,6 +41,23 @@ document.addEventListener("DOMContentLoaded", function () {
       displayMessage(message);
     });
   });
+
+  const audioCallBtn = document.getElementById("audioCallBtn");
+  const videoCallBtn = document.getElementById("videoCallBtn");
+
+  // (7) Handle audio call button click - **NEW CODE** - Line 44
+  if (audioCallBtn) {
+    audioCallBtn.addEventListener("click", function () {
+      window.location.href = `audiocall.html?gigId=${gigId}`;
+    });
+  }
+
+  // (8) Handle video call button click - **NEW CODE** - Line 49
+  if (videoCallBtn) {
+    videoCallBtn.addEventListener("click", function () {
+      window.location.href = `videocall.html?gigId=${gigId}`;
+    });
+  }
 
   // Display message in the chat UI
   function displayMessage(message) {

@@ -1,5 +1,8 @@
 const loginForm = document.querySelector('#login-form');
-
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault(); // Prevent default form submission
 
@@ -14,7 +17,7 @@ loginForm.addEventListener('submit', async (e) => {
     }
 
     // Send the login request to the server for normal users
-    const response = await fetch('http://localhost:5000/api/v1/auth/login', {
+    const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

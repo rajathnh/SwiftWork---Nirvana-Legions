@@ -1,4 +1,8 @@
 // Function to get freelancer ID from local storage
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 function getFreelancerIdFromLocalStorage() {
   const freelancerId = localStorage.getItem('swiftWork_ID');
   if (!freelancerId) {
@@ -11,7 +15,7 @@ function getFreelancerIdFromLocalStorage() {
 // Fetch freelancer data from the API
 async function getFreelancerData(freelancerId) {
   try {
-      const response = await fetch(`http://localhost:5000/api/v1/freelancer/${freelancerId}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/freelancer/${freelancerId}`);
       if (!response.ok) {
           throw new Error("Failed to fetch freelancer data");
       }
@@ -27,7 +31,7 @@ async function getFreelancerData(freelancerId) {
 // Fetch proposals for the freelancer
 async function getFreelancerProposals(freelancerId) {
   try {
-      const response = await fetch(`http://localhost:5000/api/v1/freelancer/${freelancerId}/proposals`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/freelancer/${freelancerId}/proposals`);
       if (!response.ok) {
           throw new Error("Failed to fetch proposals");
       }
@@ -45,7 +49,7 @@ async function getFreelancerProposals(freelancerId) {
 // Fetch freelancer badges
 async function getFreelancerBadges(freelancerId) {
   try {
-      const response = await fetch(`http://localhost:5000/api/v1/test/freelancer-badges/${freelancerId}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/test/freelancer-badges/${freelancerId}`);
       if (!response.ok) {
           throw new Error("Failed to fetch freelancer badges");
       }
@@ -379,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function getFreelancerBadges(freelancerId) {
   freelancerId = localStorage.getItem('swiftWork_ID')
   try {
-      const response = await fetch(`http://localhost:5000/api/v1/test/freelancer-badges/${freelancerId}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/test/freelancer-badges/${freelancerId}`);
       console.log("♨️1231223♨️", response);
       console.log("♨️1231223♨️", response.json);
       console.log("♨️ID IS: ", freelancerId);

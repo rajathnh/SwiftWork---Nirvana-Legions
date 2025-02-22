@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Call</title>
+    <link rel="stylesheet" href="videocall.css">
+</head>
+<body>
+    <div class="video-call-container">
+        <h2>Video Call</h2>
+        <p id="call-status">Connecting...</p>
+        
+        <video id="localVideo" autoplay muted></video>
+        <video id="remoteVideo" autoplay></video>
+        
+        <div class="call-controls">
+            <button id="muteAudioBtn">Mute Audio</button>
+            <button id="muteVideoBtn">Mute Video</button>
+            <button id="endCallBtn">End Call</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="videocall.js"></script>
+</body>
+</html>

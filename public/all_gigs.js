@@ -1,6 +1,10 @@
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
 document.addEventListener("DOMContentLoaded", async function () {
   try {
-    const response = await fetch("http://localhost:5000/api/v1/gigs", {
+    const response = await fetch(`${API_BASE_URL}/api/v1/gigs`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
