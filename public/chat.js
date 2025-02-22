@@ -42,6 +42,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  const audioCallBtn = document.getElementById("audioCallBtn");
+  const videoCallBtn = document.getElementById("videoCallBtn");
+
+  // (7) Handle audio call button click - **NEW CODE** - Line 44
+  if (audioCallBtn) {
+    audioCallBtn.addEventListener("click", function () {
+      window.location.href = `audiocall.html?gigId=${gigId}`;
+    });
+  }
+
+  // (8) Handle video call button click - **NEW CODE** - Line 49
+  if (videoCallBtn) {
+    videoCallBtn.addEventListener("click", function () {
+      window.location.href = `videocall.html?gigId=${gigId}`;
+    });
+  }
+
   // Display message in the chat UI
   function displayMessage(message) {
     const messageContainer = document.getElementById("messages");

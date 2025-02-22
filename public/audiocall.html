@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Call</title>
+    <link rel="stylesheet" href="audiocall.css">
+</head>
+<body>
+    <div class="call-container">
+        <h2>Audio Call</h2>
+        <p id="call-status">Connecting...</p>
+        
+        <audio id="remoteAudio" autoplay></audio>
+        
+        <div class="call-controls">
+            <button id="muteBtn">Mute</button>
+            <button id="endCallBtn">End Call</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="audiocall.js"></script>
+</body>
+</html>

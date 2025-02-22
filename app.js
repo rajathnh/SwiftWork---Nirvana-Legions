@@ -78,6 +78,9 @@ const io = new Server(server, {
   cors: corsOptions,
 });
 
+const offers= [];
+const connectedSockets = []
+
 // Cloudinary Configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -142,59 +145,118 @@ app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 // Socket.IO Connection Handling
-io.on("connection", (socket) => {
-  console.log("A user connected");
 
-  // Listen for users joining a specific room (gigId)
-  socket.on("joinRoom", async (gigId) => {
-    socket.join(gigId); // Users join the room based on gigId
-    console.log(`User joined room ${gigId}`);
+// ✅ Messaging Feature
+const handleMessaging = (socket, io) => {
+    console.log("A user connected for messaging");
 
-    // Fetch the previous messages for this gigId from the database
-    const messages = await Message.find({ gigId })
-      .sort({ timestamp: 1 }) // Sort messages by timestamp in ascending order
-      .limit(50); // Limit to the most recent 50 messages
+    socket.on("joinRoom", async (gigId) => {
+        socket.join(gigId);
+        console.log(`User joined room ${gigId}`);
 
-    // Send the previous messages to the user who just joined the room
-    socket.emit("chatHistory", messages);
-  });
-
-  // Listen for sending messages
-  socket.on("sendMessage", async (messageData) => {
-    // Ensure sender is defined
-    console.log("Received message data:", messageData);
-    if (!messageData.senderId) {
-      console.error("Sender ID is required.");
-      return;
-    }
-
-    const message = new Message({
-      text: messageData.text,
-      sender: messageData.senderId, // Ensure senderId is assigned here
-      senderType: messageData.senderType, // Ensure senderType is assigned here
-      timestamp: new Date().toISOString(),
-      gigId: messageData.gigId, // Include gigId in the message
-      attachments: messageData.attachments || [], // Optional, in case there are no attachments
+        const messages = await Message.find({ gigId }).sort({ timestamp: 1 }).limit(50);
+        socket.emit("chatHistory", messages);
     });
 
-    // Save the message to the database
-    try {
-      await message.save();
-      console.log("Message saved successfully!");
+    socket.on("sendMessage", async (messageData) => {
+        if (!messageData.senderId) {
+            console.error("Sender ID is required.");
+            return;
+        }
 
-      // Broadcast the message to the room
-      io.to(messageData.gigId).emit("receiveMessage", message); // Send message only to the specific room (gigId)
-      console.log(`Message sent in gig ${messageData.gigId}`);
-    } catch (err) {
-      console.error("Error saving message:", err);
-    }
+        const message = new Message({
+            text: messageData.text,
+            sender: messageData.senderId,
+            senderType: messageData.senderType,
+            timestamp: new Date().toISOString(),
+            gigId: messageData.gigId,
+            attachments: messageData.attachments || [],
+        });
+
+        try {
+            await message.save();
+            io.to(messageData.gigId).emit("receiveMessage", message);
+        } catch (err) {
+            console.error("Error saving message:", err);
+        }
+    });
+};
+const activeRooms = {};
+
+// ✅ WebRTC Feature
+const handleWebRTC = (socket, io) => {
+  console.log("A user connected to WebRTC");
+
+  socket.on("join-room", async (gigId) => {
+      const usersInRoom = activeRooms[gigId] || [];
+
+      if (usersInRoom.length === 0) {
+          // ✅ First user → Offerer
+          activeRooms[gigId] = [socket.id];
+          console.log(`User ${socket.id} is the offerer for room ${gigId}`);
+          socket.emit("offerer-ready");
+      } else if (usersInRoom.length === 1) {
+          // ✅ Second user → Answerer
+          activeRooms[gigId].push(socket.id);
+          console.log(`User ${socket.id} is the answerer for room ${gigId}`);
+
+          // Notify the offerer to send the offer
+          io.to(activeRooms[gigId][0]).emit("start-offer");
+      } else {
+          console.log(`Room ${gigId} is full!`);
+          socket.emit("room-full");
+      }
   });
 
-  // Handle user disconnect
-  socket.on("disconnect", () => {
-    console.log("A user disconnected");
+  socket.on("offer", ({ gigId, offer }) => {
+      const room = activeRooms[gigId];
+      if (room && room.length > 1) {
+          io.to(room[1]).emit("offer", { offer });
+      }
   });
+
+  socket.on("answer", ({ gigId, answer }) => {
+      const room = activeRooms[gigId];
+      if (room && room.length > 1) {
+          io.to(room[0]).emit("answer", { answer });
+      }
+  });
+
+  socket.on("ice-candidate", ({ gigId, candidate }) => {
+      const room = activeRooms[gigId];
+      if (room) {
+          io.to(room[0]).emit("ice-candidate", { candidate });
+          io.to(room[1]).emit("ice-candidate", { candidate });
+      }
+  });
+};
+
+// ✅ Main Socket.IO Connection
+io.on("connection", (socket) => {
+    handleMessaging(socket, io);  
+    handleWebRTC(socket, io);     
+
+    socket.on("disconnect", () => {
+        console.log("A user disconnected");
+
+        // ✅ Remove from connectedSockets
+        const index = connectedSockets.findIndex(s => s.socketId === socket.id);
+        if (index !== -1) {
+            connectedSockets.splice(index, 1);
+        }
+
+        // ✅ Remove from activeRooms
+        for (const gigId in activeRooms) {
+            activeRooms[gigId] = activeRooms[gigId].filter(id => id !== socket.id);
+
+            // Delete room if empty
+            if (activeRooms[gigId].length === 0) {
+                delete activeRooms[gigId];
+            }
+        }
+    });
 });
+
 
 // Database and Server Initialization
 const connectDB = require("./db/connect");
