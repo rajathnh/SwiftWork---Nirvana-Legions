@@ -136,13 +136,16 @@
           resultDiv.innerHTML = "Calculating price...";
 
           // Send data to the backend route
-          const response = await fetch("https://quicklance.onrender.com", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ description, deadline }),
-          });
+          const response = await fetch(
+            "https://quicklance.onrender.com/predict",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ description, deadline }),
+            }
+          );
 
           // Parse the JSON response
           const data = await response.json();
