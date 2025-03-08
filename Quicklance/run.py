@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, Response, request, jsonify
 from flask_cors import CORS  # Import Flask-CORS
 import pickle
 import numpy as np
@@ -7,6 +7,11 @@ import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
+
+@app.after_request
+def add_csp_headers(response):
+    response.headers["Content-Security-Policy"] = "connect-src 'self' https://quicklance.onrender.com;"
+    return response
 
 # Load models
 with open('complexity/complexity_model.pkl', 'rb') as cm_file:
