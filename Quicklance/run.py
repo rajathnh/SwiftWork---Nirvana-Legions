@@ -9,8 +9,10 @@ app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": "*"}})
 
 @app.after_request
-def add_csp_headers(response):
-    response.headers["Content-Security-Policy"] = "connect-src 'self' https://quicklance.onrender.com;"
+def add_csp(response):
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; script-src 'self'; connect-src 'self' https://quicklance.onrender.com;"
+    )
     return response
 
 # Load models
@@ -22,12 +24,6 @@ with open('complexity/vectorizer.pkl', 'rb') as vec_file:
 
 with open('Urgency/urgency_model.pkl', 'rb') as um_file:
     urgency_model = pickle.load(um_file)
-
-# Add Content Security Policy to fix Fetch API block
-@app.after_request
-def add_csp(response):
-    response.headers["Content-Security-Policy"] = "default-src 'self'; connect-src *;"
-    return response
 
 # Endpoint to predict both complexity and urgency
 @app.route('/predict', methods=['POST'])
