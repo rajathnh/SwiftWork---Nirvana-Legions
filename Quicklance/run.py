@@ -1,12 +1,12 @@
 from flask import Flask, Response, request, jsonify
-from flask_cors import CORS  # Import Flask-CORS
+from flask_cors import CORS  
 import pickle
 import numpy as np
 from datetime import datetime
 import os
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={r"/predict": {"origins": "*"}})
 
 @app.after_request
 def add_csp_headers(response):
