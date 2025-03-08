@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; connect-src 'self' https://quicklance.onrender.com;"
+      content="default-src 'self'; script-src 'self'; connect-src 'self' https://quicklance.onrender.com;"
     />
-
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Uber for Freelancers</title>
     <link rel="stylesheet" href="src/output.css" />
@@ -63,7 +62,7 @@
 
           <!-- Submit Button -->
           <button
-            onclick="submitDetails(event)"
+            id="estimateButton"
             type="button"
             class="w-full bg-[#B31312] text-white font-bold py-3 rounded-lg hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2"
           >
@@ -100,92 +99,6 @@
       </div>
     </footer>
 
-    <script>
-      async function submitDetails(event) {
-        // Prevent default behavior if part of a form
-        if (event) event.preventDefault();
-
-        // Debugging log
-        console.log("submitDetails function triggered");
-
-        // Get values from input elements
-        const description = document.getElementById("description").value;
-        const deadline = document.getElementById("deadline").value;
-
-        // Debugging logs to confirm values
-        console.log("Description:", description);
-        console.log("Deadline:", deadline);
-
-        // Validate inputs
-        if (!description || !deadline) {
-          alert("Please fill in both description and deadline.");
-          return;
-        }
-
-        // Validate description length (minimum 35 characters)
-        if (description.length < 35) {
-          alert("Description must be at least 35 characters long.");
-          return;
-        }
-
-        // Validate deadline to ensure it's a future date
-        const currentDate = new Date();
-        const selectedDate = new Date(deadline);
-        if (selectedDate <= currentDate) {
-          alert("Please select a future date for the deadline.");
-          return;
-        }
-
-        try {
-          // Show a loading indicator (optional)
-          const resultDiv = document.getElementById("result");
-          resultDiv.innerHTML = "Calculating price...";
-
-          // Send data to the backend route
-          const response = await fetch(
-            "https://quicklance.onrender.com/predict",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ description, deadline }),
-            }
-          );
-
-          // Parse the JSON response
-          const data = await response.json();
-
-          // Display the result
-          if (response.ok) {
-            resultDiv.innerHTML = `
-        <p class="text-white font-bold">Total Price: INR ${data.totalPrice}</p>
-      `;
-          } else {
-            resultDiv.innerHTML = `<p class="text-red-500">Error: ${data.error}</p>`;
-          }
-        } catch (error) {
-          // Handle any unexpected errors
-          console.error("Error:", error);
-          document.getElementById("result").innerHTML =
-            '<p class="text-red-500 font-bold">Something went wrong. Please try again.</p>';
-        }
-      }
-
-      // Add real-time feedback for description input
-      document
-        .getElementById("description")
-        .addEventListener("input", function () {
-          const description = this.value;
-          const feedback = document.getElementById("description-feedback");
-
-          if (description.length < 35) {
-            feedback.textContent = `Description must be at least 35 characters long. (${description.length}/35)`;
-            feedback.style.color = "red";
-          } else {
-            feedback.textContent = "  ";
-          }
-        });
-    </script>
+    <script src="quicklance.js"></script>
   </body>
 </html>
