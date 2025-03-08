@@ -52,11 +52,17 @@ app.use(
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
         imgSrc: ["'self'", "https://res.cloudinary.com", "data:"],
-        connectSrc: ["'self'", "http://localhost:5000", "http://localhost:5001"],
+        connectSrc: [
+          "'self'",
+          "http://localhost:5000",
+          "http://localhost:5001",
+          "https://quicklance.onrender.com"
+        ],
       },
     },
   })
 );
+
 
 
 
