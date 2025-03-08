@@ -36,10 +36,14 @@ def predict():
 
         urgency = urgency_model.predict([[days_remaining]])[0]
 
-        # Return results
+        BASE_PRICE = 1000 # Minimum price in INR
+        COMPLEXITY_MULTIPLIER = 150  # Price increase per complexity level
+        URGENCY_MULTIPLIER = 100  # Additional price per urgency level
+
+        total_price = BASE_PRICE + (complexity * COMPLEXITY_MULTIPLIER) + (urgency * URGENCY_MULTIPLIER)
+
         return jsonify({
-            'complexity': int(complexity),
-            'urgency': int(urgency)
+            'totalPrice': int(total_price)  # Ensure integer value for clean JSON output
         })
 
     except Exception as e:
