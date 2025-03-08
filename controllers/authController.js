@@ -55,18 +55,23 @@ const createFreelancer = async (req, res) => {
                 })
             );
         };
+        const profilePic = await uploadImageSafely(req.files?.profilePic, defaultImage);
 
         // Process image uploads
         const [image1, image2, image3, image4] = await uploadImages(req.files || {}, defaultImage);
+
+        // Split skills string into an array of individual skills
+        const separatedSkills = skills.split(',').map(skill => skill.trim());
 
         // Create the freelancer document
         const newFreelancer = await Freelancer.create({
             name,
             email,
             password: hashedPassword,
-            skills,
+            skills: separatedSkills,
             bio,
             portfolio,
+            profilePic,
             image1,
             image2,
             image3,
@@ -81,6 +86,7 @@ const createFreelancer = async (req, res) => {
                 name: newFreelancer.name,
                 email: newFreelancer.email,
                 skills: newFreelancer.skills,
+                profilePic: newFreelancer.profilePic,
                 images: [image1, image2, image3, image4],
             },
         });
@@ -95,28 +101,63 @@ const createFreelancer = async (req, res) => {
 
 
 
-const createClient = async(req,res)=>{
-    try{
-    const{name,email,password} = req.body;
-    const existingClient = await Client.findOne({email})
-    if(existingClient)
-    {
-        return res.status(400).json({msg:'Email already exists'})
+const createClient = async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        const defaultProfilePic = '/uploads/default-profile.jpg'; // Default image if none is uploaded
+
+        // Check if client already exists
+        const existingClient = await Client.findOne({ email });
+        if (existingClient) {
+            return res.status(400).json({ msg: 'Email already exists' });
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Define the function to safely upload the profile picture
+        const uploadImageSafely = async (file, defaultUrl) => {
+            if (!file) return defaultUrl; // Return default if no file is uploaded
+            try {
+                const result = await cloudinary.uploader.upload(file.tempFilePath, {
+                    use_filename: true,
+                    folder: 'client-profile-images',
+                });
+                return result.secure_url; // Return the uploaded image URL
+            } catch (error) {
+                console.error('Error uploading image:', error.message);
+                return defaultUrl; // Return default image if upload fails
+            }
+        };
+
+        // Process the profile picture upload
+        const profilePic = await uploadImageSafely(req.files?.profilePic, defaultProfilePic);
+
+        // Create the new client document
+        const newClient = new Client({
+            name,
+            email,
+            password: hashedPassword,
+            profilePic, // Add the profilePic field
+        });
+        await newClient.save();
+
+        // Respond with success
+        res.status(201).json({
+            msg: 'Client created successfully',
+            newClient: {
+                id: newClient._id,
+                name: newClient.name,
+                email: newClient.email,
+                profilePic: newClient.profilePic, // Include profilePic in the response
+            },
+        });
+    } catch (error) {
+        console.error('Error creating client:', error.message);
+        res.status(500).json({ msg: 'Server Error', error: error.message });
     }
-    const hashedPassword = await bcrypt.hash(password,10);
-    
-    const newClient = new Client({name,email,password:hashedPassword});
-    await newClient.save();    
-    
-    res.status(201).json({msg:'client created successfully',newClient: {
-        id: newClient._id,
-        name: newClient.name,
-        email: newClient.email,},
-    });
-}catch(error){
-    res.status(500).json({msg:'Server Error',error:error.message});
-}
 };
+
 
 const login = async(req,res)=>{
     try{
@@ -148,7 +189,8 @@ const login = async(req,res)=>{
         
         const tokenUser = createTokenUser(user);
         attachCookiesToResponse({ res, user: tokenUser });
-        res.status(StatusCodes.OK).json({ user: tokenUser });
+        const userType = user instanceof Freelancer ? 'freelancer' : 'client';
+        res.status(StatusCodes.OK).json({ user: tokenUser ,userId:user._id, userType: userType,});
     }catch(error){
         console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: 'Server Error', error: error.message });

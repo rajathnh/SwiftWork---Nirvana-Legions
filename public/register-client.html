@@ -1,50 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Client Registration</title>
-  <link rel="stylesheet" href="register-client.css">
-  <script defer src="register-client.js"></script>
+  <title>Client Sign Up</title>
+  <link rel="stylesheet" href="src/output.css">
 </head>
-<body class="bg-gray-100">
-  <div class="flex justify-center items-center h-screen">
-    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-      <h2 class="text-2xl font-bold text-center mb-4">Client Registration</h2>
-      
-      <form id="client-form" class="space-y-4">
-        <!-- Name -->
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-          <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        </div>
 
-        <!-- Email -->
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-          <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        </div>
+<body class="bg-[#2B2A4C] text-[#EEE2DE] min-h-screen flex flex-col justify-between font-sans">
+  <!-- Header -->
+  <header class="bg-[#EEE2DE] placeholder: shadow-md">
+    <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
+      <!-- Logo -->
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
+      </div>
 
+      <!-- Navigation Links -->
+      <ul class="hidden md:flex space-x-8 text-lg">
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#home">Home</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#about-us">About</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#contact-us">Contact us</a></li>
+      </ul>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="block md:hidden text-[#e56f08] focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#EEE2DE] text-center text-lg py-4">
+      <a href="index.html#home" class="block py-2 text-[#e56f08] hover:text-[#000000]">Home</a>
+      <a href="index.html#about-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">About</a>
+      <a href="index.html#contact-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">Contact us</a>
+    </div>
+  </header>
+
+  <div class="flex flex-col md:flex-row items-stretch justify-center min-h-screen py-12 px-4">
+    <!-- Sign Up Form Container -->
+    <div class="w-full max-w-md bg-[#EEE2DE] text-[#2B2A4C] rounded-l-lg shadow-lg p-8 flex flex-col">
+      <h2 class="text-3xl font-extrabold text-center mb-4">Client Sign Up</h2>
+      <p class="text-center mb-6 text-[#EA906C]">Join our platform to hire the best talents!</p>
+  
+      <form id="client-signup-form" action="/signup" method="POST" enctype="multipart/form-data" class="flex-grow">
+        <!-- Full Name -->
+        <div class="mb-4">
+          <label for="name" class="block text-sm font-medium">Full Name</label>
+          <input type="text" id="name" name="name" required class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" placeholder="Enter your full name" />
+        </div>
+  
+        <!-- Email Address -->
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium">Email Address</label>
+          <input type="email" id="email" name="email" required class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" placeholder="you@example.com" />
+        </div>
+  
         <!-- Password -->
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-          <input type="password" id="password" name="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium">Create Password</label>
+          <input type="password" id="password" name="password" required class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" placeholder="Create a strong password" />
         </div>
-
+  
         <!-- Profile Picture -->
-        <div>
-          <label for="profilePic" class="block text-sm font-medium text-gray-700">Profile Picture (optional)</label>
-          <input type="file" id="profilePic" name="profilePic" accept="image/*" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <div class="mb-4">
+          <label for="profilePic" class="block text-sm font-medium">Profile Picture</label>
+          <input type="file" id="profilePic" name="profilePic" accept="image/*" class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" />
         </div>
-
+  
         <!-- Submit Button -->
-        <div class="text-center">
-          <button type="submit" class="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Register</button>
-        </div>
+        <button
+          type="submit"
+          class="w-full px-6 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-200 focus:outline-none"
+        >
+          Sign Up
+        </button>
       </form>
-
-      <div id="error-message" class="mt-4 text-center text-red-500 hidden"></div>
+  
+      <div class="mt-6 text-center">
+        <p class="text-sm text-[#2B2A4C]">
+          Already have an account? <a href="login.html" class="text-[#B31312] hover:text-[#EA906C]">Sign In</a>
+        </p>
+      </div>
+    </div>
+  
+    <!-- Adjacent Image Box -->
+    <div class="w-full max-w-md hidden md:block">
+      <img
+        src="uploads/client-sign.jpg"
+        alt="Sign Up Illustration"
+        class="w-full h-full object-cover rounded-r-lg"
+      />
     </div>
   </div>
+   <!-- Sign-Up Form -->
+ 
+
+
+  <!-- Footer -->
+  <footer class="bg-[#2B2A4C] py-6">
+    <div class="container mx-auto px-4 text-center">
+      <hr class="my-4 border-[#EEE2DE]">
+      <p class="text-sm">
+        © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  </script>
+   <script src="register-client.js"></script>
 </body>
+
 </html>

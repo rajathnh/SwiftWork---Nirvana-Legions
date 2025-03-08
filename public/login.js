@@ -1,13 +1,23 @@
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+const loginForm = document.querySelector('#login-form');
+const API_BASE_URL =
+  window.location.hostname === "localhost" // If on localhost
+    ? "http://localhost:5000"
+    : "https://swiftwork.onrender.com";
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault(); // Prevent default form submission
 
-  // Get form data
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
   try {
-    // Send data to backend API
-    const response = await fetch('http://localhost:5000/api/v1/auth/login', {
+    if (email === 'admin@admin.com' && password === 'admin123123') {
+      // Redirect to admin page if admin credentials are used
+      window.location.href = 'admin.html';
+      return;
+    }
+
+    // Send the login request to the server for normal users
+    const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,19 +25,27 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       body: JSON.stringify({ email, password }),
     });
 
-    // Handle the response
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.msg || 'Login failed');
+    const data = await response.json();
+
+    if (response.ok) {
+      // Store the user ID and role in localStorage
+      const userId = data.userId;
+      const userType = data.userType;
+
+      localStorage.setItem('swiftWork_ID', userId);
+      localStorage.setItem('swiftWork_role', userType);
+
+      // Redirect based on user type
+      if (userType === 'freelancer') {
+        window.location.href = 'freelancer-profile.html';
+      } else if (userType === 'client') {
+        window.location.href = 'client-portfolio.html';
+      }
+    } else {
+      alert(data.message); // Show error message if login failed
     }
-
-    const result = await response.json();
-    console.log('Login successful:', result);
-
-    // Redirect or show success message
-    window.location.href = '/dashboard.html';
   } catch (error) {
-    console.error('Error:', error.message);
-    alert('Login failed: ' + error.message);
+    console.error('Error:', error);
+    alert('An error occurred. Please try again.');
   }
 });

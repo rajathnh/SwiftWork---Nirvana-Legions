@@ -1,0 +1,21 @@
+Client ID,Project Name,Skills Required,Estimated Time (Hours),Offered Price (USD)
+101,E-commerce Website,HTML, CSS, JavaScript, PHP, MySQL,100,3000
+102,Logo Design,Illustrator, Photoshop, Branding,40,1000
+103,Mobile App for Fitness,Swift, Firebase, iOS Development,120,4000
+104,Blog Content Writing,SEO, Copywriting, WordPress,25,600
+105,Data Analysis for Marketing,Python, Excel, Data Analysis, SQL,60,1500
+106,Online Course Platform,HTML, CSS, JavaScript, React, Node.js,250,7000
+107,AI-Based Recommendation System,Python, TensorFlow, Data Science,150,5500
+108,Content Management System,PHP, MySQL, Laravel, JavaScript,180,4000
+109,Website Redesign,HTML, CSS, JavaScript, UX/UI Design,100,2500
+110,Blockchain Development,Solidity, Ethereum, Blockchain, Node.js,250,10000
+111,Digital Marketing Campaign,SEO, Google Ads, Facebook Ads, Content Creation,80,2000
+112,Social Media Automation,Python, Selenium, Social Media,60,1800
+113,Chatbot for Customer Service,JavaScript, Node.js, Python, NLP,100,3500
+114,AI Image Recognition,Python, OpenCV, Machine Learning, Neural Networks,200,7500
+115,Virtual Reality App Development,Unity, C#, VR, 3D Modeling,300,9500
+116,Music Streaming Service,Java, Spring, SQL, AWS,220,8500
+117,AR/VR Experience for Events,ARKit, Unity, C#, AR/VR,150,6000
+118,Cloud Data Integration,Python, AWS, Google Cloud, Docker, Kubernetes,180,5000
+119,Enterprise Resource Planning (ERP) System,Java, Spring Boot, MySQL, React,300,12000
+120,3D Animation for Product,Autodesk Maya, Blender, Animation, 3D Modelling,140,4000

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Final Work Submission</title>
+    <link href="src/output.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-message {
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-[#2B2A4C] text-[#EEE2DE]">
+  <header class="bg-[#EEE2DE] placeholder: shadow-md">
+    <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
+      <!-- Logo -->
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
+      </div>
+
+      <!-- Navigation Links -->
+      <ul class="hidden md:flex space-x-8 text-lg">
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#home">Home</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#about-us">About</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#contact-us">Contact us</a></li>
+      </ul>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="block md:hidden text-[#e56f08] focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#EEE2DE] text-center text-lg py-4">
+      <a href="index.html#home" class="block py-2 text-[#e56f08] hover:text-[#000000]">Home</a>
+      <a href="index.html#about-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">About</a>
+      <a href="index.html#contact-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">Contact us</a>
+    </div>
+  </header>
+
+  <div class="flex flex-col md:flex-row  items-center justify-center min-h-screen py-12 px-4">
+    <!-- Submit Work Form Container -->
+    <div class="w-full max-w-md bg-[#EEE2DE] text-[#2B2A4C] rounded-lg shadow-lg p-8 flex flex-col">
+        <h2 class="text-3xl font-extrabold text-center mb-4">Submit Final Work</h2>
+        <p class="text-center mb-6 text-[#EA906C]">Upload your work and provide a description.</p>
+
+        <form id="submitWorkForm" enctype="multipart/form-data" class="flex-grow">
+            <!-- Message Field -->
+            <div class="mb-4">
+                <label for="message" class="block text-sm font-medium">Message</label>
+                <textarea 
+                    id="message" 
+                    name="message" 
+                    required 
+                    rows="4" 
+                    class="mt-2 block w-full px-4 py-2 border border-[#EA906C] rounded-lg shadow-sm bg-white text-[#2B2A4C] focus:ring-[#EA906C] focus:border-[#EA906C]" 
+                    placeholder="Describe your work"
+                ></textarea>
+            </div>
+
+            <!-- File Upload -->
+            <div class="mb-4">
+                <label for="files" class="block text-sm font-medium">Upload Files</label>
+                <input 
+                    type="file" 
+                    id="files" 
+                    name="files" 
+                    multiple 
+                    required 
+                    class="mt-2 block w-full text-sm text-[#2B2A4C] border border-[#EA906C] rounded-lg shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-[#EA906C] file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+                type="submit" 
+                class="w-full px-6 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-200 focus:outline-none"
+            >
+                Submit Work
+            </button>
+        </form>
+
+        <!-- Status Message -->
+        <div 
+            id="statusMessage" 
+            class="status-message hidden mt-4 p-4 rounded-lg bg-green-50 text-green-700 font-medium text-center shadow-sm"
+        >
+            <!-- Success or Error Message will be displayed here -->
+        </div>
+    </div>
+
+    
+    
+</div>
+
+    
+
+    <footer class="bg-[#2B2A4C] py-6">
+      <div class="container mx-auto px-4 text-center">
+        <hr class="my-4 border-[#EEE2DE]">
+        <p class="text-sm">
+          © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+        </p>
+      </div>
+    </footer>
+  
+    <script>
+      // Mobile menu toggle
+      const menuToggle = document.getElementById("menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu");
+  
+      menuToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+    </script>
+
+    <script src="submit-project.js"></script>
+</body>
+</html>

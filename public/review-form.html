@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <link rel="stylesheet" href="review-form.css"> -->
+  <link rel="stylesheet" href="src/output.css">
+  <title>Freelancer Review</title>
+</head>
+<body style="background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);">
+  <header class="bg-[#EEE2DE] placeholder: shadow-md">
+    <nav class="flex items-center justify-between w-[92%] mx-auto py-4">
+      <!-- Logo -->
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-[#e56f08]">SwiftWork</h1>
+      </div>
+
+      <!-- Navigation Links -->
+      <ul class="hidden md:flex space-x-8 text-lg">
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#home">Home</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#about-us">About</a></li>
+        <li><a class="hover:text-[#000000] text-[#e56f08] transition-colors" href="index.html#contact-us">Contact us</a></li>
+      </ul>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="block md:hidden text-[#e56f08] focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#EEE2DE] text-center text-lg py-4">
+      <a href="index.html#home" class="block py-2 text-[#e56f08] hover:text-[#000000]">Home</a>
+      <a href="index.html#about-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">About</a>
+      <a href="index.html#contact-us" class="block py-2 text-[#e56f08] hover:text-[#000000]">Contact us</a>
+    </div>
+  </header>
+
+  <div class="review-container max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-4">
+    <h1 class="review-title text-center text-2xl font-bold text-gray-800 mb-4">Submit Your Review</h1>
+    <form id="review-form" class="space-y-4">
+      <div class="form-group ">
+        <label for="rating" class="block text-sm font-medium text-gray-700">Overall Rating (1-5)</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" required class="mt-1 block w-full py-3 px-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+      </div>
+      <div class="form-group">
+        <label for="efficiency" class="block text-sm font-medium text-gray-700">Efficiency</label>
+        <input type="number" id="efficiency" name="efficiency" min="1" max="5" required class="mt-1 block py-3 px-2  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+      </div>
+      <div class="form-group">
+        <label for="communication" class="block text-sm font-medium text-gray-700">Communication</label>
+        <input type="number" id="communication" name="communication" min="1" max="5" required class="mt-1 block py-3 px-2  w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+      </div>
+      <div class="form-group">
+        <label for="qualityOfWork" class="block text-sm font-medium text-gray-700">Quality of Work</label>
+        <input type="number" id="qualityOfWork" name="qualityOfWork" min="1" max="5" required class="mt-1 block w-full py-3 px-2  rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+      </div>
+      <div class="form-group">
+        <label for="timeliness" class="block text-sm font-medium text-gray-700">Timeliness</label>
+        <input type="number" id="timeliness" name="timeliness" min="1" max="5" required class="mt-1 block w-full py-3 px-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+      </div>
+      <div class="form-group">
+        <label for="title" class="block text-sm font-medium text-gray-700">Review Title</label>
+        <input type="text" id="title" name="title" maxlength="100" required class="mt-1 block w-full rounded-md py-3 px-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+      </div>
+      <div class="form-group">
+        <label for="comment" class="block text-sm font-medium text-gray-700">Review Comment</label>
+        <textarea id="comment" name="comment" rows="5" maxlength="500" required class="mt-1 block w-full rounded-md py-3 px-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+      </div>
+      <button type="submit" class="submit-btn w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Submit Review</button>
+    </form>
+    <p id="success-message" class="hidden text-green-600 mt-4">Review submitted successfully!</p>
+</div>
+
+<footer class="bg-[#2B2A4C] py-6">
+  <div class="container mx-auto px-4 text-center">
+    <hr class="my-4 border-[#EEE2DE]">
+    <p class="text-sm">
+      © 2024 SwiftWork. <a href="#home" class="text-[#EA906C] hover:underline">All rights reserved.</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const menuToggle = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  menuToggle.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+</script>
+  <script src="review-form.js"></script>
+</body>
+</html>

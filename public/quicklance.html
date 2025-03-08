@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; connect-src 'self' https://quicklance.onrender.com;"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Uber for Freelancers</title>
+    <link rel="stylesheet" href="src/output.css" />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-gray-50 shadow-md">
+      <div
+        class="container mx-auto flex justify-between items-center py-4 px-6"
+      >
+        <div class="text-blue-500 text-3xl font-bold">SwiftWork</div>
+        <nav class="flex space-x-6">
+          <a href="index.html" class="text-black text-2xl hover:underline"
+            >Home</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main
+      class="flex bg-[#2B2A4C] items-center justify-center min-h-screen space-x-10"
+    >
+      <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+        <h1 class="text-4xl font-bold text-black mb-6 text-center">
+          QuickLance
+        </h1>
+        <form>
+          <!-- Select Deadline -->
+          <div class="mb-6">
+            <label for="deadline" class="block text-black font-medium mb-2"
+              >Select Deadline</label
+            >
+            <input
+              type="date"
+              id="deadline"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <!-- Add Description -->
+          <div class="mb-6">
+            <label for="description" class="block text-black font-medium mb-2"
+              >Add Description About the Job</label
+            >
+            <textarea
+              id="description"
+              rows="4"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            ></textarea>
+            <div id="description-feedback" class="text-sm mt-1"></div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            id="estimateButton"
+            type="button"
+            class="w-full bg-[#B31312] text-white font-bold py-3 rounded-lg hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2"
+          >
+            Estimate Price
+          </button>
+        </form>
+      </div>
+
+      <!-- Result Section -->
+      <div id="result" class="text-center mt-4 text-lg"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-3 relative bg-blueGray-200 pt-8 pb-6 bg-blue-950">
+      <div class="container mx-auto px-4">
+        <hr class="my-6 border-blueGray-300" />
+        <div
+          class="flex flex-wrap items-center md:justify-between justify-center"
+        >
+          <div class="w-full md:w-4/12 px-4 mx-auto text-center">
+            <div
+              class="text-sm text-blueGray-500 font-semibold py-1 text-gray-100"
+            >
+              © 2024 SwiftWork.
+              <a
+                href="#home"
+                class="text-blueGray-500 hover:text-gray-800"
+                target="_blank"
+                >All rights reserved.</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="quicklance.js"></script>
+  </body>
+</html>

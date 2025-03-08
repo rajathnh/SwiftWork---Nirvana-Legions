@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Dashboard</title>
+</head>
+<body>
+    <h1>All Gigs Available</h1>
+
+    <div class="gigs-list">
+        <% gigs.forEach(gig => { %>
+            <div class="gig-item">
+                <h3><%= gig.title %></h3>
+                <p><%= gig.description %></p>
+                <p><strong>Budget:</strong> $<%= gig.budget %></p>
+
+                <!-- Safe access to client name -->
+                <p><strong>Client:</strong> <%= gig.client && gig.client.name ? gig.client.name : 'No Client Assigned' %></p>
+
+                <a href="/gig/<%= gig._id %>">View Details</a> <!-- Link to view gig details -->
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>

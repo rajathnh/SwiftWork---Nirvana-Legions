@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header>
+    <h1>Admin Panel</h1>
+    <nav>
+      <button id="freelancersTab">Freelancers</button>
+      <button id="clientsTab">Clients</button>
+      <button id="gigsTab">Gigs</button>
+    </nav>
+  </header>
+  <main>
+    <section id="freelancersSection" class="hidden">
+      <h2>All Freelancers</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody id="freelancersTable">
+          <!-- Data will be dynamically inserted -->
+        </tbody>
+      </table>
+    </section>
+    <section id="clientsSection" class="hidden">
+      <h2>All Clients</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody id="clientsTable">
+          <!-- Data will be dynamically inserted -->
+        </tbody>
+      </table>
+    </section>
+    <section id="gigsSection" class="hidden">
+      <h2>All Gigs</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Budget</th>
+          </tr>
+        </thead>
+        <tbody id="gigsTable">
+          <!-- Data will be dynamically inserted -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>
