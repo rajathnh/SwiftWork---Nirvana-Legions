@@ -31,6 +31,8 @@ const corsOptions = {
     "http://127.0.0.1:5500",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://localhost:5000",   // ✅ Add this
+    "http://127.0.0.1:5000",
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
@@ -47,14 +49,15 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "'unsafe-inline'"],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // Allow Google Fonts stylesheets
-        fontSrc: ["'self'", "https://fonts.gstatic.com"], // Allow Google Fonts files
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
         imgSrc: ["'self'", "https://res.cloudinary.com", "data:"],
-        connectSrc: ["'self'", "http://localhost:5000"], // Allow API calls to your backend
+        connectSrc: ["'self'", "http://localhost:5000", "http://localhost:5001"],
       },
     },
   })
 );
+
 
 
 app.use(xss());

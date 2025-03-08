@@ -6,14 +6,21 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
-CORS(app, resources={r"/predict": {"origins": "*"}})
+CORS(app, resources={r"/predict": {"origins": ["http://localhost", "http://127.0.0.1", "https://quicklance.onrender.com"]}})
 
 @app.after_request
 def add_csp(response):
-    response.headers["Content-Security-Policy"] = (
-        "default-src 'self'; script-src 'self'; connect-src 'self' https://quicklance.onrender.com;"
-    )
+    # For API endpoints, we don't need to set CSP headers
+    # Instead, focus on proper CORS configuration
+    
+    # Set CORS headers
+    response.headers["Access-Control-Allow-Origin"] = "*"  # Or specific origins
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    
     return response
+
+
 
 # Load models
 with open('complexity/complexity_model.pkl', 'rb') as cm_file:
@@ -58,5 +65,5 @@ def predict():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Get port from Render, default to 5000
+    port = int(os.environ.get("PORT", 5001))  # Change to 5001 or another available port
     app.run(host="0.0.0.0", port=port)

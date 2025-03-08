@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSP Test</title>
+</head>
+<body>
+  <h1>CSP Test</h1>
+  <div id="csp"></div>
+  
+  <script>
+    // This will let us see what CSP is being enforced
+    document.addEventListener('securitypolicyviolation', (e) => {
+      const cspDiv = document.getElementById('csp');
+      cspDiv.innerHTML += `
+        <p>Violated directive: ${e.violatedDirective}</p>
+        <p>Blocked URI: ${e.blockedURI}</p>
+        <p>Original policy: ${e.originalPolicy}</p>
+      `;
+    });
+    
+    // Try to make a request that might trigger CSP
+    fetch('http://127.0.0.1:5000/predict')
+      .then(response => response.json())
+      .catch(error => console.error('Error:', error));
+  </script>
+</body>
+</html>

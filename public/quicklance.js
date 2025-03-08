@@ -13,39 +13,41 @@ document.addEventListener("DOMContentLoaded", function () {
       feedback.textContent = `Description must be at least 35 characters long. (${description.length}/35)`;
       feedback.style.color = "red";
     } else {
-      feedback.textContent = "  ";
+      feedback.textContent = " ";
     }
   });
 
+  // Function to determine API URL (local or deployed)
+  function getApiUrl() {
+    const localUrl = "http://localhost:5001/predict";  // Updated port
+    const deployedUrl = "https://quicklance.onrender.com/predict";
+    
+    return window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+        ? localUrl
+        : deployedUrl;
+}
   // submitDetails function
   async function submitDetails(event) {
-    // Prevent default behavior if part of a form
     if (event) event.preventDefault();
 
-    // Debugging log
     console.log("submitDetails function triggered");
 
-    // Get values from input elements
     const description = document.getElementById("description").value;
     const deadline = document.getElementById("deadline").value;
 
-    // Debugging logs to confirm values
     console.log("Description:", description);
     console.log("Deadline:", deadline);
 
-    // Validate inputs
     if (!description || !deadline) {
       alert("Please fill in both description and deadline.");
       return;
     }
 
-    // Validate description length (minimum 35 characters)
     if (description.length < 35) {
       alert("Description must be at least 35 characters long.");
       return;
     }
 
-    // Validate deadline to ensure it's a future date
     const currentDate = new Date();
     const selectedDate = new Date(deadline);
     if (selectedDate <= currentDate) {
@@ -54,12 +56,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
-      // Show a loading indicator (optional)
       const resultDiv = document.getElementById("result");
       resultDiv.innerHTML = "Calculating price...";
 
-      // Send data to the backend route
-      const response = await fetch("https://quicklance.onrender.com/predict", {
+      // Dynamically determine the API URL
+      const apiUrl = getApiUrl();
+      console.log("Using API URL:", apiUrl);
+
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,10 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
         body: JSON.stringify({ description, deadline }),
       });
 
-      // Parse the JSON response
       const data = await response.json();
 
-      // Display the result
       if (response.ok) {
         resultDiv.innerHTML = `
             <p class="text-white font-bold">Total Price: INR ${data.totalPrice}</p>
@@ -79,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
         resultDiv.innerHTML = `<p class="text-red-500">Error: ${data.error}</p>`;
       }
     } catch (error) {
-      // Handle any unexpected errors
       console.error("Error:", error);
       document.getElementById("result").innerHTML =
         '<p class="text-red-500 font-bold">Something went wrong. Please try again.</p>';
